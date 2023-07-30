@@ -1,0 +1,50 @@
+stages:
+  - test
+#   - dast
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+#   - template: Security/DAST.gitlab-ci.yml
+#   - template: DAST-API.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
+
+
+# variables:
+#   # DAST settings
+#   DAST_WEBSITE: http://${Public_IP}:80/
+#   # do a full scan
+#   DAST_FULL_SCAN_ENABLED: "true"
+#   DAST_API_PROFILE: Quick
+#   DAST_API_POSTMAN_COLLECTION: ./ops/iCenna_postman_collection.json
+#   DAST_API_TARGET_URL: http://test-deployment
+
+
+sast:
+  stage: test
+  artifacts:
+    paths:
+      - gl-sast-report.json
+      - gl-secret-detection-report.json
+  when: manual
+
+
+secret_detection:
+  when: manual
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+
+# dast:
+#   when: manual
+
+# dast_api:
+#   when: manual
+
+code_quality:
+  when: manual
+
+license_scanning:
+  when: manual
+
