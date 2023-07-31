@@ -17,9 +17,8 @@ import Scrollbar from '../components/scrollbar';
 import SearchBar from '../components/searchbar';
 import { SideNavItem } from '../components/side-nav-item';
 import { PatientStatuses } from '../constants';
-import { BOTTOM_NAV_HEIGHT } from '../layouts/components/bottom-nav';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
-import { DoctorLayout } from '../layouts/doctor-layout';
+import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { Patient } from '../sections/doctor/patient';
 
 const drawerWidth = 300;
@@ -129,7 +128,6 @@ const Doctor = () => {
         sx={{
           '& .MuiDrawer-paper': {
             paddingTop: `${TOP_NAV_HEIGHT + 5}px`,
-            paddingBottom: `${BOTTOM_NAV_HEIGHT + 5}px`,
           },
         }}
         variant="permanent"
@@ -202,9 +200,9 @@ const Doctor = () => {
 };
 
 Doctor.getLayout = (page) => (
-  <DoctorLayout pageTitle="Doctor">
+  <DashboardLayout>
     {page}
-  </DoctorLayout>
+  </DashboardLayout>
 );
 
 export default Doctor;

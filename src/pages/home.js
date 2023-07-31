@@ -12,7 +12,7 @@ const Home = () => (
 );
 
 Home.getLayout = (page) => (
-  <DashboardLayout pageTitle="Home">
+  <DashboardLayout>
     {page}
   </DashboardLayout>
 );
