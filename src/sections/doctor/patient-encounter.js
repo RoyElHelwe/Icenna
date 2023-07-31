@@ -58,6 +58,7 @@ export const PatientEncounters = (props) => {
         }
         withDivider
       >
+
         <SectionList>
           {patientData?.medical_code?.map((c, i) => (
             <SectionTreeItem

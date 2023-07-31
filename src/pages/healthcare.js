@@ -12,7 +12,7 @@ const Healthcare = () => (
 );
 
 Healthcare.getLayout = (page) => (
-  <DashboardLayout pageTitle="Healthcare">
+  <DashboardLayout>
     {page}
   </DashboardLayout>
 );

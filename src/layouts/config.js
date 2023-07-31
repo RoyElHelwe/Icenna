@@ -5,7 +5,7 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import MasksIcon from '@mui/icons-material/Masks';
 import RtlSvgIcon from '../components/rtl-svgicon';
 
-export const bottomItems = [
+export const navItems = [
   {
     title: 'Home',
     path: '/home',
@@ -50,5 +50,5 @@ export const bottomItems = [
         <CogIcon />
       </RtlSvgIcon>
     )
-  }];
-
+  }
+];

@@ -6,7 +6,7 @@ import { TopNav } from './components/top-nav';
 const ConfirmLoginLayout = ({ children }) => {
   return (
     <BlankLayoutWrapper className='layout-wrapper'>
-      <TopNav />
+      <TopNav withTabs={false} />
       <Customizer />
       <Box className='app-content'
         sx={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative' }}>
