@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "src/theme/ThemeOptions.js", "src/theme/palette/index.js", "src/theme/breakpoints/index.js", "src/utils/create-emotion-cache.js", "src/utils/hex-to-rgba.js", "src/sections/doctor/patient/dental-charting.js", "src/utils/time-ago.js", "src/utils/time-to-date.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
