@@ -48,3 +48,6 @@ code_quality:
 license_scanning:
   when: manual
 
+dependency_scanning:
+  when: manual
+
