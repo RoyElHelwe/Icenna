@@ -1,4 +1,5 @@
 stages:
+  - build
   - test
 #   - dast
 
@@ -46,5 +47,8 @@ code_quality:
   when: manual
 
 license_scanning:
+  when: manual
+
+dependency_scanning:
   when: manual
 
