@@ -29,11 +29,8 @@ sast:
     paths:
       - gl-sast-report.json
       - gl-secret-detection-report.json
-  when: manual
-
 
 secret_detection:
-  when: manual
   variables:
     SECRET_DETECTION_HISTORIC_SCAN: "true"
 
@@ -43,12 +40,4 @@ secret_detection:
 # dast_api:
 #   when: manual
 
-code_quality:
-  when: manual
-
-license_scanning:
-  when: manual
-
-dependency_scanning:
-  when: manual
 
