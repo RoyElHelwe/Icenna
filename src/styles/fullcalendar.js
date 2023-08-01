@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import useBgColor from '../hooks/use-bgcolor';
 import { hexToRGBA } from '../utils/hex-to-rgba';
 
@@ -70,7 +70,7 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
               padding: theme.spacing(1.5, 5.08),
               color: theme.palette.text.primary,
               borderColor: theme.palette.divider,
-              '&.fc-button-active, &:hover': {
+              '&.fc-button-active, &:hover:enabled': {
                 color: theme.palette.primary.main,
                 borderColor: theme.palette.divider,
                 backgroundColor: bgColors.primaryLight.backgroundColor
@@ -110,6 +110,23 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
               borderBottomLeftRadius: 0
             }
           }
+        },
+        '.fc-today-button': {
+          textTransform: 'capitalize',
+          '&:focus': {
+            boxShadow: 'none'
+          },
+          backgroundColor: 'transparent',
+          padding: theme.spacing(1.5, 5.08),
+          color: theme.palette.text.primary,
+          borderColor: theme.palette.divider,
+          '&:hover:enabled': {
+            color: theme.palette.primary.main,
+            borderColor: theme.palette.divider,
+            backgroundColor: bgColors.primaryLight.backgroundColor
+          },
+          padding: theme.spacing(2.2, 6),
+          borderRadius: theme.shape.borderRadius
         },
         '& > * > :not(:first-of-type)': {
           marginLeft: 0

@@ -25,7 +25,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/theme/ThemeOptions.js", "src/theme/palette/index.js", "src/theme/breakpoints/index.js", "src/utils/create-emotion-cache.js", "src/utils/hex-to-rgba.js", "src/sections/doctor/patient/dental-charting.js", "src/utils/time-ago.js", "src/utils/time-to-date.js"  ],
+  ],
   "exclude": [
     "node_modules"
   ]

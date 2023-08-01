@@ -10,7 +10,7 @@ const defaultProvider = {
   setUser: () => null,
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
-  logout: () => Promise.resolve()
+  logout: () => Promise.resolve(),
 };
 
 const AuthContext = createContext(defaultProvider);
@@ -33,6 +33,9 @@ const AuthProvider = ({ children }) => {
             setUser({ ...response.data.data });
             window.localStorage.setItem(authConfig.storUserKeyName, JSON.stringify(response.data.data));
             setLoading(false);
+            if (response.data.data?.action !== 0) {
+              window.localStorage.removeItem(authConfig.storAccessTokenKey);
+            }
           })
           .catch((e) => {
             clearLocalStorage();

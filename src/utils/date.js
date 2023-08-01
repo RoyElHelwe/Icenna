@@ -37,3 +37,17 @@ export const timeAgo = (targetDate) => {
     return `${interval} ${interval === 1 ? 'year' : 'years'} ago`;
   }
 };
+
+export const timeToDate = (date, time) => {
+  const [year, month, day] = date.split("-");
+  const [hours, minutes] = time.split(":");
+  return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+};
+
+export const getDayDifference = (startDate, endDate) => {
+  const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in one day
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffInDays = Math.round(Math.abs((end - start) / oneDay));
+  return diffInDays;
+};

@@ -7,9 +7,10 @@ import Translations from '../../components/Translations';
 import CustomDialog from '../../components/custom-dialog';
 import SearchBar from '../../components/searchbar';
 import Section from '../../components/section';
-import SectionList from '../../components/section-list';
-import SectionTreeItem from '../../components/section-tree-item';
 import ChiefComplaintForm from '../../forms/chief-complaint';
+import MedicalCodes from './medical-codes';
+import Medications from './medications';
+import Procedures from './procedures';
 
 export const LinkTypography = styled(Typography)(({ theme }) => ({
   cursor: 'pointer',
@@ -58,60 +59,15 @@ export const PatientEncounters = (props) => {
         }
         withDivider
       >
-
-        <SectionList>
-          {patientData?.medical_code?.map((c, i) => (
-            <SectionTreeItem
-              key={c.id}
-              id={c.id}
-              title={(
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mr: 3, }}>
-                  <Typography variant="body1" sx={{ flexGrow: 1, fontWeight: 'bold' }}>{c.name}</Typography>
-                  <Typography>{c.code}</Typography>
-                </Box>
-              )}
-              {...(i === patientData?.medical_code?.length - 1 && { sx: { borderRadius: 0, } })}
-            >
-              <Typography variant="body2">Description</Typography>
-              <Typography sx={{ pt: 2 }} variant="section">{c.description}</Typography>
-            </SectionTreeItem>
-          ))}
-        </SectionList>
+        <MedicalCodes data={patientData?.medical_code ?? []} />
       </Section>
       <Section title="Procedures" withDivider>
         {patientData?.procedure?.map((p) => (
-          <SectionList key={p.approval_id}>
-            {p.items?.map((pro, i) => (
-              <SectionTreeItem
-                key={pro.id}
-                id={pro.id}
-                title={(
-                  <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mr: 3, }}>
-                    <Typography variant="body1" sx={{ flexGrow: 1, fontWeight: 'bold' }}>{pro.name}</Typography>
-                    <Typography>{pro.price} SAR</Typography>
-                  </Box>
-                )}
-                {...(i === p?.items?.length - 1 && { sx: { borderRadius: 0, } })}
-              >
-                <Typography variant="body2">Clinical Procedures</Typography>
-                <Typography sx={{ pt: 2 }} variant="section">{pro.description}</Typography>
-              </SectionTreeItem>
-            ))}
-          </SectionList>
+          <Procedures data={p.items ?? []} />
         ))}
       </Section>
       <Section title="Medications" withDivider>
-        {patientData?.drugs?.map((d) => (
-          <SectionTreeItem key={d.id} id={d.id} title={(
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mr: 3, }}>
-              <Typography variant="body1" sx={{ flexGrow: 1, fontWeight: 'bold' }}>{d.name}</Typography>
-              <Typography>{d.code}</Typography>
-            </Box>
-          )}>
-            <Typography variant="body2">Description</Typography>
-            <Typography sx={{ pt: 2 }} variant="section">{d.description}</Typography>
-          </SectionTreeItem>
-        ))}
+        <Medications data={patientData?.drugs ?? []} />
       </Section>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', pt: 10 }}>

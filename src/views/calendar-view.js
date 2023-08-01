@@ -31,23 +31,16 @@ const calendarsColor = {
   ETC: 'info',
 };
 
-const Calendar = ({
-  events,
-}) => {
+const CalendarView = (props) => {
   const { settings } = useSettings();
   const { direction } = settings;
   const calendarOptions = {
-    events,
+    allDaySlot: false,
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, bootstrap5Plugin],
     initialView: 'timeGridDay',
     headerToolbar: {
-      start: 'sidebarToggle, prev, next, title',
-      end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
-    },
-    views: {
-      week: {
-        titleFormat: { year: 'numeric', month: 'long', day: 'numeric', },
-      },
+      start: 'today, prev, next, title,',
+      end: false,
     },
     editable: false,
     eventResizableFromStart: true,
@@ -77,17 +70,11 @@ const Calendar = ({
       const ev = { ...blankEvent, };
       ev.start = info.date;
       ev.end = info.date;
-      ev.allDay = true;
 
       // TODO: handleAddEventSidebarToggle()
     },
-    eventDrop({ event: droppedEvent }) {
-      // TODO: eventDrop()
-    },
-    eventResize({ event: resizedEvent }) {
-      // TODO: eventResize()
-    },
     direction,
+    ...props,
   };
 
   return (
@@ -108,10 +95,12 @@ const Calendar = ({
           backgroundColor: 'background.paper',
         }}
       >
-        <FullCalendar {...calendarOptions} />
+        <FullCalendar
+          {...calendarOptions}
+        />
       </Box>
     </CalendarWrapper>
   );
 };
 
-export default Calendar;
+export default CalendarView;

@@ -4,17 +4,23 @@ import { useQuery } from '@tanstack/react-query';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
-import { getAppointments } from '../api/receptionist';
+import { getAppointments } from '../api/calendar';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
-import Calendar from '../views/calendar';
+import CalendarView from '../views/calendar-view';
 
-const Reception = () => {
+const Calendar = () => {
   const [open, setOpen] = useState(false);
-  const date = format(new Date(), 'yyyy-MM-dd');
+  const [date, setDate] = useState(new Date());
+  const ALL_DOC_OPTION = {
+    id: undefined,
+    practitioner_name: 'All Doctors',
+  };
+  const [practitioner, setPractitioner] = useState(ALL_DOC_OPTION);
+
 
   const { isLoading, error, data, refetch, isFetching, } = useQuery({
-    queryKey: ['getAppointments', date],
-    queryFn: getAppointments,
+    queryKey: ['getAppointments', date, practitioner],
+    queryFn: (ctx) => getAppointments(ctx, format(date, 'yyyy-MM-dd'), practitioner.id),
   });
 
   const {
@@ -23,15 +29,12 @@ const Reception = () => {
   } = data?.data?.data ?? {};
 
   const options = [
-    {
-      id: null,
-      practitioner_name: 'All Doctors',
-    },
+    ALL_DOC_OPTION,
     ...(practitioners ?? []),
   ];
 
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', my: 10, justifyContent: 'start', px: 20, }} spacing={5}>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', my: 10, justifyContent: 'start', px: 20, maxHeight: '100%' }} spacing={5}>
       <Card>
         <CardContent>
           <Autocomplete
@@ -39,8 +42,10 @@ const Reception = () => {
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
+            value={practitioner}
+            isOptionEqualToValue={(option, value) => option?.id === value?.id}
             getOptionLabel={(option) => option.practitioner_name}
+            onChange={(e, value) => setPractitioner(value)}
             options={options}
             loading={isLoading}
             renderInput={(params) => (
@@ -62,26 +67,30 @@ const Reception = () => {
         </CardContent>
       </Card>
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%', maxHeight: '100%', }}>
-        <Calendar events={
-          calender?.filter((obj) => obj.appointments.length !== 0)
-            .map((obj) => (
-              obj.appointments.map(({ id, patient_name, appointment_time }) => ({
-                id,
-                title: patient_name,
-                start: `${date}T${obj.time}`,
-                allDay: false,
-              })))
-            ).flat()
-        } />
+        <CalendarView
+          events={
+            calender?.filter((obj) => obj.appointments.length !== 0)
+              .map((obj) => (
+                obj.appointments.map(({ id, patient_name, appointment_time }) => ({
+                  id,
+                  title: patient_name,
+                  start: `${format(date, 'yyyy-MM-dd')}T${obj.time}`,
+                  allDay: false,
+                })))
+              ).flat()
+          }
+          loading={isLoading}
+          datesSet={({ start }) => setDate(start)}
+        />
       </Box>
     </Stack>
   );
 };
 
-Reception.getLayout = (page) => (
+Calendar.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
 
-export default Reception;
+export default Calendar;
