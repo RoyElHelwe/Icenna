@@ -6,8 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import Section from '../../components/section';
 import SectionList from '../../components/section-list';
 import SectionTreeItem from '../../components/section-tree-item';
-import { timeAgo } from '../../utils/time-ago';
-import { timeToDate } from '../../utils/time-to-date';
+import { timeAgo, timeToDate } from '../../utils/date';
 import { DentalCharting } from './patient/dental-charting';
 
 export const PatientHistory = (props) => {
@@ -27,9 +26,9 @@ export const PatientHistory = (props) => {
           navButtonsAlwaysVisible
           sx={{ maxWidth: "100%", bgcolor: 'background.paper', borderRadius: 3, }}>
           {patientData?.images?.map((image, i) => (
-            <Box sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
               <Link href={image.gcb_path} target='_blank'>
-                <img key={i} src={image.image} width="100%" height={500} maxWidth="80%" />
+                <img key={i} src={image.image} width="100%" height={500} />
               </Link>
             </Box>
           ))}

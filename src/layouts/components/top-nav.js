@@ -25,7 +25,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
 
   const router = useRouter();
   const pathname = router.pathname;
-  const [value, setValue] = useState(String(navItems.findIndex((i) => pathname === i.path)));
+  const [value, setValue] = useState('0');
 
   useEffect(() => {
     const index = navItems.findIndex((i) => pathname === i.path);
