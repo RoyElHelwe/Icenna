@@ -97,7 +97,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
               height: 50,
               width: 50,
             }}
-            src={auth.user.image ?? "/assets/errors/error-401.png"}
+            src={auth.user?.image ?? "/assets/errors/error-401.png"}
           />
         </Stack>
       </Stack>

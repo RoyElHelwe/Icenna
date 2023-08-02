@@ -24,14 +24,14 @@ const AuthGuard = (props) => {
       return;
     }
 
-    if (user === null && !window.localStorage.getItem(authConfig.storUserKeyName)) {
+    if (!loading && !user) {
       redirect(router, '/login', router.pathname.includes('/login'));
     } else if (user && user?.action !== 0 && !router.pathname.includes('login/confirm')) {
       redirect(router, '/login/confirm');
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [router, loading]);
 
 
   if (loading || user === null || (user?.action !== 0 && !router.pathname.includes('login/confirm'))) {
