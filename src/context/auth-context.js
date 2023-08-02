@@ -33,9 +33,6 @@ const AuthProvider = ({ children }) => {
             setUser({ ...response.data.data });
             window.localStorage.setItem(authConfig.storUserKeyName, JSON.stringify(response.data.data));
             setLoading(false);
-            if (response.data.data?.action !== 0) {
-              window.localStorage.removeItem(authConfig.storAccessTokenKey);
-            }
           })
           .catch((e) => {
             clearLocalStorage();

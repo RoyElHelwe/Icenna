@@ -77,8 +77,7 @@ const App = (props) => {
 
                     return (
                       <ThemeComponent settings={settings}>
-                        <Guard authGuard={authGuard}
-                          guestGuard={guestGuard}>
+                        <Guard authGuard={authGuard} guestGuard={guestGuard}>
                           {getLayout(<Component {...pageProps} />)}
                         </Guard>
                       </ThemeComponent>
