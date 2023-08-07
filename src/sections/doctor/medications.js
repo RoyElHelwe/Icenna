@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
-import { MaterialReactTable } from 'material-react-table';
 import React, { useMemo } from 'react';
+import ExpandTable from '../../components/expand-table';
 
 const Medications = (props) => {
   const columns = useMemo(() => [
@@ -15,9 +15,7 @@ const Medications = (props) => {
   ], [],);
 
   return (
-    <MaterialReactTable
-      enableTopToolbar={false}
-      enableBottomToolbar={false}
+    <ExpandTable
       columns={columns}
       renderDetailPanel={({ row }) => (
         <Grid container spacing={2}>

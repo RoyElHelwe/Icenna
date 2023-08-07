@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -7,6 +7,7 @@ import Section from '../../components/section';
 import SectionList from '../../components/section-list';
 import SectionTreeItem from '../../components/section-tree-item';
 import { timeAgo, timeToDate } from '../../utils/date';
+import { PatientEncounterView } from './patient-encounter-view';
 import { DentalCharting } from './patient/dental-charting';
 
 export const PatientHistory = (props) => {
@@ -36,14 +37,13 @@ export const PatientHistory = (props) => {
       </Section>
       <Section title="Patient Encounters">
         <SectionList>
-          {patientData?.time_line?.map(({ id, status, encounter_date: date, encounter_time: time }, i) => (
+          {patientData?.time_line?.map(({ id, status, encounter_date: date, encounter_time: time, appointment }, i) => (
             <SectionTreeItem
               key={id}
               id={id}
               title={`${timeAgo(timeToDate(date, time))} (${date})`}
               {...(i === patientData?.time_line?.length - 1 && { sx: { borderRadius: 0, } })}>
-              <Typography variant="body2">Status</Typography>
-              <Typography sx={{ pt: 2 }} variant="section">{status}</Typography>
+              <PatientEncounterView appointmentId={appointment} />
             </SectionTreeItem>
           ))}
         </SectionList>

@@ -1,26 +1,33 @@
+import AddIcon from '@mui/icons-material/Add';
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { useMutation } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useState } from 'react';
-import Translations from '../../components/Translations';
-import CustomDialog from '../../components/custom-dialog';
-import SearchBar from '../../components/searchbar';
+import toast from 'react-hot-toast';
+import { addEncounterItem } from '../../api/practitioner';
+import CustomDialog, { DefaultOptions } from '../../components/custom-dialog';
 import Section from '../../components/section';
 import ChiefComplaintForm from '../../forms/chief-complaint';
-import MedicalCodes from './medical-codes';
+import DiagnosisDescriptionForm from '../../forms/diagnosis-description';
+import AddToEncounter from './add-to-encounter';
+import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
 
-export const LinkTypography = styled(Typography)(({ theme }) => ({
-  cursor: 'pointer',
-  color: theme.palette.primary.main,
-}));
+export const PatientEncounters = ({ patientData, setPatientData }) => {
+  const [dialogOptions, setDialogOptions] = useState(DefaultOptions);
 
-export const PatientEncounters = (props) => {
-  const { patientData } = props;
+  const setOpen = (open) => setDialogOptions({ ...dialogOptions, open, });
+  const onClose = () => setDialogOptions({ ...DefaultOptions, });
 
-  const [open, setOpen] = useState(false);
+  const { isLoading: isAdding, error: addError, data: addData, mutate, mutateAsync } = useMutation({
+    mutationFn: addEncounterItem,
+    enabled: false,
+    onSuccess: (data) => setPatientData(data?.data?.data),
+    onMutate: () => setOpen(false),
+  });
 
   const handleCheckout = (e) => {
     console.log('Checkout');
@@ -28,50 +35,118 @@ export const PatientEncounters = (props) => {
 
   return (
     <>
-      <CustomDialog
-        open={open}
-        setOpen={setOpen}
-        title="Write Chief Complaint"
-      >
-        <ChiefComplaintForm />
-      </CustomDialog>
+      <CustomDialog {...dialogOptions} setOpen={setOpen} />
 
-      <SearchBar sx={{ mb: 5, }} onChange={(e) => console.log(e.target.value)} />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 5, }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', }}>
+          <Button
+            variant="outlined"
+            sx={{ mr: 3, }}
+            onClick={() => setDialogOptions({
+              ...DefaultOptions,
+              onClose,
+              open: true,
+              title: 'Write Diagnosis',
+              children: (
+                <DiagnosisDescriptionForm
+                  values={{ id: patientData?.id, text: patientData?.diagnosis_description ?? '', }}
+                  onSubmit={(data) => setPatientData(data)}
+                  onClose={onClose}
+                />
+              ),
+            })}>
+            Write Diagnosis
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ mr: 3, }}
+            onClick={() => setDialogOptions({
+              ...DefaultOptions,
+              onClose,
+              open: true,
+              title: 'Write Chief Complaint',
+              children: (
+                <ChiefComplaintForm
+                  values={{ id: patientData?.id, text: patientData?.chief_complaint ?? '', }}
+                  onSubmit={(data) => setPatientData(data)}
+                  onClose={onClose}
+                />
+              ),
+            })}>
+            Chief Complaint
+          </Button>
+        </Box>
 
-      <Section
-        title={
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-end',
-          }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mr: 3, }}>
-              <Translations text="Medical codes" />
-            </Typography>
-            <LinkTypography sx={{ p: 1, }} onClick={() => setOpen(true)}>
-              Write Diagnosis
-            </LinkTypography>
-            <LinkTypography sx={{ p: 1, }} onClick={() => setOpen(true)}>
-              Chief Complaint
-            </LinkTypography>
+        <LoadingButton
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => setDialogOptions({
+            ...DefaultOptions,
+            open: true,
+            maxWidth: 'lg',
+            minHeight: '80vh',
+            title: 'Add To Encounter',
+            children: (
+              <AddToEncounter
+                id={patientData?.id}
+                onItemClick={(params) => {
+                  toast.promise(
+                    mutateAsync({
+                      id: patientData?.id,
+                      t_type: 'add',
+                      ...params,
+                    }), {
+                    loading: 'Adding ...',
+                    success: 'Added successfully!',
+                    error: 'Error adding!',
+                  });
+                }}
+              />
+            ),
+          })}
+        >
+          Add
+        </LoadingButton>
+      </Box>
+
+      {!!patientData?.chief_complaint?.length && (
+        <Section title="Chief Complaint" withDivider>
+          <Typography>{patientData?.chief_complaint}</Typography>
+        </Section>
+      )}
+
+      {!!patientData?.medical_code?.length && (
+        <Section title="Diagnosis" withDivider>
+          <Box sx={{ mb: 5, }}>
+            <Typography sx={{ fontWeight: 'bold', }}>Description</Typography>
+            <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
           </Box>
-        }
-        withDivider
-      >
-        <MedicalCodes data={patientData?.medical_code ?? []} />
-      </Section>
-      <Section title="Procedures" withDivider>
-        {patientData?.procedure?.map((p) => (
-          <Procedures data={p.items ?? []} />
-        ))}
-      </Section>
-      <Section title="Medications" withDivider>
-        <Medications data={patientData?.drugs ?? []} />
-      </Section>
+
+          <Diagnosis data={patientData?.medical_code ?? []} />
+        </Section>
+      )}
+
+      {!!patientData?.procedure?.length && (
+        <Section title="Procedures" withDivider>
+          {patientData?.procedure?.map((p) => (
+            <Procedures
+              key={p.approval_id}
+              data={p.items ?? []}
+            />
+          ))}
+        </Section>
+      )}
+
+      {!!patientData?.drugs?.length && (
+        <Section title="Medications" withDivider>
+          <Medications
+            data={patientData?.drugs ?? []}
+          />
+        </Section>
+      )}
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', pt: 10 }}>
-        <Button variant='contained' sx={{ borderRadius: 1.5, textTransform: 'none' }} onClick={handleCheckout}>
+        <Button variant='contained' sx={{ borderRadius: 1.5, textTransform: 'none' }} onClick={() => toast.error('Error !!')}>
           Checkout
         </Button>
       </Box>
@@ -81,4 +156,5 @@ export const PatientEncounters = (props) => {
 
 PatientEncounters.propTypes = {
   patientData: PropTypes.object,
+  setPatientData: PropTypes.func,
 };

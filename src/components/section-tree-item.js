@@ -60,7 +60,7 @@ const SectionTreeItem = ({ id, title, code, children, ...props }) => {
       onClick={(e) => setSelected(!selected)}
       {...props}
     >
-      <Box sx={{ pb: 1, pl: 5 }}>
+      <Box sx={{ pb: 6, px: 6, }}>
         {children}
       </Box>
     </TreeItem>

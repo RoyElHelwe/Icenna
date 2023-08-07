@@ -42,8 +42,13 @@ const AuthProvider = ({ children }) => {
             }
           });
       } else if (currUser) {
+        const u = JSON.parse(currUser);
+        if (u.action === 0) {
+          clearLocalStorage();
+        } else {
+          setUser(u);
+        }
         setLoading(false);
-        setUser(JSON.parse(currUser));
       } else {
         setLoading(false);
       }

@@ -8,6 +8,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import Head from 'next/head';
+import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import 'simplebar-react/dist/simplebar.min.css';
 import Spinner from 'src/components/spinner';
@@ -18,6 +19,7 @@ import AuthGuard from 'src/guards/auth-guard';
 import ThemeComponent from 'src/theme/ThemeComponent';
 import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import GuestGuard from '../guards/guest-guard';
+import ReactHotToast from '../styles/ReactHotToast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,7 +64,9 @@ const App = (props) => {
           content="initial-scale=1, width=device-width"
         />
       </Head>
-
+      <ReactHotToast>
+        <Toaster position='top-right' toastOptions={{ className: 'react-hot-toast' }} />
+      </ReactHotToast>
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
           <AuthProvider>

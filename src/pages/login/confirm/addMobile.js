@@ -90,7 +90,6 @@ const ConfirmLogin = () => {
               sx={{
                 mb: 1,
                 mt: 1,
-                textTransform: 'none',
               }}>
               Submit mobile
             </LoadingButton>

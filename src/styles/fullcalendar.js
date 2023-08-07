@@ -250,7 +250,7 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
         width: "20rem",
       },
       '& .fc-view-harness': {
-        minHeight: '650px',
+        maxHeight: '50rem',
         margin: theme.spacing(0, -5.25),
         width: `calc(100% + ${theme.spacing(5.25 * 2)})`
       },

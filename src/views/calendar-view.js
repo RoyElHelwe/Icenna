@@ -6,8 +6,11 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Box } from '@mui/material';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { format } from 'date-fns';
 import { useSettings } from '../hooks/useSettings';
 import CalendarWrapper from '../styles/fullcalendar';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 
 const blankEvent = {
   title: '',
@@ -42,6 +45,8 @@ const CalendarView = (props) => {
       start: 'today, prev, next, title,',
       end: false,
     },
+    nowIndicator: true,
+    scrollTime: format(new Date().setHours(new Date().getHours() - 1), 'HH:mm:sss'),
     editable: false,
     eventResizableFromStart: true,
     dragScroll: true,

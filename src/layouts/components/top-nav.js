@@ -2,6 +2,7 @@ import { TabContext, TabList } from '@mui/lab';
 import {
   AppBar,
   Avatar,
+  Box,
   Stack,
   Tab,
   Typography
@@ -17,7 +18,7 @@ import Translations from '../../components/Translations';
 import { navItems } from '../config';
 import { AccountPopover } from './account-popover';
 
-export const TOP_NAV_HEIGHT = 65;
+export const TOP_NAV_HEIGHT = 60;
 
 export const TopNav = ({ withTabs, ...rest }) => {
   const accountPopover = usePopover();
@@ -68,7 +69,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
           <Typography variant="h3">iCenna</Typography>
           {(withTabs ?? true) && (
             <TabContext value={value}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <TabList onChange={handleChange} sx={{ minHeight: TOP_NAV_HEIGHT, display: 'flex', alignItems: 'flex-end', }}>
                 {navItems.map((item, i) => (
                   <Tab
                     key={i}

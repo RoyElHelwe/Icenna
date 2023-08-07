@@ -40,7 +40,7 @@ icenna
 		├── 404.js
 		├── _app.js
 		├── _document.js
-		├── login
+		└── login
 			├── index.js
 			└── confirm
 		├── doctor.js

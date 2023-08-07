@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { MaterialReactTable } from 'material-react-table';
 import React, { useMemo } from 'react';
+import ExpandTable from '../../components/expand-table';
 
 const Procedures = (props) => {
   const columns = useMemo(() => [
@@ -19,9 +19,7 @@ const Procedures = (props) => {
   ], [],);
 
   return (
-    <MaterialReactTable
-      enableTopToolbar={false}
-      enableBottomToolbar={false}
+    <ExpandTable
       columns={columns}
       renderDetailPanel={({ row }) => (
         <Box sx={{ pb: 1, pl: 5 }}>

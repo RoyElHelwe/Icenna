@@ -6,22 +6,22 @@ import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 import * as yup from 'yup';
-import { addChiefComplaint } from "../api/practitioner";
+import { addDiagnosisDescription } from "../api/practitioner";
 
 const schema = yup.object().shape({
   text: yup.string().required('Details can\'t be empty!'),
 });
 
-const ChiefComplaintForm = ({
+const DiagnosisDescriptionForm = ({
   values,
-  onSubmit,
   onClose,
+  onSubmit,
 }) => {
   const {
     isLoading,
     mutate,
   } = useMutation({
-    mutationFn: addChiefComplaint,
+    mutationFn: addDiagnosisDescription,
     enabled: false,
     onSuccess: (data) => {
       toast.success('Updated Successfully!');
@@ -82,4 +82,4 @@ const ChiefComplaintForm = ({
 };
 
 
-export default ChiefComplaintForm;
+export default DiagnosisDescriptionForm;
