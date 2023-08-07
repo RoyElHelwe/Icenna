@@ -106,7 +106,6 @@ const Login = () => {
               sx={{
                 mb: 1,
                 mt: 1,
-                textTransform: 'none',
               }}>
               Continue with us
             </LoadingButton>

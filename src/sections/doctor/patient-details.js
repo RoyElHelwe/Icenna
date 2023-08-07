@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getEncounterInfo } from '../../api/practitioner';
-import CenteredCircularProgress from '../../components/centered-circular-progress';
 import CenteredAlert from '../../components/centered-alert';
+import CenteredCircularProgress from '../../components/centered-circular-progress';
 import { PatientEncounters } from './patient-encounter';
 import { PatientHistory } from './patient-history';
 
-export const Patient = (props) => {
+export const PatientDetails = (props) => {
   const { appointment } = props;
 
   const { isLoading, error, data } = useQuery({
@@ -21,7 +21,7 @@ export const Patient = (props) => {
     queryFn: getEncounterInfo,
   });
 
-  const [patientData, setPatientData] = useState();
+  const [patientData, setPatientData] = useState({});
   useEffect(() => {
     setPatientData(data?.data?.data ?? {});
   }, [data]);
@@ -79,14 +79,14 @@ export const Patient = (props) => {
             <PatientHistory patientData={patientData} />
           </TabPanel>
           <TabPanel value="2">
-            <PatientEncounters patientData={patientData} />
+            <PatientEncounters patientData={patientData} setPatientData={setPatientData} />
           </TabPanel>
         </Container>
-      </Box >
-    </TabContext >
+      </Box>
+    </TabContext>
   );
 };
 
-Patient.propTypes = {
+PatientDetails.propTypes = {
   appointment: PropTypes.string,
 };

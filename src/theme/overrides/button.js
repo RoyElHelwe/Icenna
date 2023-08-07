@@ -1,18 +1,19 @@
-import themeConfig from 'src/configs/theme'
+import themeConfig from 'src/configs/theme';
 
 const Button = () => {
   return {
     MuiButton: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
+          textTransform: 'none',
           fontWeight: 500,
           borderRadius: 5,
           lineHeight: 1.71,
           letterSpacing: '0.3px',
           ...(ownerState.size === 'medium' &&
             ownerState.variant === 'text' && {
-              padding: `${theme.spacing(1.875, 3)}`
-            })
+            padding: `${theme.spacing(1.875, 3)}`
+          })
         }),
         contained: ({ theme }) => ({
           boxShadow: theme.shadows[3],
@@ -47,10 +48,10 @@ const Button = () => {
     },
     MuiButtonBase: {
       defaultProps: {
-        disableRipple: themeConfig.disableRipple
+        disableRipple: themeConfig.disableRipple,
       }
     }
-  }
-}
+  };
+};
 
-export default Button
+export default Button;

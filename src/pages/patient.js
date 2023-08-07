@@ -19,7 +19,7 @@ import { SideNavItem } from '../components/side-nav-item';
 import { PatientStatuses } from '../constants';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
-import { Patient } from '../sections/doctor/patient';
+import { PatientDetails } from '../sections/doctor/patient-details';
 
 const drawerWidth = 300;
 
@@ -61,7 +61,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const Doctor = () => {
+const Patient = () => {
   const router = useRouter();
 
   const { isLoading, error, data, refetch, isFetching, } = useQuery({
@@ -194,15 +194,15 @@ const Doctor = () => {
           }
         </Scrollbar>
       </Drawer>
-      {selectedPatient?.id && <Patient appointment={selectedPatient.appointment} />}
+      {selectedPatient?.id && <PatientDetails appointment={selectedPatient.appointment} />}
     </Box>
   )
 };
 
-Doctor.getLayout = (page) => (
+Patient.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
 
-export default Doctor;
+export default Patient;

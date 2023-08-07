@@ -13,10 +13,19 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
 });
 
+export const DefaultOptions = {
+  open: false,
+  title: '',
+  description: '',
+  minHeight: undefined,
+  children: undefined,
+};
+
 const CustomDialog = ({
   open,
   setOpen,
   title,
+  minHeight,
   description,
   onSubmit,
   onClose: onCloseOption,
@@ -26,7 +35,7 @@ const CustomDialog = ({
 
   const onClose = () => {
     onCloseOption?.();
-    setOpen(false);
+    setOpen?.(false);
   };
 
   return (
@@ -34,14 +43,13 @@ const CustomDialog = ({
       fullWidth
       open={open}
       maxWidth='md'
-      scroll='body'
       onClose={onClose}
       TransitionComponent={Transition}
-      sx={{ minHeight: '100vh' }}
       {...rest}
     >
       <DialogContent
         sx={{
+          minHeight,
           position: 'relative',
           pb: theme => `${theme.spacing(8)} !important`,
           px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],

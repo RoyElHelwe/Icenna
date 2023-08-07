@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
-import { MaterialReactTable } from 'material-react-table';
 import React, { useMemo } from 'react';
+import ExpandTable from '../../components/expand-table';
 
-const MedicalCodes = (props) => {
+const Diagnosis = (props) => {
   const columns = useMemo(() => [
     {
       accessorKey: 'name',
@@ -19,9 +19,7 @@ const MedicalCodes = (props) => {
   ], [],);
 
   return (
-    <MaterialReactTable
-      enableTopToolbar={false}
-      enableBottomToolbar={false}
+    <ExpandTable
       columns={columns}
       renderDetailPanel={({ row }) => (
         <Box sx={{ pb: 1, pl: 5 }}>
@@ -34,4 +32,4 @@ const MedicalCodes = (props) => {
   );
 };
 
-export default MedicalCodes;
+export default Diagnosis;
