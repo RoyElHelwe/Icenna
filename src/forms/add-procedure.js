@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoadingButton } from "@mui/lab";
-import { Button, FormControl, FormHelperText } from "@mui/material";
+import { FormControl, FormHelperText } from "@mui/material";
 import { Box } from "@mui/system";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -15,7 +15,6 @@ const schema = yup.object().shape({
 
 const AddProcedureForm = ({
   values,
-  onClose,
   onSubmit,
 }) => {
   const { isLoading, error, data, } = useQuery({
@@ -65,8 +64,7 @@ const AddProcedureForm = ({
       </FormControl>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
-        <LoadingButton variant='contained' loading={isLoading} type='submit'>Submit</LoadingButton>
-        {onClose && (<Button variant='outlined' sx={{ ml: 3, }} color='secondary' onClick={onClose}>Discard</Button>)}
+        <LoadingButton variant='contained' loading={isLoading} type='submit'>Add</LoadingButton>
       </Box>
     </form >
   );

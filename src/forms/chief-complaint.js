@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoadingButton } from "@mui/lab";
-import { Button, FormControl, FormHelperText, TextField } from "@mui/material";
+import { FormControl, FormHelperText, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { addChiefComplaint } from "../api/practitioner";
 
 const schema = yup.object().shape({
-  text: yup.string().required('Details can\'t be empty!'),
+  text: yup.string().required('Chief Complaint can\'t be empty!'),
 });
 
 const ChiefComplaintForm = ({
@@ -60,7 +60,7 @@ const ChiefComplaintForm = ({
           render={({ field: { value, onChange, onBlur } }) => (
             <TextField
               fullWidth
-              label='Details'
+              label='Chief Complaint'
               multiline
               placeholder='Dental examination'
               value={value}
@@ -75,7 +75,6 @@ const ChiefComplaintForm = ({
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
         <LoadingButton variant='contained' loading={isLoading} type='submit'>Submit</LoadingButton>
-        {onClose && (<Button variant='outlined' sx={{ ml: 3, }} color='secondary' onClick={onClose}>Discard</Button>)}
       </Box>
     </form >
   );

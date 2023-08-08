@@ -1,6 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Collapse, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -18,6 +19,7 @@ import Procedures from './procedures';
 
 export const PatientEncounters = ({ patientData, setPatientData }) => {
   const [dialogOptions, setDialogOptions] = useState(DefaultOptions);
+  const [collapseOpen, setCollapseOpen] = useState(false);
 
   const setOpen = (open) => setDialogOptions({ ...dialogOptions, open, });
   const onClose = () => setDialogOptions({ ...DefaultOptions, });
@@ -37,7 +39,7 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
     <>
       <CustomDialog {...dialogOptions} setOpen={setOpen} />
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 5, }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 3, }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', }}>
           <Button
             variant="outlined"
@@ -79,35 +81,30 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
 
         <LoadingButton
           variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setDialogOptions({
-            ...DefaultOptions,
-            open: true,
-            maxWidth: 'lg',
-            minHeight: '80vh',
-            title: 'Add To Encounter',
-            children: (
-              <AddToEncounter
-                id={patientData?.id}
-                onItemClick={(params) => {
-                  toast.promise(
-                    mutateAsync({
-                      id: patientData?.id,
-                      t_type: 'add',
-                      ...params,
-                    }), {
-                    loading: 'Adding ...',
-                    success: 'Added successfully!',
-                    error: 'Error adding!',
-                  });
-                }}
-              />
-            ),
-          })}
+          startIcon={collapseOpen ? <RemoveIcon /> : <AddIcon />}
+          onClick={() => setCollapseOpen((prev) => !prev)}
         >
-          Add
+          {collapseOpen ? 'Finish' : 'Add'}
         </LoadingButton>
       </Box>
+
+      <Collapse in={collapseOpen} sx={{ mb: 3, }}>
+        <AddToEncounter
+          id={patientData?.id}
+          onItemClick={(params) => {
+            toast.promise(
+              mutateAsync({
+                id: patientData?.id,
+                t_type: 'add',
+                ...params,
+              }), {
+              loading: 'Adding ...',
+              success: 'Added successfully!',
+              error: 'Error adding!',
+            });
+          }}
+        />
+      </Collapse>
 
       {!!patientData?.chief_complaint?.length && (
         <Section title="Chief Complaint" withDivider>

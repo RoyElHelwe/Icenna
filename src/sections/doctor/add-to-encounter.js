@@ -72,8 +72,8 @@ export const AddToEncounter = ({
               setDialogOptions({
                 open: true, title: 'Add Procedure', children: (
                   <AddProcedureForm
-                    onClose={onClose}
-                    onSubmit={({ body_site, ...rest}) => {
+                    onSubmit={({ body_site, ...rest }) => {
+                      onClose?.();
                       onItemClick?.({
                         i_type: sec.code,
                         code: item.code,
@@ -88,8 +88,8 @@ export const AddToEncounter = ({
               setDialogOptions({
                 open: true, title: 'Add Medication', children: (
                   <AddMedicationForm
-                    onClose={onClose}
                     onSubmit={(data) => {
+                      onClose?.();
                       onItemClick?.({
                         i_type: sec.code,
                         code: item.id,
@@ -113,7 +113,7 @@ export const AddToEncounter = ({
   };
 
   return (
-    <Stack spacing={{ xs: 1, sm: 3, }} direction="column" flexWrap="wrap">
+    <Stack spacing={1} direction="column" flexWrap="wrap" sx={{ height: '20rem', bgcolor: 'background.paper', p: 3, borderRadius: 3, }}>
       <CustomDialog {...dialogOptions} onClose={onClose} />
 
       <SearchBar onChange={(e) => setSearchText(e.target.value)} />
@@ -128,7 +128,7 @@ export const AddToEncounter = ({
           </TabList>
         </Box>
         <TabPanel value="0" sx={{ p: 0, }}>
-          <List sx={{ overflow: 'auto', maxHeight: '55vh', '& ul, li': { p: 0, m: 0, }, }} subheader={<li />}>
+          <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }} subheader={<li />}>
             {sections.map((sec) => (
               <li key={`section-${sec.id}`}>
                 <ul>
@@ -140,17 +140,17 @@ export const AddToEncounter = ({
           </List>
         </TabPanel>
         <TabPanel value="1" sx={{ p: 0, }}>
-          <List sx={{ overflow: 'auto', maxHeight: '55vh', '& ul, li': { p: 0, m: 0, }, }}>
+          <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }}>
             {getListItems(sections[0])}
           </List>
         </TabPanel>
         <TabPanel value="2" sx={{ p: 0, }}>
-          <List sx={{ overflow: 'auto', maxHeight: '55vh', '& ul, li': { p: 0, m: 0, }, }}>
+          <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }}>
             {getListItems(sections[1])}
           </List>
         </TabPanel>
         <TabPanel value="3" sx={{ p: 0, }}>
-          <List sx={{ overflow: 'auto', maxHeight: '55vh', '& ul, li': { p: 0, m: 0, }, }}>
+          <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }}>
             {getListItems(sections[2])}
           </List>
         </TabPanel>
