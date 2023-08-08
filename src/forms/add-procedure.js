@@ -34,7 +34,6 @@ const AddProcedureForm = ({
     defaultValues, mode: 'onSubmit', resolver: yupResolver(schema),
   });
   useEffect(() => {
-    console.log('defaultValues', defaultValues);
     reset(defaultValues);
   }, [reset, data]);
 
