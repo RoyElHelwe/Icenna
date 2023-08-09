@@ -1,7 +1,11 @@
-import { Box, Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import ReactApexChart from "react-apexcharts";
+import { useSettings } from '../hooks/useSettings';
 
-export const ApexChart = ({ title, children, ...rest }) => {
+export const ApexChart = ({ title, children, options, ...rest }) => {
+  const { settings } = useSettings();
+  const { mode } = settings;
+
   const defaultOptions = {
     chart: {
       width: 300,
@@ -12,6 +16,16 @@ export const ApexChart = ({ title, children, ...rest }) => {
     noData: {
       text: 'No data',
     },
+    theme: {
+      mode: mode ?? 'light',
+      palette: 'palette1',
+      monochrome: {
+        enabled: false,
+        color: '#255aee',
+        shadeTo: mode ?? 'light',
+        shadeIntensity: 0.65,
+      },
+    },
   };
 
   return (
@@ -19,15 +33,16 @@ export const ApexChart = ({ title, children, ...rest }) => {
       <CardHeader title={title} sx={{ textAlign: "center", mt: 5, }} />
       <CardContent>
         {children}
-        <Box sx={{ p: 3, pb: 1 }}>
-          <ReactApexChart
-            series={[]}
-            options={defaultOptions}
-            type="bar"
-            height={300}
-            {...rest}
-          />
-        </Box>
+        <ReactApexChart
+          series={[]}
+          options={{
+            ...defaultOptions,
+            ...options,
+          }}
+          type="bar"
+          height={300}
+          {...rest}
+        />
       </CardContent>
     </Card>
   );
