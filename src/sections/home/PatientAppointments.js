@@ -62,7 +62,7 @@ export const PatientAppointments = () => {
       series={series}
       type="bar"
       options={options}
-      height={450}
+      height={550}
     />
   );
 };
