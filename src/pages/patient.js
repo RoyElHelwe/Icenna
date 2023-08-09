@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getPatients } from '../api/practitioner';
+import Centered from '../components/Centered';
 import Translations from '../components/Translations';
 import CenteredAlert from '../components/centered-alert';
 import Scrollbar from '../components/scrollbar';
@@ -194,7 +195,11 @@ const Patient = () => {
           }
         </Scrollbar>
       </Drawer>
-      {selectedPatient?.id && <PatientDetails appointment={selectedPatient.appointment} />}
+      {!!selectedPatient?.id ? (<PatientDetails appointment={selectedPatient.appointment} />) : (
+        <Centered>
+          <Typography variant="h5">Please select a Patient from the list</Typography>
+        </Centered>
+      )}
     </Box>
   )
 };

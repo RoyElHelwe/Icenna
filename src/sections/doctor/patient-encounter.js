@@ -1,13 +1,13 @@
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Collapse, Typography } from '@mui/material';
+import { Box, Button, Popover, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { addEncounterItem } from '../../api/practitioner';
+import { encounterItem } from '../../api/practitioner';
 import CustomDialog, { DefaultOptions } from '../../components/custom-dialog';
 import Section from '../../components/section';
 import ChiefComplaintForm from '../../forms/chief-complaint';
@@ -19,13 +19,15 @@ import Procedures from './procedures';
 
 export const PatientEncounters = ({ patientData, setPatientData }) => {
   const [dialogOptions, setDialogOptions] = useState(DefaultOptions);
-  const [collapseOpen, setCollapseOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const popOpen = Boolean(anchorEl);
+  const id = popOpen ? 'simple-popover' : undefined;
 
   const setOpen = (open) => setDialogOptions({ ...dialogOptions, open, });
   const onClose = () => setDialogOptions({ ...DefaultOptions, });
 
-  const { isLoading: isAdding, error: addError, data: addData, mutate, mutateAsync } = useMutation({
-    mutationFn: addEncounterItem,
+  const { isLoading, error, data, mutateAsync } = useMutation({
+    mutationFn: encounterItem,
     enabled: false,
     onSuccess: (data) => setPatientData(data?.data?.data),
     onMutate: () => setOpen(false),
@@ -81,30 +83,40 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
 
         <LoadingButton
           variant="contained"
-          startIcon={collapseOpen ? <RemoveIcon /> : <AddIcon />}
-          onClick={() => setCollapseOpen((prev) => !prev)}
+          startIcon={popOpen ? <RemoveIcon /> : <AddIcon />}
+          aria-describedby={id}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          {collapseOpen ? 'Finish' : 'Add'}
+          {popOpen ? 'Finish' : 'Add'}
         </LoadingButton>
-      </Box>
-
-      <Collapse in={collapseOpen} sx={{ mb: 3, }}>
-        <AddToEncounter
-          id={patientData?.id}
-          onItemClick={(params) => {
-            toast.promise(
-              mutateAsync({
-                id: patientData?.id,
-                t_type: 'add',
-                ...params,
-              }), {
-              loading: 'Adding ...',
-              success: 'Added successfully!',
-              error: 'Error adding!',
-            });
+        <Popover
+          id={id}
+          open={popOpen}
+          anchorEl={anchorEl}
+          onClose={() => setAnchorEl(null)}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
           }}
-        />
-      </Collapse>
+          PaperProps={{ sx: { width: '70%', mt: 3, }, }}
+        >
+          <AddToEncounter
+            id={patientData?.id}
+            onItemClick={(params) => {
+              toast.promise(
+                mutateAsync({
+                  id: patientData?.id,
+                  t_type: 'add',
+                  ...params,
+                }), {
+                loading: 'Adding ...',
+                success: 'Added successfully!',
+                error: 'Error adding!',
+              });
+            }}
+          />
+        </Popover>
+      </Box>
 
       {!!patientData?.chief_complaint?.length && (
         <Section title="Chief Complaint" withDivider>
@@ -119,7 +131,22 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
             <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
           </Box>
 
-          <Diagnosis data={patientData?.medical_code ?? []} />
+          <Diagnosis
+            data={patientData?.medical_code ?? []}
+            state={{ isLoading, }}
+            onDelete={(row) => {
+              toast.promise(mutateAsync({
+                id: patientData?.id,
+                t_type: 'delete',
+                i_type: 1,
+                code: row?.original?.id,
+              }), {
+                loading: 'Deleting ...',
+                success: 'Deleted successfully!',
+                error: 'Error deleting!',
+              });
+            }}
+          />
         </Section>
       )}
 
@@ -129,6 +156,19 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
             <Procedures
               key={p.approval_id}
               data={p.items ?? []}
+              state={{ isLoading, }}
+              onDelete={(row) => {
+                toast.promise(mutateAsync({
+                  id: patientData?.id,
+                  t_type: 'delete',
+                  i_type: 2,
+                  code: row?.original?.code,
+                }), {
+                  loading: 'Deleting ...',
+                  success: 'Deleted successfully!',
+                  error: 'Error deleting!',
+                });
+              }}
             />
           ))}
         </Section>
@@ -138,6 +178,19 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
         <Section title="Medications" withDivider>
           <Medications
             data={patientData?.drugs ?? []}
+            state={{ isLoading, }}
+            onDelete={(row) => {
+              toast.promise(mutateAsync({
+                id: patientData?.id,
+                t_type: 'delete',
+                i_type: 3,
+                code: row?.original?.id,
+              }), {
+                loading: 'Deleting ...',
+                success: 'Deleted successfully!',
+                error: 'Error deleting!',
+              });
+            }}
           />
         </Section>
       )}
