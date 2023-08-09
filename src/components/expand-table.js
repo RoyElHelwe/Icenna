@@ -1,8 +1,9 @@
-import { ThemeProvider, createTheme, useTheme } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, IconButton, ThemeProvider, createTheme, useTheme } from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
 import React, { useMemo } from 'react';
 
-const ExpandTable = (props) => {
+const ExpandTable = ({ onDelete, ...props }) => {
   const globalTheme = useTheme();
 
   const tableTheme = useMemo(() =>
@@ -35,6 +36,27 @@ const ExpandTable = (props) => {
         muiTableContainerProps={{
           sx: { my: 5, },
         }}
+        positionActionsColumn='last'
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            maxSize: 20,
+          },
+          'mrt-row-expand': {
+            maxSize: 20,
+          },
+        }}
+        {...(
+          onDelete && {
+            enableRowActions: true,
+            renderRowActions: ({ row, table }) => (
+              <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+                <IconButton color="error" onClick={() => onDelete(row)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            )
+          }
+        )}
         {...props}
       />
     </ThemeProvider>
