@@ -45,3 +45,11 @@ export const addDiagnosisDescription = ({ id, text }) => {
 export const getDentalCharting = () => {
   return axios.get('/icenna.user_api.practitioner.get_dental_charting');
 };
+
+export const encounterCheckout = (body) => {
+  return axios.post('/icenna.user_api.practitioner.encounter_checkout', body);
+};
+
+export const checkApproval = (body) => {
+  return axios.post('/icenna.user_api.practitioner.check_approval', body);
+};
