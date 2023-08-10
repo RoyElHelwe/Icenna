@@ -22,10 +22,10 @@ import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { PatientDetails } from '../sections/doctor/patient-details';
 
-const drawerWidth = 300;
+export const PatientDrawerWidth = 300;
 
 const openedMixin = (theme) => ({
-  width: drawerWidth,
+  width: PatientDrawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -47,7 +47,7 @@ const closedMixin = (theme) => ({
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
-    width: drawerWidth,
+    width: PatientDrawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',

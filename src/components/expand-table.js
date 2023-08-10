@@ -1,9 +1,9 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, IconButton, ThemeProvider, createTheme, useTheme } from '@mui/material';
+import { MenuItem, ThemeProvider, createTheme, useTheme } from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
+import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-const ExpandTable = ({ onDelete, ...props }) => {
+const ExpandTable = ({ actions, ...props }) => {
   const globalTheme = useTheme();
 
   const tableTheme = useMemo(() =>
@@ -45,22 +45,27 @@ const ExpandTable = ({ onDelete, ...props }) => {
             maxSize: 20,
           },
         }}
-        {...(
-          onDelete && {
-            enableRowActions: true,
-            renderRowActions: ({ row, table }) => (
-              <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                <IconButton color="error" onClick={() => onDelete(row)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            )
-          }
-        )}
+        {...(!!actions?.length && {
+          enableRowActions: true,
+          renderRowActionMenuItems: ({ row, table }) => actions.map((a) => (
+            <MenuItem key={a.name} onClick={() => a.onClick(row)}>
+              {a.name}
+            </MenuItem>
+          ))
+        })}
         {...props}
       />
     </ThemeProvider>
   );
+};
+
+ExpandTable.propTypes = {
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      onClick: PropTypes.func,
+    }),
+  ),
 };
 
 export default ExpandTable;
