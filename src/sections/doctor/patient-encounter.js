@@ -5,7 +5,7 @@ import { Box, Button, Popover, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { checkApproval, encounterCheckout, encounterItem } from '../../api/practitioner';
 import { getGeneralSettings } from '../../api/settings';
@@ -15,12 +15,25 @@ import Section from '../../components/section';
 import ChiefComplaintForm from '../../forms/chief-complaint';
 import DiagnosisDescriptionForm from '../../forms/diagnosis-description';
 import { useSettings } from '../../hooks/useSettings';
+import { pusherClient } from '../../lib/pusher';
 import AddToEncounter from './add-to-encounter';
 import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
 
-export const PatientEncounters = ({ patientData, setPatientData }) => {
+export const PatientEncounter = ({ patientData, setPatientData }) => {
+  useEffect(() => {
+    const channel = pusherClient.subscribe('iCenna');
+
+    channel.bind('patient_encounter_updates', (data) => {
+      setPatientData(data.message);
+    });
+
+    return () => {
+      pusherClient.unsubscribe('iCenna');
+    };
+  }, []);
+
   const { settings: ctxSettings } = useSettings();
   const ref = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -191,7 +204,6 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
       {!!patientData?.medical_code?.length && (
         <Section title="Diagnosis" withDivider>
           <Box sx={{ mb: 5, }}>
-            <Typography sx={{ fontWeight: 'bold', }}>Description</Typography>
             <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
           </Box>
 
@@ -275,7 +287,7 @@ export const PatientEncounters = ({ patientData, setPatientData }) => {
   );
 };
 
-PatientEncounters.propTypes = {
+PatientEncounter.propTypes = {
   patientData: PropTypes.object,
   setPatientData: PropTypes.func,
 };

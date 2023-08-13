@@ -74,7 +74,7 @@ const ChiefComplaintForm = ({
       </FormControl>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
-        <LoadingButton variant='contained' loading={isLoading} type='submit'>Submit</LoadingButton>
+        <LoadingButton variant='contained' loading={isLoading} type='submit'>Update</LoadingButton>
       </Box>
     </form >
   );

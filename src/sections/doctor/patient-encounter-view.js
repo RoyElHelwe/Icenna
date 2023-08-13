@@ -40,7 +40,6 @@ export const PatientEncounterView = (props) => {
       {!!patientData?.medical_code?.length && (
         <Section title="Diagnosis" withDivider>
           <Box sx={{ mb: 5, }}>
-            <Typography sx={{ fontWeight: 'bold', }}>Description</Typography>
             <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
           </Box>
 

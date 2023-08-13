@@ -10,7 +10,9 @@ import { useEffect, useState } from 'react';
 import { getEncounterInfo } from '../../api/practitioner';
 import CenteredAlert from '../../components/centered-alert';
 import CenteredCircularProgress from '../../components/centered-circular-progress';
-import { PatientEncounters } from './patient-encounter';
+import { PatientStatuses } from '../../constants';
+import { PatientEncounter } from './patient-encounter';
+import { PatientEncounterView } from './patient-encounter-view';
 import { PatientHistory } from './patient-history';
 
 export const PatientDetails = (props) => {
@@ -79,7 +81,11 @@ export const PatientDetails = (props) => {
             <PatientHistory patientData={patientData} />
           </TabPanel>
           <TabPanel value="2">
-            <PatientEncounters patientData={patientData} setPatientData={setPatientData} />
+            {patientData?.status === PatientStatuses.CheckedOUT ? (
+              <PatientEncounterView appointmentId={patientData?.appointment} />
+            ) : (
+              <PatientEncounter patientData={patientData} setPatientData={setPatientData} />
+            )}
           </TabPanel>
         </Container>
       </Box>

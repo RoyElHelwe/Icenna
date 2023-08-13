@@ -1,12 +1,10 @@
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
 import { Grid } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
-import Appointments from '../sections/home/Appointments';
 
 const Sales = dynamic(() => import('../sections/home/Sales'), { ssr: false });
 const PatientStatues = dynamic(() => import('../sections/home/PatientStatues'), { ssr: false });
+const PatientColumns = dynamic(() => import('../sections/home/PatientColumns'), { ssr: false });
 const PatientTracker = dynamic(() => import('../sections/home/PatientTracker'), { ssr: false });
 const AgeGroups = dynamic(() => import('../sections/home/AgeGroups'), { ssr: false });
 const PatientVisits = dynamic(() => import('../sections/home/PatientVisits'), { ssr: false });
@@ -27,20 +25,7 @@ const Home = () => (
       <PatientStatues />
     </Grid>
     <Grid item xs={12} md={6} lg={4}>
-      <Grid container rowSpacing={3} columnSpacing={3}>
-        <Grid item xs={12} md={6} lg={6}>
-          <Appointments title="Today Appointments" data={52} icon={CalendarMonthIcon} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Appointments title="Tomorrow Appointments" data={45} icon={CalendarMonthIcon} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Appointments title="Today Surgeries" data={15} icon={ContentCutIcon} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Appointments title="Tomorrow Surgeries" data={25} icon={ContentCutIcon} />
-        </Grid>
-      </Grid>
+      <PatientColumns />
     </Grid>
     <Grid item xs={12} md={6} lg={4}>
       <PatientTracker />
