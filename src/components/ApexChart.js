@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic";
 import { useSettings } from '../hooks/useSettings';
+
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export const ApexChart = ({ title, children, options, ...rest }) => {
   const { settings } = useSettings();
@@ -41,6 +43,7 @@ export const ApexChart = ({ title, children, options, ...rest }) => {
           }}
           type="bar"
           height={300}
+          width="100%"
           {...rest}
         />
       </CardContent>

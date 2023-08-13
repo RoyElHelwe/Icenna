@@ -20,6 +20,7 @@ import { SideNavItem } from '../components/side-nav-item';
 import { PatientStatuses } from '../constants';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
+import { pusherClient } from '../lib/pusher';
 import { PatientDetails } from '../sections/doctor/patient-details';
 
 export const PatientDrawerWidth = 300;
@@ -71,6 +72,18 @@ const Patient = () => {
   });
 
   const [patients, setPatients] = useState([]);
+  useEffect(() => {
+    const channel = pusherClient.subscribe('iCenna');
+
+    channel.bind('new_appointment', (data) => {
+      refetch();
+    });
+
+    return () => {
+      pusherClient.unsubscribe('iCenna');
+    };
+  }, []);
+
   const [selectedPatient, setSelectedPatient] = useState();
   useEffect(() => {
     setPatients(data?.data?.data ?? []);
@@ -83,7 +96,7 @@ const Patient = () => {
   }, [lgUp]);
 
   const [search, setSearch] = useState('');
-  const filteredPatients = patients.filter((p) => p.full_name.toLowerCase().includes(search.toLowerCase()));
+  const filteredPatients = patients?.filter((p) => p.full_name.toLowerCase().includes(search.toLowerCase()));
 
   useEffect(() => {
     setSelectedPatient(patients.find((p) => p.appointment === router.query.appid));
@@ -195,7 +208,9 @@ const Patient = () => {
           }
         </Scrollbar>
       </Drawer>
-      {!!selectedPatient?.id ? (<PatientDetails appointment={selectedPatient.appointment} />) : (
+      {!!selectedPatient?.id ? (
+        <PatientDetails appointment={selectedPatient.appointment} />
+      ) : (
         <Centered>
           <Typography variant="h5">Please select a Patient from the list</Typography>
         </Centered>
