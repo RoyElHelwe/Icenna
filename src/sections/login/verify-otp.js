@@ -33,7 +33,6 @@ const VerifyOTP = () => {
 
   const onSubmit = ({ code }) => {
     verifyOTP({ code, otp_token }, () => {
-      // TODO: show error Toast
       setError('code', {
         type: 'manual',
         message: 'Unable to verify code! Try again later.'
@@ -50,13 +49,16 @@ const VerifyOTP = () => {
           name='code'
           control={control}
           rules={{ required: true }}
-          render={({ field: { value, onChange, onBlur } }) => (
+          render={({ field: { value, onChange, onBlur, } }) => (
             <MuiOtpInput
+              autoFocus
               value={value}
               length={6}
               validateChar={(c) => !isNaN(c)}
               onBlur={onBlur}
               onChange={onChange}
+              type="number"
+              onComplete={handleSubmit(onSubmit)}
               error={errors.code}
             />
           )}

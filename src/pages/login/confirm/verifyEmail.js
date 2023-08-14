@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Card } from '../../../components/auth-card';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
-import VerifyOTP from '../../../sections/doctor/verify-otp';
+import VerifyOTP from '../../../sections/login/verify-otp';
 
 const ConfirmLogin = () => {
 

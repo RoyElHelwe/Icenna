@@ -27,8 +27,7 @@ const AcceptTerms = () => {
 
   const onSubmit = (e) => {
     acceptTerms({ user_id: user.email, id: user.terms_and_conditions_id, }, () => {
-      // TODO: show error Toast
-      console.log('Error');
+      console.log('Error accepting terms!');
     })
   };
 

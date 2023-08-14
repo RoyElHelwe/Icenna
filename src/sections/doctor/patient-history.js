@@ -8,7 +8,7 @@ import SectionList from '../../components/section-list';
 import SectionTreeItem from '../../components/section-tree-item';
 import { timeAgo, timeToDate } from '../../utils/date';
 import { PatientEncounterView } from './patient-encounter-view';
-import { DentalCharting } from './patient/dental-charting';
+import { DentalCharting } from './dental-charting';
 
 export const PatientHistory = (props) => {
   const { patientData } = props;

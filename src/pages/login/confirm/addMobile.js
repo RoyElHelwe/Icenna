@@ -39,7 +39,6 @@ const ConfirmLogin = () => {
   const onSubmit = (values) => {
     const { mobile, } = values;
     addMobile({ id: user.email, mobile_no: mobile, }, () => {
-      // TODO: show error Toast
       setError('email', {
         type: 'manual',
         message: 'Unable to add mobile! Try again later.'
@@ -72,6 +71,7 @@ const ConfirmLogin = () => {
                 render={({ field: { value, onChange, onBlur } }) => (
                   <MuiTelInput
                     label='Mobile number'
+                    autoFocus
                     value={value}
                     onBlur={onBlur}
                     onChange={onChange}

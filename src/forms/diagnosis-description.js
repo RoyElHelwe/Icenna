@@ -4,7 +4,6 @@ import { FormControl, FormHelperText, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
-import toast from 'react-hot-toast';
 import * as yup from 'yup';
 import { addDiagnosisDescription } from "../api/practitioner";
 
@@ -24,10 +23,8 @@ const DiagnosisDescriptionForm = ({
     mutationFn: addDiagnosisDescription,
     enabled: false,
     onSuccess: (data) => {
-      toast.success('Updated Successfully!');
       onSubmit?.(data?.data?.data);
     },
-    onError: () => toast.error('Error updating!'),
     onSettled: () => onClose?.(),
   });
 

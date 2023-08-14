@@ -34,11 +34,11 @@ const AuthProvider = ({ children }) => {
             window.localStorage.setItem(authConfig.storUserKeyName, JSON.stringify(response.data.data));
             setLoading(false);
           })
-          .catch((e) => {
+          .catch(async (e) => {
             clearLocalStorage();
             setLoading(false);
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
-              router.replace('/login');
+              await router.replace('/login');
             }
           });
       } else if (currUser) {
@@ -72,13 +72,13 @@ const AuthProvider = ({ children }) => {
     setUser({ ...data.user });
   };
 
-  const redirectUser = (u) => {
+  const redirectUser = async (u) => {
     if (u?.action === 0) {
       const returnUrl = router.query.returnUrl;
       const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
-      router.replace(redirectURL);
+      await router.replace(redirectURL);
     } else {
-      router.replace({
+      await router.replace({
         pathname: '/login/confirm',
         query: router.query,
       });
@@ -107,7 +107,7 @@ const AuthProvider = ({ children }) => {
       .post('/icenna.user_api.auth.add_mobile', params)
       .then(async (response) => {
         storeUser(response.data.data);
-        redirectUser(response.data.data.user);
+        await redirectUser(response.data.data.user);
         setLoading(false);
       }).catch(err => {
         setLoading(false);
@@ -123,7 +123,7 @@ const AuthProvider = ({ children }) => {
       .post('/icenna.user_api.auth.verify_otp', params)
       .then(async (response) => {
         storeUser(response.data.data);
-        redirectUser(response.data.data.user);
+        await redirectUser(response.data.data.user);
         setLoading(false);
       }).catch(err => {
         setLoading(false);
@@ -139,7 +139,7 @@ const AuthProvider = ({ children }) => {
       .post('/icenna.user_api.auth.accept_terms', params)
       .then(async (response) => {
         storeUser(response.data.data);
-        redirectUser(response.data.data.user);
+        await redirectUser(response.data.data.user);
         setLoading(false);
       }).catch(err => {
         setLoading(false);

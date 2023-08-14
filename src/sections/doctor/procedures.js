@@ -11,6 +11,7 @@ const Procedures = (props) => {
     {
       accessorKey: 'status',
       header: 'Status',
+      
     },
     {
       accessorKey: 'price',
