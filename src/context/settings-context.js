@@ -40,12 +40,12 @@ export const SettingsContext = createContext({
 export const SettingsProvider = ({ children, pageSettings }) => {
   const [settings, setSettings] = useState({ ...initialSettings });
   useEffect(() => {
-    const restoredSettings = restoreSettings()
+    const restoredSettings = restoreSettings();
     if (restoredSettings) {
-      setSettings({ ...restoredSettings })
+      setSettings({ ...restoredSettings });
     }
     if (pageSettings) {
-      setSettings({ ...settings, ...pageSettings })
+      setSettings({ ...settings, ...pageSettings });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSettings]);

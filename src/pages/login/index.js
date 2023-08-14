@@ -23,13 +23,12 @@ const defaultValues = {
   email: '',
 };
 
-const Login = () => {
+const Login = (props) => {
   const auth = useAuth();
   const { settings } = useSettings();
 
   const login = (params) => {
     auth.login(params, () => {
-      // TODO: create Toast
       setError('email', {
         type: 'manual',
         message: 'Unable to sign-on! Try again later.'
@@ -44,7 +43,7 @@ const Login = () => {
     formState: { errors, },
   } = useForm({
     defaultValues,
-    mode: 'onBlur',
+    mode: 'onChange',
     resolver: yupResolver(schema)
   });
 
@@ -65,11 +64,9 @@ const Login = () => {
           <GoogleLogin
             text="continue_with"
             size='large'
-            locale={settings.language}
             theme={settings.mode === 'dark' ? 'filled_black' : 'outline'}
             onSuccess={(credentialResponse) => login({ auth_token: credentialResponse.credential, device_type: 'WEB', from_google: 1, })}
             onError={() => {
-              // TODO: Show Toast
               console.log('Login with Goggle failed!');
             }}
             useOneTap={false}
@@ -86,7 +83,9 @@ const Login = () => {
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextField
+                    autoFocus
                     label='Email'
+                    type='email'
                     value={value}
                     onBlur={onBlur}
                     onChange={onChange}

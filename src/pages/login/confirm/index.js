@@ -9,7 +9,7 @@ export const confirmStatusRoute = {
   4: 'addMobile',
   2: 'verifyMobile',
   3: 'acceptTerms',
-}
+};
 
 const ConfirmLogin = () => {
   const { user, } = useAuth();

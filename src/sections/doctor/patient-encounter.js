@@ -6,7 +6,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { checkApproval, encounterCheckout, encounterItem } from '../../api/practitioner';
 import { getGeneralSettings } from '../../api/settings';
 import AsyncAutocomplete from '../../components/AsyncAutocomplete';
@@ -44,19 +43,19 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
   const onClose = () => setDialogOptions({ ...DefaultOptions, });
 
   const onSuccess = (data, vars, ctx) => setPatientData(data?.data?.data);
-  const { isLoading, mutateAsync } = useMutation({
+  const { isLoading, mutate: updateEncItem } = useMutation({
     mutationFn: encounterItem,
     enabled: false,
     onSuccess,
     onMutate: () => setOpen(false),
   });
 
-  const { isLoading: isSubmitting, mutateAsync: submit } = useMutation({
+  const { isLoading: isSubmitting, mutate: submit } = useMutation({
     mutationFn: encounterCheckout,
     enabled: false,
     onSuccess,
   });
-  const { isLoading: isChecking, mutateAsync: check } = useMutation({
+  const { isLoading: isChecking, mutate: check } = useMutation({
     mutationFn: checkApproval,
     enabled: false,
     onSuccess,
@@ -79,11 +78,10 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
   const [duration, setDuration] = useState(0);
 
   const handleCheckout = (e) => {
-    let promise;
     if (patientData?.action === 1) {
-      promise = check({ id: patientData?.id });
+      check({ id: patientData?.id });
     } else if (patientData?.action === 3) {
-      promise = submit({
+      submit({
         id: patientData?.id,
         ...(duration ? {
           extension: 1,
@@ -91,15 +89,8 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
         } : {}),
       });
     } else {
-      promise = submit({
-        id: patientData?.id,
-      });
+      submit({ id: patientData?.id, });
     }
-    toast.promise(promise, {
-      loading: 'Loading ...',
-      success: 'Success!',
-      error: 'Error!',
-    });
   };
 
   const getCheckoutText = () => {
@@ -179,18 +170,9 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
         >
           <AddToEncounter
             id={patientData?.id}
-            onItemClick={(params) => {
-              toast.promise(
-                mutateAsync({
-                  id: patientData?.id,
-                  t_type: 'add',
-                  ...params,
-                }), {
-                loading: 'Adding ...',
-                success: 'Added successfully!',
-                error: 'Error adding!',
-              });
-            }}
+            onItemClick={(params) => updateEncItem({
+              id: patientData?.id, t_type: 'add', ...params,
+            })}
           />
         </Popover>
       </Box>
@@ -213,11 +195,9 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             actions={[
               {
                 name: 'Delete',
-                onClick: (row) => toast.promise(mutateAsync({
+                onClick: (row) => updateEncItem({
                   id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.original?.id,
-                }), {
-                  loading: 'Deleting ...', success: 'Deleted successfully!', error: 'Error deleting!',
-                })
+                }),
               },
             ]}
           />
@@ -234,11 +214,9 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
               actions={[
                 {
                   name: 'Delete',
-                  onClick: (row) => toast.promise(mutateAsync({
+                  onClick: (row) => updateEncItem({
                     id: patientData?.id, t_type: 'delete', i_type: 2, code: row?.original?.code,
-                  }), {
-                    loading: 'Deleting ...', success: 'Deleted successfully!', error: 'Error deleting!',
-                  })
+                  }),
                 },
               ]}
             />
@@ -254,11 +232,9 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             actions={[
               {
                 name: 'Delete',
-                onClick: (row) => toast.promise(mutateAsync({
+                onClick: (row) => updateEncItem({
                   id: patientData?.id, t_type: 'delete', i_type: 3, code: row?.original?.id,
-                }), {
-                  loading: 'Deleting ...', success: 'Deleted successfully!', error: 'Error deleting!',
-                })
+                }),
               },
             ]}
           />
