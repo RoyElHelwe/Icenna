@@ -78,9 +78,10 @@ const AuthProvider = ({ children }) => {
       const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
       await router.replace(redirectURL);
     } else {
+      const { provider, auth_token, ...rest } = router.query;
       await router.replace({
         pathname: '/login/confirm',
-        query: router.query,
+        query: rest,
       });
     }
   };

@@ -53,3 +53,11 @@ export const encounterCheckout = (body) => {
 export const checkApproval = (body) => {
   return axios.post('/icenna.user_api.practitioner.check_approval', body);
 };
+
+export const sendReply = (body) => {
+  return axios.post('/icenna.user_api.practitioner.communication_reply', body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  });
+};

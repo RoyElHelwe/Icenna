@@ -23,10 +23,12 @@ const ConfirmLogin = () => {
       const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
       router.replace(redirectURL);
     } else if (user?.action && router.pathname === '/login/confirm') {
+      const { provider, auth_token, ...rest } = router.query;
+      
       const to = `/login/confirm/${confirmStatusRoute[user.action]}`;
       router.replace({
         pathname: to,
-        query: router.query,
+        query: rest,
       });
     }
   }, []);
