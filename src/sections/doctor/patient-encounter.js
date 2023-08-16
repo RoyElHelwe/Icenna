@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Popover, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -9,16 +10,23 @@ import { useEffect, useRef, useState } from 'react';
 import { checkApproval, encounterCheckout, encounterItem } from '../../api/practitioner';
 import { getGeneralSettings } from '../../api/settings';
 import AsyncAutocomplete from '../../components/AsyncAutocomplete';
+import Translations from '../../components/Translations';
 import CustomDialog, { DefaultOptions } from '../../components/custom-dialog';
 import Section from '../../components/section';
 import ChiefComplaintForm from '../../forms/chief-complaint';
 import DiagnosisDescriptionForm from '../../forms/diagnosis-description';
 import { useSettings } from '../../hooks/useSettings';
 import { pusherClient } from '../../lib/pusher';
+import CommunicationRequest from './CommunicationRequest';
 import AddToEncounter from './add-to-encounter';
 import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
+
+export const LinkTypography = styled(Typography)(({ theme }) => ({
+  cursor: 'pointer',
+  color: theme.palette.primary.main,
+}));
 
 export const PatientEncounter = ({ patientData, setPatientData }) => {
   useEffect(() => {
@@ -44,21 +52,14 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
   const onSuccess = (data, vars, ctx) => setPatientData(data?.data?.data);
   const { isLoading, mutate: updateEncItem } = useMutation({
-    mutationFn: encounterItem,
-    enabled: false,
-    onSuccess,
-    onMutate: () => setOpen(false),
+    mutationFn: encounterItem, enabled: false, onSuccess, onMutate: () => setOpen(false),
   });
 
   const { isLoading: isSubmitting, mutate: submit } = useMutation({
-    mutationFn: encounterCheckout,
-    enabled: false,
-    onSuccess,
+    mutationFn: encounterCheckout, enabled: false, onSuccess,
   });
   const { isLoading: isChecking, mutate: check } = useMutation({
-    mutationFn: checkApproval,
-    enabled: false,
-    onSuccess,
+    mutationFn: checkApproval, enabled: false, onSuccess,
   });
 
   const { isLoading: loadingSettings, data: settings, } = useQuery({
@@ -68,12 +69,12 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
   const { duration_labels } = settings?.data?.data ?? {};
   const labels = [
-    {
-      label: 'No Session',
-      duration: 0,
-    },
+    { label: 'No Session', duration: 0, },
     ...duration_labels ?? [],
   ];
+
+  const [isWritingDiagnosis, setIsWritingDiagnosis] = useState(false);
+  const formRef = useRef();
 
   const [duration, setDuration] = useState(0);
 
@@ -112,44 +113,24 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
       <CustomDialog {...dialogOptions} setOpen={setOpen} />
 
       <Box ref={ref} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 3, }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', }}>
-          <Button
-            variant="outlined"
-            sx={{ mr: 3, }}
-            onClick={() => setDialogOptions({
-              ...DefaultOptions,
-              onClose,
-              open: true,
-              title: 'Write Diagnosis',
-              children: (
-                <DiagnosisDescriptionForm
-                  values={{ id: patientData?.id, text: patientData?.diagnosis_description ?? '', }}
-                  onSubmit={(data) => setPatientData(data)}
-                  onClose={onClose}
-                />
-              ),
-            })}>
-            Write Diagnosis
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mr: 3, }}
-            onClick={() => setDialogOptions({
-              ...DefaultOptions,
-              onClose,
-              open: true,
-              title: 'Write Chief Complaint',
-              children: (
-                <ChiefComplaintForm
-                  values={{ id: patientData?.id, text: patientData?.chief_complaint ?? '', }}
-                  onSubmit={(data) => setPatientData(data)}
-                  onClose={onClose}
-                />
-              ),
-            })}>
-            Chief Complaint
-          </Button>
-        </Box>
+        <Button
+          variant="outlined"
+          sx={{ mr: 3, }}
+          onClick={() => setDialogOptions({
+            ...DefaultOptions,
+            onClose,
+            open: true,
+            title: 'Write Chief Complaint',
+            children: (
+              <ChiefComplaintForm
+                values={{ id: patientData?.id, text: patientData?.chief_complaint ?? '', }}
+                onSubmit={(data) => setPatientData(data)}
+                onClose={onClose}
+              />
+            ),
+          })}>
+          Chief Complaint
+        </Button>
 
         <LoadingButton
           variant="contained"
@@ -183,26 +164,59 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
         </Section>
       )}
 
-      {!!patientData?.medical_code?.length && (
-        <Section title="Diagnosis" withDivider>
-          <Box sx={{ mb: 5, }}>
-            <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
-          </Box>
+      <Section title={(
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-end',
+        }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', mr: 3, }}>
+            <Translations text='Diagnosis' />
+          </Typography>
+          <LinkTypography sx={{ p: 1, }} onClick={() => {
+            if (isWritingDiagnosis) {
+              formRef?.current?.submitForm();
+            } else {
+              setIsWritingDiagnosis((prev) => !prev);
+            }
+          }}>
+            {isWritingDiagnosis ? 'Done' : 'Write Diagnosis'}
+          </LinkTypography>
+        </Box>
+      )} withDivider>
+        {!!patientData?.medical_code?.length && (
+          <>
+            <Box sx={{ mb: 5, }}>
+              {isWritingDiagnosis ? (
+                <DiagnosisDescriptionForm
+                  reference={formRef}
+                  values={{ id: patientData?.id, text: patientData?.diagnosis_description ?? '', }}
+                  onSubmit={(data) => {
+                    setIsWritingDiagnosis((prev) => !prev);
+                    setPatientData(data);
+                  }}
+                />
+              ) : (
+                <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
+              )}
+            </Box>
 
-          <Diagnosis
-            data={patientData?.medical_code ?? []}
-            state={{ isLoading, }}
-            actions={[
-              {
-                name: 'Delete',
-                onClick: (row) => updateEncItem({
-                  id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.original?.id,
-                }),
-              },
-            ]}
-          />
-        </Section>
-      )}
+            <Diagnosis
+              data={patientData?.medical_code ?? []}
+              state={{ isLoading, }}
+              actions={[
+                {
+                  name: 'Delete',
+                  onClick: (row) => updateEncItem({
+                    id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.original?.id,
+                  }),
+                },
+              ]}
+            />
+          </>
+        )}
+      </Section>
 
       {!!patientData?.procedure?.length && (
         <Section title="Procedures" withDivider>
@@ -219,6 +233,10 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
                   }),
                 },
               ]}
+              {...(p.communication_request && {
+                enableBottomToolbar: true,
+                renderBottomToolbar: () => (<CommunicationRequest data={p.communication_request} onSubmit={(data) => setPatientData(data)} />)
+              })}
             />
           ))}
         </Section>

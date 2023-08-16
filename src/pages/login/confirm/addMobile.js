@@ -32,7 +32,7 @@ const ConfirmLogin = () => {
     formState: { errors, },
   } = useForm({
     defaultValues,
-    mode: 'onBlur',
+    mode: 'onSubmit',
     resolver: yupResolver(schema),
   });
 

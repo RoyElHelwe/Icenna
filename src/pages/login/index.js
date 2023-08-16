@@ -8,7 +8,10 @@ import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { format } from 'url';
 import * as yup from 'yup';
 import { Card } from '../../components/auth-card';
 import { useAuth } from '../../hooks/use-auth';
@@ -26,6 +29,14 @@ const defaultValues = {
 const Login = (props) => {
   const auth = useAuth();
   const { settings } = useSettings();
+  const router = useRouter();
+
+  useEffect(() => {
+    const { provider, auth_token } = router.query ?? {};
+    if (provider === 'google' && !!auth_token) {
+      login({ auth_token, device_type: 'WEB', from_google: 1, });
+    }
+  }, [router]);
 
   const login = (params) => {
     auth.login(params, () => {
@@ -36,15 +47,8 @@ const Login = (props) => {
     });
   };
 
-  const {
-    control,
-    setError,
-    handleSubmit,
-    formState: { errors, },
-  } = useForm({
-    defaultValues,
-    mode: 'onChange',
-    resolver: yupResolver(schema)
+  const { control, setError, handleSubmit, formState: { errors, }, } = useForm({
+    defaultValues, mode: 'onSubmit', resolver: yupResolver(schema),
   });
 
   const onSubmit = (data) => login({ email: data.email });
@@ -65,10 +69,8 @@ const Login = (props) => {
             text="continue_with"
             size='large'
             theme={settings.mode === 'dark' ? 'filled_black' : 'outline'}
-            onSuccess={(credentialResponse) => login({ auth_token: credentialResponse.credential, device_type: 'WEB', from_google: 1, })}
-            onError={() => {
-              console.log('Login with Goggle failed!');
-            }}
+            ux_mode='redirect'
+            login_uri={format({ pathname: `${window.location.origin}/api/login`, query: router.query, })}
             useOneTap={false}
           />
           <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }}>or</Divider>

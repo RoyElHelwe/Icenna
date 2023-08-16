@@ -1,25 +1,30 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoadingButton } from "@mui/lab";
-import { FormControl, FormHelperText, TextField } from "@mui/material";
+import { CircularProgress, FormControl, FormHelperText, InputAdornment, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMutation } from "@tanstack/react-query";
+import { useImperativeHandle } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { addDiagnosisDescription } from "../api/practitioner";
 
 const schema = yup.object().shape({
-  text: yup.string().required('Diagnosis can\'t be empty!'),
+  text: yup.string(),
 });
 
 const DiagnosisDescriptionForm = ({
   values,
   onClose,
   onSubmit,
+  reference,
 }) => {
-  const {
-    isLoading,
-    mutate,
-  } = useMutation({
+  useImperativeHandle(reference, () => ({
+    submitForm() {
+      handleSubmit(({ id, text }) => mutate({ id, text }))();
+    }
+  }));
+
+  const { isLoading, mutate, } = useMutation({
     mutationFn: addDiagnosisDescription,
     enabled: false,
     onSuccess: (data) => {
@@ -48,8 +53,7 @@ const DiagnosisDescriptionForm = ({
   return (
     <form onSubmit={handleSubmit(({ id, text }) => mutate({ id, text }))}>
       <FormControl
-        fullWidth
-        sx={{ mb: 4 }}>
+        sx={{ mb: 4, width: '50%', }}>
         <Controller
           name='text'
           control={control}
@@ -57,22 +61,31 @@ const DiagnosisDescriptionForm = ({
           render={({ field: { value, onChange, onBlur } }) => (
             <TextField
               fullWidth
-              label='Diagnosis'
               multiline
               placeholder='Dental examination'
               value={value}
               onBlur={onBlur}
               onChange={onChange}
               error={!!errors.text}
+              disabled={isLoading}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {isLoading && <CircularProgress size={25} />}
+                  </InputAdornment>
+                )
+              }}
             />
           )}
         />
         {errors.text && <FormHelperText sx={{ color: 'error.main' }}>{errors.text.message}</FormHelperText>}
       </FormControl>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
-        <LoadingButton variant='contained' loading={isLoading} type='submit'>Update</LoadingButton>
-      </Box>
+      {!reference && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', }}>
+          <LoadingButton variant='contained' loading={isLoading} type='submit'>Update</LoadingButton>
+        </Box>
+      )}
     </form >
   );
 };
