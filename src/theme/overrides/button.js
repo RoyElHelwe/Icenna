@@ -1,4 +1,4 @@
-import themeConfig from 'src/configs/theme';
+import themeConfig from '../../configs/theme';
 
 const Button = () => {
   return {

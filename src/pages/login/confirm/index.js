@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useAuth } from 'src/hooks/use-auth';
-import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
 import Spinner from '../../../components/spinner';
+import { useAuth } from '../../../hooks/use-auth';
+import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
 
 export const confirmStatusRoute = {
   1: 'verifyEmail',
@@ -24,7 +24,7 @@ const ConfirmLogin = () => {
       router.replace(redirectURL);
     } else if (user?.action && router.pathname === '/login/confirm') {
       const { provider, auth_token, ...rest } = router.query;
-      
+
       const to = `/login/confirm/${confirmStatusRoute[user.action]}`;
       router.replace({
         pathname: to,

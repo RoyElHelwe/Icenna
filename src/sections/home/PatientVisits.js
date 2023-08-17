@@ -1,4 +1,4 @@
-import ApexChart from "../../components/ApexChart";
+import { ApexChart } from "../../components/ApexChart";
 import { PatientVisitsData } from "../../mocks/PatientVisits";
 
 export const PatientVisits = () => {

@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/material";
-import ApexChart from "../../components/ApexChart";
+import { ApexChart } from "../../components/ApexChart";
 
 export const PatientStatues = () => {
   const globalTheme = useTheme();

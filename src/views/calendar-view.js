@@ -9,8 +9,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { format } from 'date-fns';
 import { useSettings } from '../hooks/useSettings';
 import CalendarWrapper from '../styles/fullcalendar';
-import { useEffect } from 'react';
-import { useRef } from 'react';
+import { useEffect , useRef } from 'react';
+
 
 const blankEvent = {
   title: '',

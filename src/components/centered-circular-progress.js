@@ -11,7 +11,8 @@ const CenteredCircularProgress = ({ ...rest }) => (
     sx={{ minHeight: '100vh', }}
     {...rest}
   >
-    <Grid item xs={3}>
+    <Grid item 
+    xs={3}>
       <CircularProgress />
     </Grid>
   </Grid>

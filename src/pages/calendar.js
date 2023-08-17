@@ -5,7 +5,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { getAppointments } from '../api/calendar';
-import AsyncAutocomplete from '../components/AsyncAutocomplete';
+import { AsyncAutocomplete } from '../components/AsyncAutocomplete';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import CalendarView from '../views/calendar-view';
 

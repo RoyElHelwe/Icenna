@@ -60,6 +60,8 @@
     "yup": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.22.10",
+    "@babel/eslint-plugin": "^7.22.10",
     "@faker-js/faker": "^8.0.2",
     "@svgr/webpack": "^8.0.1",
     "@types/node": "^18.13.0",

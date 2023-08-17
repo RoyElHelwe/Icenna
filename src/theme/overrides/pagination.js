@@ -1,5 +1,4 @@
-// ** Util Import
-import { hexToRGBA } from 'src/utils/hex-to-rgba'
+import { hexToRGBA } from '../../utils/hex-to-rgba';
 
 const Pagination = () => {
   return {
@@ -29,4 +28,4 @@ const Pagination = () => {
   }
 }
 
-export default Pagination
+export default Pagination;

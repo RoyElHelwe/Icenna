@@ -11,15 +11,15 @@ import Head from 'next/head';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import 'simplebar-react/dist/simplebar.min.css';
-import Spinner from 'src/components/spinner';
-import 'src/configs/i18n';
-import { AuthProvider } from 'src/context/auth-context';
-import { SettingsConsumer, SettingsProvider } from 'src/context/settings-context';
-import AuthGuard from 'src/guards/auth-guard';
-import ThemeComponent from 'src/theme/ThemeComponent';
-import { createEmotionCache } from 'src/utils/create-emotion-cache';
+import Spinner from '../components/spinner';
+import '../configs/i18n';
+import { AuthProvider } from '../context/auth-context';
+import { SettingsConsumer, SettingsProvider } from '../context/settings-context';
+import AuthGuard from '../guards/auth-guard';
 import GuestGuard from '../guards/guest-guard';
 import ReactHotToast from '../styles/ReactHotToast';
+import ThemeComponent from '../theme/ThemeComponent';
+import { createEmotionCache } from '../utils/create-emotion-cache';
 
 const queryClient = new QueryClient({
   defaultOptions: {

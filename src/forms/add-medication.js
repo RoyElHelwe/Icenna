@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { getGeneralSettings } from "../api/settings";
-import AsyncAutocomplete from "../components/AsyncAutocomplete";
+import { AsyncAutocomplete } from "../components/AsyncAutocomplete";
 import { useSettings } from "../hooks/useSettings";
 
 const schema = yup.object().shape({

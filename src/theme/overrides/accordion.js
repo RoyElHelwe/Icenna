@@ -1,8 +1,6 @@
-// ** Hook Import
-import { useSettings } from 'src/hooks/useSettings'
+import { useSettings } from '../../hooks/useSettings'
 
 const Accordion = () => {
-  // Hook & Var
   const { settings } = useSettings()
   const { skin } = settings
 

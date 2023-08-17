@@ -2,7 +2,6 @@ import { TabContext, TabList } from '@mui/lab';
 import {
   AppBar,
   Avatar,
-  Box,
   Stack,
   Tab,
   Typography
@@ -12,8 +11,8 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { useAuth } from 'src/hooks/use-auth';
-import { usePopover } from 'src/hooks/use-popover';
+import { useAuth } from '../../hooks/use-auth';
+import { usePopover } from '../../hooks/use-popover';
 import Translations from '../../components/Translations';
 import { navItems } from '../config';
 import { AccountPopover } from './account-popover';

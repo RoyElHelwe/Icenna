@@ -42,8 +42,8 @@
   "rules": {
     "react/no-did-update-set-state": "error",
     "react/no-unknown-property": "error",
-    "react/no-unused-prop-types": "error",
-    "react/react-in-jsx-scope": "error",
+    "react/no-unused-prop-types": "warn",
+    "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "import/export": "off",
     "no-unused-vars": "off",
@@ -56,12 +56,6 @@
     "react/display-name": "off",
     "react/no-unescaped-entities": "off",
     "import/no-anonymous-default-export": "off",
-    "react/jsx-max-props-per-line": [
-      1,
-      {
-        "maximum": 1
-      }
-    ],
     // add new line above comment
     "lines-around-comment": [
       "error",

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { getDentalCharting } from "../api/practitioner";
-import AsyncAutocomplete from "../components/AsyncAutocomplete";
+import { AsyncAutocomplete } from "../components/AsyncAutocomplete";
 
 const schema = yup.object().shape({
   body_site: yup.object().typeError('Error').required('Code is required!'),

@@ -1,5 +1,5 @@
-import { useSettings } from 'src/hooks/useSettings'
-import { hexToRGBA } from 'src/utils/hex-to-rgba'
+import { useSettings } from '../hooks/useSettings'
+import { hexToRGBA } from '../utils/hex-to-rgba'
 
 const GlobalStyles = theme => {
   const { settings } = useSettings()

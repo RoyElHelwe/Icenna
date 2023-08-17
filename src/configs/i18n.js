@@ -10,17 +10,17 @@ i18n
   .init({
     lng: 'en',
     backend: {
-      loadPath: '/locales/{{lng}}.json'
+      loadPath: '/locales/{{lng}}.json',
     },
     fallbackLng: 'en',
     debug: false,
     keySeparator: false,
     react: {
-      useSuspense: false
+      useSuspense: false,
     },
     interpolation: {
       escapeValue: false,
-      formatSeparator: ','
+      formatSeparator: ',',
     }
   });
 
