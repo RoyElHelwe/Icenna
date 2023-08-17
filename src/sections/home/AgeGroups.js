@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/material";
-import ApexChart from "../../components/ApexChart";
+import { ApexChart } from "../../components/ApexChart";
 import { AgeGroupsData } from "../../mocks/AgeGroups";
 
 export const AgeGroups = () => {

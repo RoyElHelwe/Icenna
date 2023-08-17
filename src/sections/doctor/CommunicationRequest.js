@@ -90,7 +90,8 @@ export const CommunicationRequest = ({ data: { id, description, }, onSubmit, }) 
                   onClick={() => setSelectedFiles((prev) => {
                     const updatedFiles = [...prev];
                     updatedFiles.splice(i, 1);
-                    return updatedFiles;
+                    
+return updatedFiles;
                   })}>
                   <DeleteIcon />
                 </IconButton>

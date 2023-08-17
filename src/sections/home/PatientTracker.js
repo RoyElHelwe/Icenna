@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import ApexChart from "../../components/ApexChart";
+import { ApexChart } from "../../components/ApexChart";
 
 export const PatientTracker = () => {
   const series = [82];

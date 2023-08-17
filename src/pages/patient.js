@@ -110,7 +110,8 @@ const Patient = () => {
   } else {
     body = filteredPatients.sort((a, b) => Object.values(PatientStatuses).indexOf(a.status) - Object.values(PatientStatuses).indexOf(b.status)).map((p, i) => {
       const disabled = (p.status === PatientStatuses.Opened || !p.selectable);
-      return (
+      
+return (
         <SideNavItem
           active={p.id === selectedPatient?.id}
           disabled={disabled}

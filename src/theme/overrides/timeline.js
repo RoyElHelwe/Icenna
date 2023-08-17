@@ -1,5 +1,4 @@
-// ** Util Import
-import { hexToRGBA } from 'src/utils/hex-to-rgba'
+import { hexToRGBA } from '../../utils/hex-to-rgba';
 
 const Timeline = () => {
   return {
@@ -77,4 +76,4 @@ const Timeline = () => {
   }
 }
 
-export default Timeline
+export default Timeline;

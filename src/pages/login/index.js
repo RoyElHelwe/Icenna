@@ -8,8 +8,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
+import { parseBody } from "next/dist/server/api-utils/node";
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { format } from 'url';
 import * as yup from 'yup';
@@ -26,17 +26,20 @@ const defaultValues = {
   email: '',
 };
 
-const Login = (props) => {
+export async function getServerSideProps({ req }) {
+  const body = await parseBody(req, '1mb');
+
+  return {
+    props: {
+      auth_token: body?.credential ?? null,
+    },
+  };
+};
+
+const Login = ({ auth_token }) => {
   const auth = useAuth();
   const { settings } = useSettings();
   const router = useRouter();
-
-  useEffect(() => {
-    const { provider, auth_token } = router.query ?? {};
-    if (provider === 'google' && !!auth_token) {
-      login({ auth_token, device_type: 'WEB', from_google: 1, });
-    }
-  }, [router]);
 
   const login = (params) => {
     auth.login(params, () => {
@@ -46,6 +49,10 @@ const Login = (props) => {
       });
     });
   };
+
+  if (!auth.loading && !!auth_token) {
+    login({ auth_token, device_type: 'WEB', from_google: 1, });
+  }
 
   const { control, setError, handleSubmit, formState: { errors, }, } = useForm({
     defaultValues, mode: 'onSubmit', resolver: yupResolver(schema),
@@ -70,7 +77,7 @@ const Login = (props) => {
             size='large'
             theme={settings.mode === 'dark' ? 'filled_black' : 'outline'}
             ux_mode='redirect'
-            login_uri={format({ pathname: `${window.location.origin}/api/login`, query: router.query, })}
+            login_uri={format({ pathname: `${window.location.origin}/login`, query: router.query, })}
             useOneTap={false}
           />
           <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }}>or</Divider>
