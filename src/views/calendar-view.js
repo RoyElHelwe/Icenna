@@ -9,22 +9,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { format } from 'date-fns';
 import { useSettings } from '../hooks/useSettings';
 import CalendarWrapper from '../styles/fullcalendar';
-import { useEffect , useRef } from 'react';
-
-
-const blankEvent = {
-  title: '',
-  start: '',
-  end: '',
-  allDay: false,
-  url: '',
-  extendedProps: {
-    calendar: '',
-    guests: [],
-    location: '',
-    description: ''
-  },
-};
 
 const calendarsColor = {
   Personal: 'error',
@@ -36,7 +20,9 @@ const calendarsColor = {
 
 const CalendarView = (props) => {
   const { settings } = useSettings();
+
   const { direction } = settings;
+
   const calendarOptions = {
     allDaySlot: false,
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, bootstrap5Plugin],
@@ -52,32 +38,6 @@ const CalendarView = (props) => {
     dragScroll: true,
     dayMaxEvents: 2,
     navLinks: true,
-    eventClassNames({ event: calendarEvent }) {
-      const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar];
-
-      return [`bg-${colorName}`];
-    },
-    eventClick({ event: clickedEvent }) {
-      // * Only grab required field otherwise it goes in infinity loop
-      // ! Always grab all fields rendered by form (even if it get `undefined`) otherwise due to Vue3/Composition API you might get: "object is not extensible"
-      // event.value = grabEventDataFromEventApi(clickedEvent)
-      // isAddNewEventSidebarActive.value = true
-    },
-    customButtons: {
-      sidebarToggle: {
-        icon: 'bi bi-list',
-        click() {
-          // TODO: handleLeftSidebarToggle()
-        }
-      }
-    },
-    dateClick(info) {
-      const ev = { ...blankEvent, };
-      ev.start = info.date;
-      ev.end = info.date;
-
-      // TODO: handleAddEventSidebarToggle()
-    },
     direction,
     ...props,
   };
