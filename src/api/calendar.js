@@ -8,3 +8,7 @@ export const getAppointments = ({ queryKey }, date, practitioner) => {
     },
   });
 };
+
+export const updateStatus = (body) => {
+  return axios.post('/icenna.user_api.receptionist.update_status', body);
+};

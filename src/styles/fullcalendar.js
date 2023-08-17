@@ -242,12 +242,18 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
             backgroundColor: hexToRGBA(theme.palette.info.light, 0.1)
           }
         },
+        '&.st-checked-out': {
+          fontWeight: 'bold',
+        },
         '&.fc-daygrid-event': {
           marginLeft: '4px',
           marginRight: '4px',
         },
+        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+        transition: '0.3s',
+        borderRadius: 8,
         cursor: 'pointer',
-        width: "20rem",
+        width: 'fit-content',
       },
       '& .fc-view-harness': {
         maxHeight: '50rem',
