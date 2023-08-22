@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
-import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import Translations from '../components/Translations';
+import { Permissions } from '../constants/Permissions';
+import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 
 const Healthcare = () => (
   <Typography
@@ -16,5 +17,7 @@ Healthcare.getLayout = (page) => (
     {page}
   </DashboardLayout>
 );
+
+Healthcare.access = Permissions.CanViewHealthcare;
 
 export default Healthcare;

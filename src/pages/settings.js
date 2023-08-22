@@ -1,5 +1,6 @@
 import { Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { Permissions } from '../constants/Permissions';
 import { useAuth } from '../hooks/use-auth';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 
@@ -42,5 +43,7 @@ Settings.getLayout = (page) => (
     {page}
   </DashboardLayout>
 );
+
+Settings.access = Permissions.CanViewSettings;
 
 export default Settings;

@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
+import { Permissions } from '../constants/Permissions';
 
 const Sales = dynamic(() => import('../sections/home/Sales'), { ssr: false });
 const PatientStatues = dynamic(() => import('../sections/home/PatientStatues'), { ssr: false });
@@ -47,5 +48,7 @@ Home.getLayout = (page) => (
     {page}
   </DashboardLayout>
 );
+
+Home.access = Permissions.CanViewHome;
 
 export default Home;

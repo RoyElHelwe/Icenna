@@ -11,10 +11,10 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import Translations from '../../components/Translations';
 import { useAuth } from '../../hooks/use-auth';
 import { usePopover } from '../../hooks/use-popover';
-import Translations from '../../components/Translations';
-import { navItems } from '../config';
+import { useNavItems } from '../../hooks/useNavItems';
 import { AccountPopover } from './account-popover';
 
 export const TOP_NAV_HEIGHT = 60;
@@ -26,6 +26,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
   const router = useRouter();
   const pathname = router.pathname;
   const [value, setValue] = useState('0');
+  const navItems = useNavItems();
 
   useEffect(() => {
     const index = navItems.findIndex((i) => pathname === i.path);
