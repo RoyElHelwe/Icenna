@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getAppointments, updateStatus } from '../api/calendar';
 import { AsyncAutocomplete } from '../components/AsyncAutocomplete';
 import { WeekDays } from '../constants';
+import { Permissions } from '../constants/Permissions';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { getWeekDates } from '../utils/date';
 import CalendarView from '../views/calendar-view';
@@ -193,5 +194,7 @@ Calendar.getLayout = (page) => (
     {page}
   </DashboardLayout>
 );
+
+Calendar.access = Permissions.CanViewCalendar;
 
 export default Calendar;

@@ -18,6 +18,7 @@ import Scrollbar from '../components/scrollbar';
 import SearchBar from '../components/searchbar';
 import { SideNavItem } from '../components/side-nav-item';
 import { PatientStatuses } from '../constants';
+import { Permissions } from '../constants/Permissions';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { pusherClient } from '../lib/pusher';
@@ -110,8 +111,8 @@ const Patient = () => {
   } else {
     body = filteredPatients.sort((a, b) => Object.values(PatientStatuses).indexOf(a.status) - Object.values(PatientStatuses).indexOf(b.status)).map((p, i) => {
       const disabled = (p.status === PatientStatuses.Opened || !p.selectable);
-      
-return (
+
+      return (
         <SideNavItem
           active={p.id === selectedPatient?.id}
           disabled={disabled}
@@ -225,5 +226,7 @@ Patient.getLayout = (page) => (
     {page}
   </DashboardLayout>
 );
+
+Patient.access = Permissions.CanViewPatient;
 
 export default Patient;

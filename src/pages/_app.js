@@ -15,6 +15,7 @@ import Spinner from '../components/spinner';
 import '../configs/i18n';
 import { AuthProvider } from '../context/auth-context';
 import { SettingsConsumer, SettingsProvider } from '../context/settings-context';
+import AclGuard from '../guards/AcGuard';
 import AuthGuard from '../guards/auth-guard';
 import GuestGuard from '../guards/guest-guard';
 import ReactHotToast from '../styles/ReactHotToast';
@@ -52,6 +53,7 @@ const App = (props) => {
   const getLayout = Component.getLayout ?? ((page) => page);
   const authGuard = Component.authGuard ?? true;
   const guestGuard = Component.guestGuard ?? false;
+  const access = Component.access ?? '';
 
   return (
     <CacheProvider value={emotionCache}>
@@ -82,7 +84,9 @@ const App = (props) => {
                     return (
                       <ThemeComponent settings={settings}>
                         <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                          {getLayout(<Component {...pageProps} />)}
+                          <AclGuard access={access} guestGuard={guestGuard}>
+                            {getLayout(<Component {...pageProps} />)}
+                          </AclGuard>
                         </Guard>
                       </ThemeComponent>
                     )
