@@ -18,7 +18,7 @@ const calendarsColor = {
   ETC: 'info',
 };
 
-const CalendarView = (props) => {
+const CalendarView = ({ children, calRef, ...props }) => {
   const { settings } = useSettings();
 
   const { direction } = settings;
@@ -27,8 +27,11 @@ const CalendarView = (props) => {
     allDaySlot: false,
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, bootstrap5Plugin],
     initialView: 'timeGridDay',
+    dayHeaders: false,
+    slotEventOverlap: false,
     headerToolbar: {
-      start: 'today, prev, next, title,',
+      start: 'today',
+      center: 'title',
       end: false,
     },
     nowIndicator: true,
@@ -50,9 +53,10 @@ const CalendarView = (props) => {
         width: '100%',
       }}
     >
+      {children}
       <Box
         sx={{
-          p: 5,
+          px: 5,
           pb: 0,
           flexGrow: 1,
           borderRadius: 1,
@@ -61,6 +65,7 @@ const CalendarView = (props) => {
         }}
       >
         <FullCalendar
+          ref={calRef}
           {...calendarOptions}
         />
       </Box>
