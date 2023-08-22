@@ -60,3 +60,18 @@ export const getDayDifference = (startDate, endDate) => {
 
   return diffInDays;
 };
+
+export const getWeekDates = (startDate) => {
+  const weekDates = [];
+  const currentDate = new Date(startDate);
+
+  const currentDay = currentDate.getDay();
+  currentDate.setDate(currentDate.getDate() - currentDay);
+
+  for (let i = 0; i < 7; i++) {
+    weekDates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return weekDates;
+};

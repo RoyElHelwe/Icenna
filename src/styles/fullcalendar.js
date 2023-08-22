@@ -1,13 +1,16 @@
-import Box from '@mui/material/Box';
+import { Box, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useBgColor from '../hooks/use-bgcolor';
 import { hexToRGBA } from '../utils/hex-to-rgba';
 
 const CalendarWrapper = styled(Box)(({ theme }) => {
   const bgColors = useBgColor();
+  const globalTheme = useTheme();
 
   return {
     display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: globalTheme.palette.background.paper,
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     '& .fc': {
@@ -21,7 +24,7 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
         flexWrap: 'wrap',
         flexDirection: 'row !important',
         '&.fc-header-toolbar': {
-          marginBottom: theme.spacing(6)
+          marginBottom: theme.spacing(2)
         },
         '.fc-prev-button, & .fc-next-button': {
           display: 'inline-block',
@@ -137,9 +140,6 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
           marginRight: theme.spacing(4),
           fontSize: theme.typography.h6.fontSize
         },
-        '.fc-button:empty:not(.fc-sidebarToggle-button), & .fc-toolbar-chunk:empty': {
-          display: 'none'
-        }
       },
 
       // ** Calendar head & body common
@@ -155,110 +155,16 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
 
       // ** Event Colors
       '& .fc-event': {
-        '&:not(.fc-list-event)': {
-          '&.bg-primary': {
-            borderColor: 'transparent',
-            color: theme.palette.primary.main,
-            backgroundColor: bgColors.primaryLight.backgroundColor,
-            '& .fc-event-title, & .fc-event-time': {
-              color: theme.palette.primary.main
-            }
-          },
-          '&.bg-success': {
-            borderColor: 'transparent',
-            color: theme.palette.success.main,
-            backgroundColor: bgColors.successLight.backgroundColor,
-            '& .fc-event-title, & .fc-event-time': {
-              color: theme.palette.success.main
-            }
-          },
-          '&.bg-error': {
-            borderColor: 'transparent',
-            color: theme.palette.error.main,
-            backgroundColor: bgColors.errorLight.backgroundColor,
-            '& .fc-event-title, & .fc-event-time': {
-              color: theme.palette.error.main
-            }
-          },
-          '&.bg-warning': {
-            borderColor: 'transparent',
-            color: theme.palette.warning.main,
-            backgroundColor: bgColors.warningLight.backgroundColor,
-            '& .fc-event-title, & .fc-event-time': {
-              color: theme.palette.warning.main
-            }
-          },
-          '&.bg-info': {
-            borderColor: 'transparent',
-            color: theme.palette.info.main,
-            backgroundColor: bgColors.infoLight.backgroundColor,
-            '& .fc-event-title, & .fc-event-time': {
-              color: theme.palette.info.main
-            }
-          }
-        },
-        '&.bg-primary': {
-          '& .fc-list-event-dot': {
-            borderColor: theme.palette.primary.main,
-            backgroundColor: theme.palette.primary.main
-          },
-          '&:hover td': {
-            backgroundColor: hexToRGBA(theme.palette.primary.light, 0.1)
-          }
-        },
-        '&.bg-success': {
-          '& .fc-list-event-dot': {
-            borderColor: theme.palette.success.main,
-            backgroundColor: theme.palette.success.main
-          },
-          '&:hover td': {
-            backgroundColor: hexToRGBA(theme.palette.success.light, 0.1)
-          }
-        },
-        '&.bg-error': {
-          '& .fc-list-event-dot': {
-            borderColor: theme.palette.error.main,
-            backgroundColor: theme.palette.error.main
-          },
-          '&:hover td': {
-            backgroundColor: hexToRGBA(theme.palette.error.light, 0.1)
-          }
-        },
-        '&.bg-warning': {
-          '& .fc-list-event-dot': {
-            borderColor: theme.palette.warning.main,
-            backgroundColor: theme.palette.warning.main
-          },
-          '&:hover td': {
-            backgroundColor: hexToRGBA(theme.palette.warning.light, 0.1)
-          }
-        },
-        '&.bg-info': {
-          '& .fc-list-event-dot': {
-            borderColor: theme.palette.info.main,
-            backgroundColor: theme.palette.info.main
-          },
-          '&:hover td': {
-            backgroundColor: hexToRGBA(theme.palette.info.light, 0.1)
-          }
-        },
-        '&.st-checked-out': {
-          fontWeight: 'bold',
-        },
-        '&.fc-daygrid-event': {
-          marginLeft: '4px',
-          marginRight: '4px',
-        },
-        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-        transition: '0.3s',
-        borderRadius: 8,
-        cursor: 'pointer',
-        width: 'fit-content',
+        margin: 0,
+        color: 'transparent',
+        backgroundColor: 'transparent',
+        border: 0,
+        borderRadius: 0,
       },
       '& .fc-view-harness': {
-        maxHeight: '50rem',
+        maxHeight: '70vh',
         margin: theme.spacing(0, -5.25),
-        width: `calc(100% + ${theme.spacing(5.25 * 2)})`
+        width: `calc(100% + ${theme.spacing(5.25 * 2)})`,
       },
 
       // ** Calendar Head
@@ -361,8 +267,7 @@ const CalendarWrapper = styled(Box)(({ theme }) => {
           display: 'none'
         },
         '& .fc-timegrid-event': {
-          margin: 3,
-          padding: 5,
+          margin: 2,
         }
       },
 

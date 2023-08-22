@@ -4,7 +4,6 @@ import { TreeItem as MuiTreeItem } from '@mui/lab';
 import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useState } from 'react';
 import Translations from './Translations';
@@ -24,7 +23,7 @@ const TreeItem = styled(MuiTreeItem)(({ theme }) => ({
   },
 }));
 
-const SectionTreeItem = ({ id, title, code, children, ...props }) => {
+const SectionTreeItem = ({ id, title, children, ...props }) => {
   const [selected, setSelected] = useState(false);
 
   return (
@@ -68,7 +67,3 @@ const SectionTreeItem = ({ id, title, code, children, ...props }) => {
 };
 
 export default SectionTreeItem;
-
-SectionTreeItem.propTypes = {
-  code: PropTypes.object,
-};
