@@ -160,7 +160,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
       {!!patientData?.chief_complaint?.length && (
         <Section title="Chief Complaint" withDivider>
-          <Typography>{patientData?.chief_complaint}</Typography>
+          <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.chief_complaint}</Typography>
         </Section>
       )}
 
@@ -204,7 +204,6 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
             <Diagnosis
               data={patientData?.medical_code ?? []}
-              state={{ isLoading, }}
               actions={[
                 {
                   name: 'Delete',
@@ -220,22 +219,25 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
       {!!patientData?.procedure?.length && (
         <Section title="Procedures" withDivider>
-          {patientData?.procedure?.map((p) => (
+          {patientData?.procedure?.map((p, i) => (
             <Procedures
               key={p.approval_id}
               data={p.items ?? []}
-              state={{ isLoading, }}
+              {...(i > 0 ? { muiTableHeadCellProps: { sx: { display: 'none' } } } : {})}
               actions={[
                 {
                   name: 'Delete',
                   onClick: (row) => updateEncItem({
-                    id: patientData?.id, t_type: 'delete', i_type: 2, code: row?.original?.code,
+                    id: patientData?.id, record_id: row.original.id, i_type: 2, code: row.original.code, t_type: 'delete',
                   }),
                 },
               ]}
               {...(p.communication_request && {
                 enableBottomToolbar: true,
                 renderBottomToolbar: () => (<CommunicationRequest data={p.communication_request} onSubmit={(data) => setPatientData(data)} />)
+              })}
+              onUpdate={(row, params) => updateEncItem({
+                id: patientData?.id, record_id: row.original.id, i_type: 2, code: row.original.code, t_type: 'update', ...params,
               })}
             />
           ))}
@@ -246,7 +248,6 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
         <Section title="Medications" withDivider>
           <Medications
             data={patientData?.drugs ?? []}
-            state={{ isLoading, }}
             actions={[
               {
                 name: 'Delete',

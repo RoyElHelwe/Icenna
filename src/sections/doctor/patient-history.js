@@ -7,8 +7,8 @@ import Section from '../../components/section';
 import SectionList from '../../components/section-list';
 import SectionTreeItem from '../../components/section-tree-item';
 import { timeAgo, timeToDate } from '../../utils/date';
-import { PatientEncounterView } from './patient-encounter-view';
 import { DentalCharting } from './dental-charting';
+import { PatientEncounterView } from './patient-encounter-view';
 
 export const PatientHistory = (props) => {
   const { patientData } = props;
@@ -17,9 +17,10 @@ export const PatientHistory = (props) => {
 
   return (
     <>
-      <Section title="Dental Charting">
+      {patientData?.department === 'Dental' && (<Section title="Dental Charting">
         <DentalCharting filledTeeth={[46]} />
       </Section>
+      )}
       <Section title={`Panorama Image ${imageDate ? `(${imageDate})` : ''}`} withDivider>
         <Carousel
           autoPlay={false}

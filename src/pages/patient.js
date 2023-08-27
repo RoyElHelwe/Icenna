@@ -1,7 +1,7 @@
 import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
 import MenuIcon from '@mui/icons-material/Menu';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { IconButton, Skeleton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import { IconButton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import { getPatients } from '../api/practitioner';
 import Centered from '../components/Centered';
 import Translations from '../components/Translations';
-import CenteredAlert from '../components/centered-alert';
 import Scrollbar from '../components/scrollbar';
 import SearchBar from '../components/searchbar';
 import { SideNavItem } from '../components/side-nav-item';
@@ -103,40 +102,6 @@ const Patient = () => {
     setSelectedPatient(patients.find((p) => p.appointment === router.query.appid));
   }, [patients, router.query.appid]);
 
-  let body;
-  if (isLoading || isFetching) {
-    body = Array(20).fill().map((_, i) => <Skeleton key={i} height={50} />);
-  } else if (error) {
-    body = <CenteredAlert severity="error" message="Can't get patients." sx={{ minHeight: '100px' }} />;
-  } else {
-    body = filteredPatients.sort((a, b) => Object.values(PatientStatuses).indexOf(a.status) - Object.values(PatientStatuses).indexOf(b.status)).map((p, i) => {
-      const disabled = (p.status === PatientStatuses.Opened || !p.selectable);
-
-      return (
-        <SideNavItem
-          active={p.id === selectedPatient?.id}
-          disabled={disabled}
-          icon={(p.status === PatientStatuses.CheckedOUT && (
-            <SvgIcon
-              fontSize="small"
-              color="success">
-              <CheckBadgeIcon />
-            </SvgIcon>
-          ))}
-          key={p.id}
-          title={p.full_name}
-          onClick={() => {
-            setSelectedPatient(patients.find((patient) => patient.id === p.id));
-            router.push({
-              pathname: router.pathname,
-              query: { ...router.query, appid: p.appointment },
-            });
-          }}
-        />
-      );
-    });
-  }
-
   return (
     <Box sx={{ display: 'flex', }}>
       <CssBaseline />
@@ -205,7 +170,32 @@ const Patient = () => {
                 m: 0,
               }}
             >
-              {body}
+              {filteredPatients.sort((a, b) => Object.values(PatientStatuses).indexOf(a.status) - Object.values(PatientStatuses).indexOf(b.status)).map((p, i) => {
+                const disabled = (p.status === PatientStatuses.Opened || !p.selectable);
+
+                return (
+                  <SideNavItem
+                    active={p.id === selectedPatient?.id}
+                    disabled={disabled}
+                    icon={(p.status === PatientStatuses.CheckedOUT && (
+                      <SvgIcon
+                        fontSize="small"
+                        color="success">
+                        <CheckBadgeIcon />
+                      </SvgIcon>
+                    ))}
+                    key={p.id}
+                    title={p.full_name}
+                    onClick={() => {
+                      setSelectedPatient(patients.find((patient) => patient.id === p.id));
+                      router.push({
+                        pathname: router.pathname,
+                        query: { ...router.query, appid: p.appointment },
+                      });
+                    }}
+                  />
+                );
+              })}
             </Stack>
           }
         </Scrollbar>

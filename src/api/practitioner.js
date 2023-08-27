@@ -32,10 +32,8 @@ export const search = ({ queryKey }) => {
   });
 };
 
-export const encounterItem = ({ id, code, t_type, i_type, status, dosage, period, dose, body_site, }) => {
-  return axios.post('/icenna.user_api.practitioner.encounter_info_item', {
-    id, code, t_type, i_type, status, dosage, period, dose, body_site,
-  });
+export const encounterItem = (body) => {
+  return axios.post('/icenna.user_api.practitioner.encounter_info_item', body);
 };
 
 export const addDiagnosisDescription = ({ id, text }) => {
