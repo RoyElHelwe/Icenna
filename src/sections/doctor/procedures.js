@@ -1,23 +1,41 @@
 import { Box, Typography } from '@mui/material';
-import React, { useMemo } from 'react';
+import React from 'react';
+import { AsyncAutocomplete } from '../../components/AsyncAutocomplete';
 import ExpandTable from '../../components/expand-table';
 
 const Procedures = (props) => {
-  const columns = useMemo(() => [
+  const paymentOptions = ["Ask For Approval", "Cash",];
+  const columns = [
     {
       accessorKey: 'name',
       header: 'Name',
+      enableEditing: false,
     },
     {
       accessorKey: 'status',
       header: 'Status',
-      
+      enableEditing: (row) => (row.original.status !== 'Paid'),
+      Edit: ({ cell, column, row, table }) => {
+
+        return (
+          <AsyncAutocomplete
+            fullWidth
+            disableClearable
+            isOptionEqualToValue={(o, v) => o === v}
+            getOptionLabel={(o) => o ?? ''}
+            options={paymentOptions}
+            value={row.original?.status}
+            onChange={(e, v) => props.onUpdate(row, { status: v })}
+          />
+        );
+      },
     },
     {
       accessorKey: 'price',
       header: 'Price',
+      enableEditing: false,
     },
-  ], [],);
+  ];
 
   return (
     <ExpandTable

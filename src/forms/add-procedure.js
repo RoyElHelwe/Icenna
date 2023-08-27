@@ -38,32 +38,32 @@ const AddProcedureForm = ({
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit?.(data))}>
-      <FormControl fullWidth sx={{ mb: 20, }}>
-        <Controller
-          name='body_site'
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <AsyncAutocomplete
-              fullWidth
-              label='Codes'
-              loading={isLoading}
-              isOptionEqualToValue={(o, v) => o?.id === v?.id}
-              getOptionLabel={(o) => o?.description ? `${o?.code} - ${o?.description}` : ''}
-              options={dentalCharting}
-              value={value}
-              onBlur={onBlur}
-              onChange={(e, v) => onChange(v)}
-              inputProps={{
-                error: !!errors.body_site,
-              }}
-            />
-          )}
-        />
-        {errors.body_site && <FormHelperText sx={{ color: 'error.main' }}>{errors.body_site.message}</FormHelperText>}
-      </FormControl>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 4, }}>
+        <FormControl fullWidth>
+          <Controller
+            name='body_site'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <AsyncAutocomplete
+                fullWidth
+                label='Codes'
+                loading={isLoading}
+                isOptionEqualToValue={(o, v) => o?.id === v?.id}
+                getOptionLabel={(o) => o?.description ? `${o?.code} - ${o?.description}` : ''}
+                options={dentalCharting}
+                value={value}
+                onBlur={onBlur}
+                onChange={(e, v) => onChange(v)}
+                inputProps={{
+                  error: !!errors.body_site,
+                }}
+              />
+            )}
+          />
+          {errors.body_site && <FormHelperText sx={{ color: 'error.main' }}>{errors.body_site.message}</FormHelperText>}
+        </FormControl>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
         <LoadingButton variant='contained' loading={isLoading} type='submit'>Add</LoadingButton>
       </Box>
     </form >

@@ -14,8 +14,8 @@ export const DentalCharting = ({ filledTeeth, ...rest }) => {
       <Grid container sx={{ flexGrow: 1 }} columns={{ xs: 16 }}>
         {upperToothIds.map((t) => {
           const isFilled = filledTeeth?.indexOf(t) !== -1;
-          
-return (
+
+          return (
             <Grid key={t} item xs={1} sx={{ mb: 10, }}>
               <Grid container direction="column" justifyContent="end" alignItems="center" sx={{ minHeight: '100%' }}>
                 <Grid item xs={1}>

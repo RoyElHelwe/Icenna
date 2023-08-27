@@ -49,8 +49,12 @@ export const PatientEncounterView = (props) => {
 
       {!!patientData?.procedure?.length && (
         <Section title="Procedures" withDivider>
-          {patientData?.procedure?.map((p) => (
-            <Procedures key={p.approval_id} data={p.items ?? []} />
+          {patientData?.procedure?.map((p, i) => (
+            <Procedures
+              key={p.approval_id}
+              data={p.items ?? []}
+              {...(i > 0 ? { muiTableHeadCellProps: { sx: { display: 'none' } } } : {})}
+            />
           ))}
         </Section>
       )}

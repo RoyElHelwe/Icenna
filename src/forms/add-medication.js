@@ -44,77 +44,77 @@ const AddMedicationForm = ({
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit?.(data))}>
-      <FormControl fullWidth sx={{ mb: 6, }}>
-        <Controller
-          name='dose'
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <TextField
-              fullWidth
-              label='Dose'
-              type='number'
-              InputProps={{ inputProps: { min: 0, } }}
-              placeholder='3'
-              value={value}
-              onBlur={onBlur}
-              onChange={onChange}
-              error={!!errors.dose}
-            />
-          )}
-        />
-        {errors.dose && <FormHelperText sx={{ color: 'error.main' }}>{errors.dose.message}</FormHelperText>}
-      </FormControl>
-      <FormControl fullWidth sx={{ mb: 6, }}>
-        <Controller
-          name='repeat'
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <AsyncAutocomplete
-              fullWidth
-              label='Repeat'
-              loading={isLoading}
-              isOptionEqualToValue={(o, v) => o?.id === v?.id}
-              getOptionLabel={(o) => o?.name ?? ''}
-              options={dosage ?? []}
-              value={value}
-              onBlur={onBlur}
-              onChange={(e, v) => onChange(v)}
-              inputProps={{
-                error: !!errors.repeat,
-              }}
-            />
-          )}
-        />
-        {errors.repeat && <FormHelperText sx={{ color: 'error.main' }}>{errors.repeat.message}</FormHelperText>}
-      </FormControl>
-      <FormControl fullWidth sx={{ mb: 20, }}>
-        <Controller
-          name='period'
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange, onBlur } }) => (
-            <AsyncAutocomplete
-              fullWidth
-              label='Period'
-              loading={isLoading}
-              isOptionEqualToValue={(o, v) => o?.id === v?.id}
-              getOptionLabel={(o) => o?.name ?? ''}
-              options={dosage_period ?? []}
-              value={value}
-              onBlur={onBlur}
-              onChange={(e, v) => onChange(v)}
-              inputProps={{
-                error: !!errors.period,
-              }}
-            />
-          )}
-        />
-        {errors.period && <FormHelperText sx={{ color: 'error.main' }}>{errors.period.message}</FormHelperText>}
-      </FormControl>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 4, }}>
+        <FormControl fullWidth>
+          <Controller
+            name='dose'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <TextField
+                fullWidth
+                label='Dose'
+                type='number'
+                InputProps={{ inputProps: { min: 0, } }}
+                placeholder='3'
+                value={value}
+                onBlur={onBlur}
+                onChange={onChange}
+                error={!!errors.dose}
+              />
+            )}
+          />
+          {errors.dose && <FormHelperText sx={{ color: 'error.main' }}>{errors.dose.message}</FormHelperText>}
+        </FormControl>
+        <FormControl fullWidth>
+          <Controller
+            name='repeat'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <AsyncAutocomplete
+                fullWidth
+                label='Repeat'
+                loading={isLoading}
+                isOptionEqualToValue={(o, v) => o?.id === v?.id}
+                getOptionLabel={(o) => o?.name ?? ''}
+                options={dosage ?? []}
+                value={value}
+                onBlur={onBlur}
+                onChange={(e, v) => onChange(v)}
+                inputProps={{
+                  error: !!errors.repeat,
+                }}
+              />
+            )}
+          />
+          {errors.repeat && <FormHelperText sx={{ color: 'error.main' }}>{errors.repeat.message}</FormHelperText>}
+        </FormControl>
+        <FormControl fullWidth>
+          <Controller
+            name='period'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <AsyncAutocomplete
+                fullWidth
+                label='Period'
+                loading={isLoading}
+                isOptionEqualToValue={(o, v) => o?.id === v?.id}
+                getOptionLabel={(o) => o?.name ?? ''}
+                options={dosage_period ?? []}
+                value={value}
+                onBlur={onBlur}
+                onChange={(e, v) => onChange(v)}
+                inputProps={{
+                  error: !!errors.period,
+                }}
+              />
+            )}
+          />
+          {errors.period && <FormHelperText sx={{ color: 'error.main' }}>{errors.period.message}</FormHelperText>}
+        </FormControl>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
         <LoadingButton variant='contained' loading={isLoading} type='submit'>Add</LoadingButton>
       </Box>
     </form >

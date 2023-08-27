@@ -3,7 +3,7 @@ import { MaterialReactTable } from 'material-react-table';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-const ExpandTable = ({ actions, ...props }) => {
+const ExpandTable = ({ actions, onUpdate, muiTableHeadCellProps, ...props }) => {
   const globalTheme = useTheme();
 
   const tableTheme = useMemo(() =>
@@ -29,6 +29,7 @@ const ExpandTable = ({ actions, ...props }) => {
         enableBottomToolbar={false}
         muiTableHeadCellProps={{
           sx: { borderRight: `1px solid ${globalTheme.palette.divider}`, },
+          ...muiTableHeadCellProps,
         }}
         muiTableBodyCellProps={{
           sx: { borderRight: `1px solid ${globalTheme.palette.divider}`, },
@@ -47,11 +48,19 @@ const ExpandTable = ({ actions, ...props }) => {
         }}
         {...(!!actions?.length && {
           enableRowActions: true,
-          renderRowActionMenuItems: ({ row, table }) => actions.map((a) => (
-            <MenuItem key={a.name} onClick={() => a.onClick(row)}>
+          renderRowActionMenuItems: ({ closeMenu, row, table }) => actions.map((a) => (
+            <MenuItem key={a.name} onClick={() => {
+              closeMenu();
+              a.onClick(row);
+            }}>
               {a.name}
             </MenuItem>
           ))
+        })}
+        {...(!!onUpdate && {
+          enableEditing: true,
+          editingMode: "table",
+          onEditingRowSave: ({ exitEditingMode, row, table, values }) => console.log('EditSave:', exitEditingMode, row, table, values),
         })}
         {...props}
       />
@@ -66,6 +75,7 @@ ExpandTable.propTypes = {
       onClick: PropTypes.func,
     }),
   ),
+  onUpdate: PropTypes.func,
 };
 
 export default ExpandTable;

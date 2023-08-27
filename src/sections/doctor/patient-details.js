@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getEncounterInfo } from '../../api/practitioner';
-import CenteredAlert from '../../components/centered-alert';
 import CenteredCircularProgress from '../../components/centered-circular-progress';
 import { PatientStatuses } from '../../constants';
 import { PatientEncounter } from './patient-encounter';
 import { PatientEncounterView } from './patient-encounter-view';
 import { PatientHistory } from './patient-history';
+import Centered from '../../components/Centered';
 
 export const PatientDetails = (props) => {
   const { appointment } = props;
@@ -33,7 +33,11 @@ export const PatientDetails = (props) => {
   if (isLoading) {
     return <CenteredCircularProgress />;
   } else if (error) {
-    return <CenteredAlert severity="error" message="Internal server error" />;
+    return (
+      <Centered>
+        <Typography variant="h5">Couldn't get Patient encounter!</Typography>
+      </Centered>
+    );
   }
 
   return (
