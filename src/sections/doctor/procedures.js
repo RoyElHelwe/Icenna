@@ -4,7 +4,9 @@ import { AsyncAutocomplete } from '../../components/AsyncAutocomplete';
 import ExpandTable from '../../components/expand-table';
 
 const Procedures = (props) => {
-  const paymentOptions = ["Ask For Approval", "Cash",];
+  const approvedOptions = ["Approved", "Cash",];
+  const nonApprovedOptions = ["Ask For Approval", "Cash",];
+
   const columns = [
     {
       accessorKey: 'name',
@@ -15,6 +17,7 @@ const Procedures = (props) => {
       accessorKey: 'status',
       header: 'Status',
       enableEditing: (row) => (row.original.status !== 'Paid'),
+      editVariant: 'select',
       Edit: ({ cell, column, row, table }) => {
 
         return (
@@ -23,7 +26,7 @@ const Procedures = (props) => {
             disableClearable
             isOptionEqualToValue={(o, v) => o === v}
             getOptionLabel={(o) => o ?? ''}
-            options={paymentOptions}
+            options={row.original?.status === 'Approved' ? approvedOptions : nonApprovedOptions}
             value={row.original?.status}
             onChange={(e, v) => props.onUpdate(row, { status: v })}
           />

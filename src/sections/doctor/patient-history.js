@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import Carousel from 'react-material-ui-carousel';
@@ -10,6 +10,20 @@ import { timeAgo, timeToDate } from '../../utils/date';
 import { DentalCharting } from './dental-charting';
 import { PatientEncounterView } from './patient-encounter-view';
 
+const DicomViewer = dynamic(() => import('./DicomViewer'), { ssr: false });
+
+const getDepartmentCharting = (dept) => {
+  if (dept === 'Dental') {
+    return (
+      <Section title="Dental Charting">
+        <DentalCharting filledTeeth={[46]} />
+      </Section>
+    );
+  } else {
+    return null;
+  }
+};
+
 export const PatientHistory = (props) => {
   const { patientData } = props;
 
@@ -17,23 +31,19 @@ export const PatientHistory = (props) => {
 
   return (
     <>
-      {patientData?.department === 'Dental' && (<Section title="Dental Charting">
-        <DentalCharting filledTeeth={[46]} />
-      </Section>
-      )}
+      {getDepartmentCharting(patientData?.department)}
       <Section title={`Panorama Image ${imageDate ? `(${imageDate})` : ''}`} withDivider>
         <Carousel
           autoPlay={false}
           animation='slide'
           navButtonsAlwaysVisible
-          sx={{ maxWidth: "100%", bgcolor: 'background.paper', borderRadius: 3, }}>
-          {patientData?.images?.map((image, i) => (
-            <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <Link href={image.gcb_path} target='_blank'>
-                <img key={i} src={image.image} width="100%" height={500} />
-              </Link>
-            </Box>
-          ))}
+          swipe={false}
+          sx={{ maxWidth: "100%", minHeight: '500px', bgcolor: 'background.paper', borderRadius: 3, }}>
+          {/* {patientData?.images?.map((image, i) => ( */}
+          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            <DicomViewer token={patientData?.access_token} image={patientData?.images?.[1]} />
+          </Box>
+          {/* ))} */}
         </Carousel>
       </Section>
       <Section title="Patient Encounters">
@@ -42,7 +52,7 @@ export const PatientHistory = (props) => {
             <SectionTreeItem
               key={id}
               id={id}
-              title={`${timeAgo(timeToDate(date, time))} (${date})`}
+              title={`${timeAgo(timeToDate(date?.split(' ')?.[0], time))} (${date?.split(' ')?.[0]})`}
               {...(i === patientData?.time_line?.length - 1 && { sx: { borderRadius: 0, } })}>
               <PatientEncounterView appointmentId={appointment} />
             </SectionTreeItem>

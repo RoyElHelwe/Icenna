@@ -43,7 +43,10 @@ export const PatientEncounterView = (props) => {
             <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
           </Box>
 
-          <Diagnosis data={patientData?.medical_code ?? []} />
+          <Diagnosis
+            data={patientData?.medical_code ?? []}
+            initialState={{ density: 'compact' }}
+          />
         </Section>
       )}
 
@@ -53,6 +56,7 @@ export const PatientEncounterView = (props) => {
             <Procedures
               key={p.approval_id}
               data={p.items ?? []}
+              initialState={{ density: 'compact' }}
               {...(i > 0 ? { muiTableHeadCellProps: { sx: { display: 'none' } } } : {})}
             />
           ))}
@@ -61,7 +65,10 @@ export const PatientEncounterView = (props) => {
 
       {!!patientData?.drugs?.length && (
         <Section title="Medications" withDivider>
-          <Medications data={patientData?.drugs ?? []} />
+          <Medications
+            data={patientData?.drugs ?? []}
+            initialState={{ density: 'compact' }}
+          />
         </Section>
       )}
     </>
