@@ -1,7 +1,9 @@
 import { useTheme } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { ApexChart } from "../../components/ApexChart";
 
 export const PatientStatues = () => {
+  const { t } = useTranslation();
   const globalTheme = useTheme();
 
   const series = [44, 55, 41, 17, 15];
@@ -29,10 +31,10 @@ export const PatientStatues = () => {
     dataLabels: {
       enabled: false,
     },
-    labels: ["Checked In", "Checked out", "Confirmed", "Opened", "Out"],
+    labels: ["Checked In", "Checked Out", "Confirmed", "Opened", "Out"].map((l) => t(l)),
     tooltip: {
       y: {
-        formatter: (val) => `${val} patients`,
+        formatter: (val) => `${val} ${t('Patients')}`,
       },
     },
   };

@@ -7,16 +7,20 @@ import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getEncounterInfo } from '../../api/practitioner';
+import Centered from '../../components/Centered';
 import CenteredCircularProgress from '../../components/centered-circular-progress';
 import { PatientStatuses } from '../../constants';
 import { PatientEncounter } from './patient-encounter';
 import { PatientEncounterView } from './patient-encounter-view';
 import { PatientHistory } from './patient-history';
-import Centered from '../../components/Centered';
 
-export const PatientDetails = (props) => {
-  const { appointment } = props;
+export const PatientDetails = ({
+  appointment,
+  historyOnly
+}) => {
+  const { t } = useTranslation();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['get_encounter_info', appointment],
@@ -35,14 +39,21 @@ export const PatientDetails = (props) => {
   } else if (error) {
     return (
       <Centered>
-        <Typography variant="h5">Couldn't get Patient encounter!</Typography>
+        <Typography variant="h5">{t("Couldn't get Patient encounter!")}</Typography>
       </Centered>
     );
   }
 
-  return (
-    <TabContext value={tab}>
-      <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', }}>
+  let content
+  if (historyOnly) {
+    content = (
+      <Container sx={{ pt: 3 }} maxWidth={false}>
+      <PatientHistory patientData={patientData} />
+    </Container>
+    );
+  } else {
+    content = (
+      <TabContext value={tab}>
         <Box
           variant="elevation"
           position="sticky"
@@ -59,8 +70,8 @@ export const PatientDetails = (props) => {
             pr: 4,
           }}>
             <TabList onChange={(e, newValue) => setTab(newValue)}>
-              <Tab label="History" value="1" />
-              <Tab label="Patient Encounter" value="2" />
+              <Tab label={t("History")} value="1" />
+              <Tab label={t("Patient Encounter")} value="2" />
             </TabList>
             <Box sx={{
               display: 'flex',
@@ -75,7 +86,7 @@ export const PatientDetails = (props) => {
                 alignItems: 'flex-start',
               }}>
                 <Typography sx={{ fontWeight: 'bold' }} variant="body1">{patientData?.patient?.age}</Typography>
-                <Typography sx={{ fontWeight: 'bold' }} variant="body1">{patientData?.patient?.gender}</Typography>
+                <Typography sx={{ fontWeight: 'bold' }} variant="body1">{t(patientData?.patient?.gender)}</Typography>
               </Box>
             </Box>
           </Box>
@@ -92,8 +103,15 @@ export const PatientDetails = (props) => {
             )}
           </TabPanel>
         </Container>
-      </Box>
-    </TabContext>
+      </TabContext>
+    );
+  }
+
+
+  return (
+    <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', }}>
+      {content}
+    </Box>
   );
 };
 

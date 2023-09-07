@@ -2,9 +2,11 @@ import { MenuItem, ThemeProvider, createTheme, useTheme } from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ExpandTable = ({ actions, onUpdate, muiTableHeadCellProps, ...props }) => {
   const globalTheme = useTheme();
+  const { t } = useTranslation();
 
   const tableTheme = useMemo(() =>
     createTheme({
@@ -40,6 +42,7 @@ const ExpandTable = ({ actions, onUpdate, muiTableHeadCellProps, ...props }) => 
         positionActionsColumn='last'
         displayColumnDefOptions={{
           'mrt-row-actions': {
+            header: t('Actions'),
             maxSize: 20,
           },
           'mrt-row-expand': {

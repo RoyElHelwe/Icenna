@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getEncounterInfo } from '../../api/practitioner';
 import CenteredAlert from '../../components/centered-alert';
 import CenteredCircularProgress from '../../components/centered-circular-progress';
@@ -10,8 +11,10 @@ import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
 
-export const PatientEncounterView = (props) => {
-  const { appointmentId } = props;
+export const PatientEncounterView = ({
+  appointmentId
+}) => {
+  const { t } = useTranslation();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['get_encounter_info', appointmentId],
@@ -26,7 +29,7 @@ export const PatientEncounterView = (props) => {
   if (isLoading) {
     return <CenteredCircularProgress />;
   } else if (error) {
-    return <CenteredAlert severity="error" message="Internal server error" />;
+    return <CenteredAlert severity="error" message={t("Internal server error")} />;
   }
 
   return (

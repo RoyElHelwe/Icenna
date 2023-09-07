@@ -1,21 +1,25 @@
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box } from '@mui/material';
-import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import Carousel from 'react-material-ui-carousel';
+import RtlSvgIcon from '../../components/rtl-svgicon';
 import Section from '../../components/section';
 import SectionList from '../../components/section-list';
 import SectionTreeItem from '../../components/section-tree-item';
+import { useSettings } from '../../hooks/useSettings';
 import { timeAgo, timeToDate } from '../../utils/date';
 import { DentalCharting } from './dental-charting';
 import { PatientEncounterView } from './patient-encounter-view';
 
-const DicomViewer = dynamic(() => import('./DicomViewer'), { ssr: false });
+const getDepartmentCharting = (dept, t) => {
 
-const getDepartmentCharting = (dept) => {
   if (dept === 'Dental') {
     return (
-      <Section title="Dental Charting">
+      <Section title={t("Dental Charting")}>
         <DentalCharting filledTeeth={[46]} />
       </Section>
     );
@@ -24,26 +28,29 @@ const getDepartmentCharting = (dept) => {
   }
 };
 
-export const PatientHistory = (props) => {
-  const { patientData } = props;
-
-  const imageDate = '6 Months old';
+export const PatientHistory = ({ patientData }) => {
+  const { direction } = useSettings();
+  const { t } = useTranslation();
 
   return (
     <>
-      {getDepartmentCharting(patientData?.department)}
-      <Section title={`Panorama Image ${imageDate ? `(${imageDate})` : ''}`} withDivider>
+      {getDepartmentCharting(patientData?.department, t)}
+      <Section title={`${t('Panorama Image')}`} withDivider>
         <Carousel
           autoPlay={false}
           animation='slide'
           navButtonsAlwaysVisible
           swipe={false}
+          NextIcon={(<RtlSvgIcon><ArrowForwardIosIcon /></RtlSvgIcon>)}
+          PrevIcon={(<RtlSvgIcon><ArrowBackIosNewIcon /></RtlSvgIcon>)}
           sx={{ maxWidth: "100%", minHeight: '500px', bgcolor: 'background.paper', borderRadius: 3, }}>
-          {/* {patientData?.images?.map((image, i) => ( */}
-          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-            <DicomViewer token={patientData?.access_token} image={patientData?.images?.[1]} />
-          </Box>
-          {/* ))} */}
+          {patientData?.images?.map((img, i) => (
+            <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+              <Link href="#">
+                <img key={i} src={img.image} width="100%" height={500} />
+              </Link>
+            </Box>
+          ))}
         </Carousel>
       </Section>
       <Section title="Patient Encounters">
@@ -53,7 +60,7 @@ export const PatientHistory = (props) => {
               key={id}
               id={id}
               title={`${timeAgo(timeToDate(date?.split(' ')?.[0], time))} (${date?.split(' ')?.[0]})`}
-              {...(i === patientData?.time_line?.length - 1 && { sx: { borderRadius: 0, } })}>
+            >
               <PatientEncounterView appointmentId={appointment} />
             </SectionTreeItem>
           ))}

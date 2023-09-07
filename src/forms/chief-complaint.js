@@ -4,18 +4,17 @@ import { FormControl, FormHelperText, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import * as yup from 'yup';
 import { addChiefComplaint } from "../api/practitioner";
-
-const schema = yup.object().shape({
-  text: yup.string().required('Chief Complaint can\'t be empty!'),
-});
 
 const ChiefComplaintForm = ({
   values,
   onSubmit,
   onClose,
 }) => {
+  const { t } = useTranslation();
+
   const {
     isLoading,
     mutate,
@@ -33,6 +32,10 @@ const ChiefComplaintForm = ({
     text: '',
     ...values,
   };
+
+  const schema = yup.object().shape({
+    text: yup.string().required(t("Chief Complaint can't be empty!")),
+  });
 
   const {
     control,
@@ -57,9 +60,8 @@ const ChiefComplaintForm = ({
           render={({ field: { value, onChange, onBlur } }) => (
             <TextField
               fullWidth
-              label='Chief Complaint'
+              label={t('Chief Complaint')}
               multiline
-              placeholder='Dental examination'
               value={value}
               onBlur={onBlur}
               onChange={onChange}
@@ -71,7 +73,7 @@ const ChiefComplaintForm = ({
       </FormControl>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
-        <LoadingButton variant='contained' loading={isLoading} type='submit'>Update</LoadingButton>
+        <LoadingButton variant='contained' loading={isLoading} type='submit'>{t('Update')}</LoadingButton>
       </Box>
     </form >
   );

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
 import parse from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
 import { getTerms } from '../../../api/get-terms';
 import { useAuth } from '../../../hooks/use-auth';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
@@ -19,6 +20,7 @@ export const Card = styled(MuiCard)(({ theme }) => ({
 
 const AcceptTerms = () => {
   const { user, acceptTerms } = useAuth();
+  const { t } = useTranslation();
 
   const { isLoading, data } = useQuery({
     queryKey: ['terms_and_conditions', user.terms_and_conditions_id],
@@ -44,7 +46,7 @@ const AcceptTerms = () => {
             )}
             <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }} />
             <Typography sx={{ color: 'text.secondary' }}>
-              Do you accept our terms and conditions?
+              {t('Do you accept our terms and conditions?')}
             </Typography>
           </Box>
           <LoadingButton fullWidth

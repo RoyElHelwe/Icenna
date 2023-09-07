@@ -2,13 +2,13 @@ import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/mate
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import { useCallback } from 'react';
-import Translations from '../../components/Translations';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/use-auth';
 
-export const AccountPopover = (props) => {
-  const { anchorEl, onClose, open } = props;
+export const AccountPopover = ({ anchorEl, onClose, open }) => {
   const router = useRouter();
   const auth = useAuth();
+  const { t } = useTranslation();
 
   const handleSignOut = useCallback(() => {
     onClose?.();
@@ -35,7 +35,7 @@ export const AccountPopover = (props) => {
         }}
       >
         <Typography variant="overline" sx={{ fontWeight: 'bold', color: 'black', }}>
-          <Translations text="Account" />
+          {t('Account')}
         </Typography>
         <Typography
           color="text.secondary"
@@ -56,7 +56,7 @@ export const AccountPopover = (props) => {
         }}
       >
         <MenuItem onClick={handleSignOut}>
-          Sign out
+          {t('Sign Out')}
         </MenuItem>
       </MenuList>
     </Popover>

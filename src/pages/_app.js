@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import 'simplebar-react/dist/simplebar.min.css';
+import { AxiosInterceptor } from '../api/axios-instance';
 import Spinner from '../components/spinner';
 import '../configs/i18n';
 import { AuthProvider } from '../context/auth-context';
@@ -83,11 +84,13 @@ const App = (props) => {
 
                     return (
                       <ThemeComponent settings={settings}>
-                        <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                          <AclGuard access={access} guestGuard={guestGuard}>
-                            {getLayout(<Component {...pageProps} />)}
-                          </AclGuard>
-                        </Guard>
+                        <AxiosInterceptor>
+                          <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                            <AclGuard access={access} guestGuard={guestGuard}>
+                              {getLayout(<Component {...pageProps} />)}
+                            </AclGuard>
+                          </Guard>
+                        </AxiosInterceptor>
                       </ThemeComponent>
                     )
                   }}
