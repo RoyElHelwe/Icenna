@@ -1,9 +1,11 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { ApexChart } from "../../components/ApexChart";
 
 export const PatientTracker = () => {
-  const series = [82];
+  const { t } = useTranslation();
 
+  const series = [82];
   const options = {
     chart: {
       height: 350,
@@ -69,13 +71,13 @@ export const PatientTracker = () => {
           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             42
           </Typography>
-          <Typography sx={{ m: 1, mb: 0.5 }}>Tickets</Typography>
+          <Typography sx={{ m: 1, mb: 0.5 }}>{t('Tickets')}</Typography>
         </Box>
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             10
           </Typography>
-          <Typography sx={{ m: 1, mb: 0.5 }}>Tickets left</Typography>
+          <Typography sx={{ m: 1, mb: 0.5 }}>{t('Tickets left')}</Typography>
         </Box>
       </Box>
     </ApexChart>

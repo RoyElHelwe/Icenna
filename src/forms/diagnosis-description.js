@@ -5,12 +5,9 @@ import { Box } from "@mui/system";
 import { useMutation } from "@tanstack/react-query";
 import { useImperativeHandle } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import * as yup from 'yup';
 import { addDiagnosisDescription } from "../api/practitioner";
-
-const schema = yup.object().shape({
-  text: yup.string(),
-});
 
 const DiagnosisDescriptionForm = ({
   values,
@@ -23,6 +20,8 @@ const DiagnosisDescriptionForm = ({
       handleSubmit(({ id, text }) => mutate({ id, text }))();
     }
   }));
+
+  const { t } = useTranslation();
 
   const { isLoading, mutate, } = useMutation({
     mutationFn: addDiagnosisDescription,
@@ -38,6 +37,10 @@ const DiagnosisDescriptionForm = ({
     text: '',
     ...values,
   };
+
+  const schema = yup.object().shape({
+    text: yup.string(),
+  });
 
   const {
     control,
@@ -62,7 +65,7 @@ const DiagnosisDescriptionForm = ({
             <TextField
               fullWidth
               multiline
-              placeholder='Dental examination'
+              label={t("Diagnosis")}
               value={value}
               onBlur={onBlur}
               onChange={onChange}
@@ -83,7 +86,7 @@ const DiagnosisDescriptionForm = ({
 
       {!reference && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', }}>
-          <LoadingButton variant='contained' loading={isLoading} type='submit'>Update</LoadingButton>
+          <LoadingButton variant='contained' loading={isLoading} type='submit'>{t("Update")}</LoadingButton>
         </Box>
       )}
     </form >

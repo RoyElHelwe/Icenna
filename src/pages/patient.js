@@ -10,7 +10,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { getPatients } from '../api/practitioner';
+import { useTranslation } from 'react-i18next';
+import { findPatient, getPatients } from '../api/practitioner';
 import Centered from '../components/Centered';
 import Translations from '../components/Translations';
 import Scrollbar from '../components/scrollbar';
@@ -65,6 +66,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const Patient = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { isLoading, error, data, refetch, isFetching, } = useQuery({
     queryKey: ['getPatients'],
@@ -84,11 +86,6 @@ const Patient = () => {
     };
   }, []);
 
-  const [selectedPatient, setSelectedPatient] = useState();
-  useEffect(() => {
-    setPatients(data?.data?.data ?? []);
-  }, [data]);
-
   const [openNav, setOpenNav] = useState(false);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   useEffect(() => {
@@ -96,8 +93,21 @@ const Patient = () => {
   }, [lgUp]);
 
   const [search, setSearch] = useState('');
-  const filteredPatients = patients?.filter((p) => p.full_name.toLowerCase().includes(search.toLowerCase()));
+  const { error: searchError, data: searchData, } = useQuery({
+    queryKey: ['find_patient', (search.length >= 3 ? search : '')],
+    queryFn: (ctx) => findPatient(ctx),
+    enabled: search.length >= 3,
+  });
 
+  useEffect(() => {
+    if (searchData) {
+      setPatients(searchData?.data?.data);
+    } else {
+      setPatients(data?.data?.data ?? []);
+    }
+  }, [data, searchData]);
+
+  const [selectedPatient, setSelectedPatient] = useState();
   useEffect(() => {
     setSelectedPatient(patients.find((p) => p.appointment === router.query.appid));
   }, [patients, router.query.appid]);
@@ -107,44 +117,25 @@ const Patient = () => {
       <CssBaseline />
       <Drawer
         sx={{
-          '& .MuiDrawer-paper': {
-            paddingTop: `${TOP_NAV_HEIGHT + 5}px`,
-          },
+          '& .MuiDrawer-paper': { paddingTop: `${TOP_NAV_HEIGHT + 5}px`, },
         }}
         variant="permanent"
         anchor="left"
         open={openNav}
         {...({ onClose: () => setOpenNav(false) })}
       >
-        <Scrollbar sx={{
-          height: '100%',
-          '& .simplebar-content': {
-            height: '100%'
-          },
-        }}>
+        <Scrollbar sx={{ height: '100%', '& .simplebar-content': { height: '100%' }, }}>
           <Box
             sx={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'flex-start',
-              flexDirection: 'column',
+              width: '100%', display: 'flex', alignItems: 'flex-start', flexDirection: 'column',
             }}
           >
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              p: 1,
-            }}>
-              <IconButton
-                aria-label="open drawer"
-                onClick={() => setOpenNav((prev) => !prev)}
-              >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 1, }}>
+              <IconButton onClick={() => setOpenNav((prev) => !prev)}>
                 <MenuIcon />
               </IconButton>
               {openNav && (
-                <SearchBar
-                  sx={{ mr: 2, }}
-                  onChange={(e) => setSearch(e.target.value)} />
+                <SearchBar sx={{ mr: 2, }} onChange={(e) => setSearch(e.target.value)} />
               )}
             </Box>
             {openNav && (
@@ -164,13 +155,9 @@ const Patient = () => {
             <Stack
               component="ul"
               spacing={isLoading ? 0.1 : 0.5}
-              sx={{
-                listStyle: 'none',
-                p: 1,
-                m: 0,
-              }}
+              sx={{ listStyle: 'none', p: 1, m: 0, }}
             >
-              {filteredPatients.sort((a, b) => Object.values(PatientStatuses).indexOf(a.status) - Object.values(PatientStatuses).indexOf(b.status)).map((p, i) => {
+              {patients.sort((a, b) => Object.values(PatientStatuses).indexOf(a.status) - Object.values(PatientStatuses).indexOf(b.status)).map((p, i) => {
                 const disabled = (p.status === PatientStatuses.Opened || !p.selectable);
 
                 return (
@@ -178,9 +165,7 @@ const Patient = () => {
                     active={p.id === selectedPatient?.id}
                     disabled={disabled}
                     icon={(p.status === PatientStatuses.CheckedOUT && (
-                      <SvgIcon
-                        fontSize="small"
-                        color="success">
+                      <SvgIcon fontSize="small" color="success">
                         <CheckBadgeIcon />
                       </SvgIcon>
                     ))}
@@ -201,10 +186,12 @@ const Patient = () => {
         </Scrollbar>
       </Drawer>
       {!!selectedPatient?.id ? (
-        <PatientDetails appointment={selectedPatient.appointment} />
+        <PatientDetails appointment={selectedPatient.appointment} historyOnly={search.length >= 3} />
       ) : (
         <Centered>
-          <Typography variant="h5">Please select a Patient from the list</Typography>
+          <Typography variant="h5">
+            {t("Please select a Patient from the list")}
+          </Typography>
         </Centered>
       )}
     </Box>

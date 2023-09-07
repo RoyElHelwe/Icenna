@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { checkApproval, encounterCheckout, encounterItem } from '../../api/practitioner';
 import { getGeneralSettings } from '../../api/settings';
 import { AsyncAutocomplete } from '../../components/AsyncAutocomplete';
@@ -41,6 +42,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
     };
   }, []);
 
+  const { t } = useTranslation();
   const { settings: ctxSettings } = useSettings();
   const ref = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,7 +71,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
   const { duration_labels } = settings?.data?.data ?? {};
   const labels = [
-    { label: 'No Session', duration: 0, },
+    { label: t('No Session'), duration: 0, },
     ...duration_labels ?? [],
   ];
 
@@ -96,15 +98,15 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
   const getCheckoutText = () => {
     if (patientData?.action === 1) {
-      return 'Ask for Approval';
+      return t('Ask for Approval');
     } else if (patientData?.action === 2) {
       const total = patientData?.total_required_to_pay ?? 0;
       const rounded = Number(total.toFixed(2));
       const formattedPrice = rounded.toLocaleString('en-US');
 
-      return `Checkout for Pay (${formattedPrice.includes('.') ? formattedPrice : formattedPrice + '.00'} SAR)`;
+      return `${t('Checkout for Pay')} (${formattedPrice.includes('.') ? formattedPrice : formattedPrice + '.00'} ${t('SAR')})`;
     } else {
-      return 'Submit';
+      return t('Submit');
     }
   };
 
@@ -120,7 +122,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             ...DefaultOptions,
             onClose,
             open: true,
-            title: 'Write Chief Complaint',
+            title: t('Write Chief Complaint'),
             children: (
               <ChiefComplaintForm
                 values={{ id: patientData?.id, text: patientData?.chief_complaint ?? '', }}
@@ -129,7 +131,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
               />
             ),
           })}>
-          Chief Complaint
+          {`${t('Add')} ${t("Chief Complaint")}`}
         </Button>
 
         <LoadingButton
@@ -137,7 +139,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
           startIcon={popOpen ? <CloseIcon /> : <AddIcon />}
           onClick={(e) => setAnchorEl(e.currentTarget)}
         >
-          {popOpen ? 'Finish' : 'Add'}
+          {t(popOpen ? 'Finish' : 'Add')}
         </LoadingButton>
         <Popover
           open={popOpen}
@@ -181,7 +183,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
               setIsWritingDiagnosis((prev) => !prev);
             }
           }}>
-            {isWritingDiagnosis ? 'Done' : 'Write Diagnosis'}
+            {t(isWritingDiagnosis ? 'Done' : 'Write Diagnosis')}
           </LinkTypography>
         </Box>
       )} withDivider>
@@ -206,7 +208,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
               data={patientData?.medical_code ?? []}
               actions={[
                 {
-                  name: 'Delete',
+                  name: t('Delete'),
                   onClick: (row) => updateEncItem({
                     id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.original?.id,
                   }),
@@ -223,10 +225,13 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             <Procedures
               key={p.approval_id}
               data={p.items ?? []}
+              department={patientData?.department}
+              // Give header only for the first table
               {...(i > 0 ? { muiTableHeadCellProps: { sx: { display: 'none' } } } : {})}
+              editable
               actions={[
                 {
-                  name: 'Delete',
+                  name: t('Delete'),
                   onClick: (row) => updateEncItem({
                     id: patientData?.id, record_id: row.original.id, i_type: 2, code: row.original.code, t_type: 'delete',
                   }),
@@ -250,12 +255,15 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             data={patientData?.drugs ?? []}
             actions={[
               {
-                name: 'Delete',
+                name: t('Delete'),
                 onClick: (row) => updateEncItem({
-                  id: patientData?.id, t_type: 'delete', i_type: 3, code: row?.original?.id,
+                  id: patientData?.id, i_type: 3, t_type: 'delete', code: row?.original?.id,
                 }),
               },
             ]}
+            onUpdate={(row, params) => updateEncItem({
+              id: patientData?.id, i_type: 3, code: row.original.id, t_type: 'update', ...params,
+            })}
           />
         </Section>
       )}
@@ -263,7 +271,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', pt: 10 }}>
         {patientData?.action === 3 && (
           <AsyncAutocomplete
-            label='Duration'
+            label={t('Duration')}
             loading={loadingSettings}
             disableClearable
             isOptionEqualToValue={(o, v) => o?.label === v?.label}

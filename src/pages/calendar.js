@@ -7,16 +7,20 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { format } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getAppointments, updateStatus } from '../api/calendar';
 import { AsyncAutocomplete } from '../components/AsyncAutocomplete';
+import RtlSvgIcon from '../components/rtl-svgicon';
 import { WeekDays } from '../constants';
 import { Permissions } from '../constants/Permissions';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
+import { pusherClient } from '../lib/pusher';
 import { getWeekDates } from '../utils/date';
 import CalendarView from '../views/calendar-view';
 
 const Calendar = () => {
   const globalTheme = useTheme();
+  const { t } = useTranslation();
   const statusColor = {
     Open: globalTheme.palette.text.disabled,
     Confirmed: globalTheme.palette.text.primary,
@@ -40,7 +44,7 @@ const Calendar = () => {
 
   const ALL_DOC_OPTION = {
     id: null,
-    practitioner_name: 'All Doctors',
+    practitioner_name: t('All Doctors'),
   };
   const [practitioner, setPractitioner] = useState(ALL_DOC_OPTION);
 
@@ -48,6 +52,18 @@ const Calendar = () => {
     queryKey: ['getAppointments', date, practitioner],
     queryFn: (ctx) => getAppointments(ctx, format(date, 'yyyy-MM-dd'), practitioner?.id),
   });
+
+  useEffect(() => {
+    const channel = pusherClient.subscribe('iCenna');
+
+    channel.bind('new_appointment', (data) => {
+      refetch();
+    });
+
+    return () => {
+      pusherClient.unsubscribe('iCenna');
+    };
+  }, []);
 
   const { practitioners, calender, } = apps?.data?.data ?? {};
   const options = [
@@ -105,7 +121,9 @@ const Calendar = () => {
             appointments,
           }))
         }
-        datesSet={({ start }) => setDate(start)}
+        datesSet={({ start }) => {
+          // setDate(start);
+        }}
         eventContent={({ timeText, event, }) => {
           const { appointments } = event.extendedProps;
 
@@ -145,7 +163,9 @@ const Calendar = () => {
         <Stack direction={'row'} sx={{ pt: 3, px: 3, }}>
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', flexGrow: 1, }}>
             <IconButton size='large' onClick={handlePreviousWeek} sx={{ color: 'text.primary' }}>
-              <ArrowBackIosIcon fontSize="inherit" />
+              <RtlSvgIcon>
+                <ArrowBackIosIcon fontSize="inherit" />
+              </RtlSvgIcon>
             </IconButton>
             {WeekDays.map((d, i) => {
               const isSelected = date.toDateString() === weekDates[i].toDateString();
@@ -161,23 +181,25 @@ const Calendar = () => {
                     setDate(weekDates[i]);
                   }}
                 >
-                  <Typography variant='inherit' sx={{ fontWeight: 'bold' }}>{d}</Typography>
+                  <Typography variant='inherit' sx={{ fontWeight: 'bold' }}>{t(d)}</Typography>
                   <Typography variant='inherit' >{weekDates[i].getDate()}</Typography>
                 </Fab>
               );
             })}
             <IconButton size='large' onClick={handleNextWeek} sx={{ color: 'text.primary' }}>
-              <ArrowForwardIosIcon fontSize="inherit" />
+              <RtlSvgIcon>
+                <ArrowForwardIosIcon fontSize="inherit" />
+              </RtlSvgIcon>
             </IconButton>
           </Box>
 
           <AsyncAutocomplete
-            label="Practitioner"
+            label={t("Practitioner")}
             disableClearable
             value={practitioner}
             loading={isLoading || isFetching}
             onOpen={() => refetch()}
-            sx={{ width: 250, }}
+            sx={{ width: 250, visibility: practitioners?.length < 2 && 'hidden' }}
             isOptionEqualToValue={(o, v) => o?.id === v?.id}
             getOptionLabel={(o) => o?.practitioner_name ?? ''}
             onChange={(e, value) => setPractitioner(value)}

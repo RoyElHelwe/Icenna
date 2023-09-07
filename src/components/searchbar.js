@@ -3,7 +3,7 @@ import { InputAdornment } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { useTranslation } from '../hooks/use-translation';
+import { useTranslation as t } from '../hooks/use-translation';
 import { useSettings } from '../hooks/useSettings';
 
 const TextField = styled(MuiTextField)(({ theme }) => ({
@@ -22,7 +22,7 @@ const SearchBar = (props) => {
 
   return (
     <TextField
-      placeholder={useTranslation('Search')}
+      placeholder={t('Search')}
       onChange={onChange}
       size='small'
       InputProps={{

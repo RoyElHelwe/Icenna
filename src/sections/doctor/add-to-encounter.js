@@ -7,10 +7,11 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { search } from '../../api/practitioner';
 import SearchBar from '../../components/searchbar';
-import AddMedicationForm from '../../forms/add-medication';
-import AddProcedureForm from '../../forms/add-procedure';
+import MedicationForm from '../../forms/medication';
+import ProcedureForm from '../../forms/procedure';
 
 export const AddToEncounter = ({
   id,
@@ -21,6 +22,7 @@ export const AddToEncounter = ({
     setValue(newValue);
   };
 
+  const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const { error, data, } = useQuery({
     queryKey: ['search', id, (searchText.length >= 3 ? searchText : ''), value],
@@ -30,16 +32,16 @@ export const AddToEncounter = ({
   const searchResult = data?.data?.data ?? {};
 
   const sections = [
-    { id: 'medical_code', name: 'Diagnosis', code: 1, },
-    { id: 'procedure', name: 'Procedures', code: 2, },
-    { id: 'drugs', name: 'Medications', code: 3, },
+    { id: 'medical_code', name: t('Medical Codes'), code: 1, },
+    { id: 'procedure', name: t('Procedures'), code: 2, },
+    { id: 'drugs', name: t('Medications'), code: 3, },
   ];
 
   const [expanded, setExpanded] = useState([]);
 
   const getListItems = (sec) => {
     if (searchText.length >= 3 && !!error) {
-      return "Couldn't get search results!";
+      return t("Couldn't get search results!");
     }
 
     return searchResult[sec.id]?.map((item) => (sec.code === sections[0].code ?
@@ -70,7 +72,7 @@ export const AddToEncounter = ({
             }}>
               <Card sx={{ p: 2, my: 1, mx: 2, }}>
                 {sec.code === sections[1].code ? (
-                  <AddProcedureForm
+                  <ProcedureForm
                     onSubmit={({ body_site, ...rest }) => {
                       setExpanded((prev) => prev.filter((id) => id !== item.id));
                       onItemClick?.({
@@ -82,14 +84,14 @@ export const AddToEncounter = ({
                     }}
                   />
                 ) : (
-                  <AddMedicationForm
+                  <MedicationForm
                     onSubmit={(data) => {
                       setExpanded((prev) => prev.filter((id) => id !== item.id));
                       onItemClick?.({
                         i_type: sec.code,
                         code: item.id,
                         dose: data.dose,
-                        dosage: data.repeat?.id,
+                        dosage: data.dosage?.id,
                         period: data.period?.id,
                         route: 'Oral',
                       });
@@ -112,10 +114,10 @@ export const AddToEncounter = ({
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', }}>
             <TabList onChange={handleTabChange}>
-              <Tab label="All" value="0" />
-              <Tab label="Diagnosis" value="1" />
-              <Tab label="Procedures" value="2" />
-              <Tab label="Medications" value="3" />
+              <Tab label={t("All")} value="0" />
+              <Tab label={t("Medical Codes")} value="1" />
+              <Tab label={t("Procedures")} value="2" />
+              <Tab label={t("Medications")} value="3" />
             </TabList>
           </Box>
           <TabPanel value="0" sx={{ p: 0, }}>
@@ -131,17 +133,17 @@ export const AddToEncounter = ({
             </List>
           </TabPanel>
           <TabPanel value="1" sx={{ p: 0, }}>
-            <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }}>
+            <List sx={{ overflow: 'auto', maxHeight: '20rem', '& ul, li': { p: 0, m: 0, }, }}>
               {getListItems(sections[0])}
             </List>
           </TabPanel>
           <TabPanel value="2" sx={{ p: 0, }}>
-            <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }}>
+            <List sx={{ overflow: 'auto', maxHeight: '20rem', '& ul, li': { p: 0, m: 0, }, }}>
               {getListItems(sections[1])}
             </List>
           </TabPanel>
           <TabPanel value="3" sx={{ p: 0, }}>
-            <List sx={{ overflow: 'auto', maxHeight: '12rem', '& ul, li': { p: 0, m: 0, }, }}>
+            <List sx={{ overflow: 'auto', maxHeight: '20rem', '& ul, li': { p: 0, m: 0, }, }}>
               {getListItems(sections[2])}
             </List>
           </TabPanel>

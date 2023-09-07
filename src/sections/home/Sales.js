@@ -49,6 +49,7 @@ export const Sales = ({ title, subtitle, colors, ...rest }) => {
       text: title ?? '',
       offsetX: 30,
       style: {
+        direction: 'ltr',
         fontSize: '24px',
         cssClass: 'apexcharts-yaxis-title'
       }
@@ -57,6 +58,7 @@ export const Sales = ({ title, subtitle, colors, ...rest }) => {
       text: subtitle ?? '',
       offsetX: 30,
       style: {
+        direction: 'ltr',
         fontSize: '14px',
         cssClass: 'apexcharts-yaxis-title'
       }

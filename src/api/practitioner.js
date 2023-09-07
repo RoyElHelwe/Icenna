@@ -59,3 +59,13 @@ export const sendReply = (body) => {
     }
   });
 };
+
+export const findPatient = ({ queryKey }) => {
+  const [_, text] = queryKey;
+
+  return axios.get('/icenna.user_api.practitioner.find_patient', {
+    params: {
+      text,
+    }
+  });
+};

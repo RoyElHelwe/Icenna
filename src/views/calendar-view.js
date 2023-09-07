@@ -1,4 +1,5 @@
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+import arLocale from '@fullcalendar/core/locales/ar';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
@@ -19,9 +20,7 @@ const calendarsColor = {
 };
 
 const CalendarView = ({ children, calRef, ...props }) => {
-  const { settings } = useSettings();
-
-  const { direction } = settings;
+  const { settings: { direction, language } } = useSettings();
 
   const calendarOptions = {
     allDaySlot: false,
@@ -42,6 +41,8 @@ const CalendarView = ({ children, calRef, ...props }) => {
     dayMaxEvents: 2,
     navLinks: true,
     direction,
+    // locales: [arLocale],
+    // locale: language,
     ...props,
   };
 

@@ -1,14 +1,17 @@
+import { useTranslation } from "react-i18next";
 import { ApexChart } from "../../components/ApexChart";
 import { PatientVisitsData } from "../../mocks/PatientVisits";
 
 export const PatientVisits = () => {
+  const { t } = useTranslation();
+
   const series = [
     {
-      name: "Male",
+      name: t("Male"),
       data: Object.keys(PatientVisitsData).map((d) => PatientVisitsData[d].male),
     },
     {
-      name: "Female",
+      name: t("Female"),
       data: Object.keys(PatientVisitsData).map((d) => PatientVisitsData[d].female),
     },
   ];
@@ -35,11 +38,11 @@ export const PatientVisits = () => {
       colors: ["transparent"]
     },
     xaxis: {
-      categories: ["Sun", "Mon", "Tue", "Wed", "Thu",],
+      categories: ["Sun", "Mon", "Tue", "Wed", "Thu",].map((d) => t(d)),
     },
     tooltip: {
       y: {
-        formatter: (val) => `${val} patients`
+        formatter: (val) => `${val} ${t('Patients')}`
       }
     }
   };

@@ -1,13 +1,13 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { TreeItem as MuiTreeItem } from '@mui/lab';
-import { Box } from '@mui/material';
+import { Box, SvgIcon } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useState } from 'react';
+import { useSettings } from '../hooks/useSettings';
 import Translations from './Translations';
-import RtlSvgIcon from './rtl-svgicon';
 
 const TreeItem = styled(MuiTreeItem)(({ theme }) => ({
   '& .MuiTreeItem-content, &.MuiTreeItem-label, &.MuiTreeItem-group': {
@@ -24,6 +24,7 @@ const TreeItem = styled(MuiTreeItem)(({ theme }) => ({
 }));
 
 const SectionTreeItem = ({ id, title, children, ...props }) => {
+  const { settings: { direction } } = useSettings();
   const [selected, setSelected] = useState(false);
 
   return (
@@ -37,11 +38,12 @@ const SectionTreeItem = ({ id, title, children, ...props }) => {
           pt: 2, pb: 2,
           radius: 5,
         }}>
-          <RtlSvgIcon
-            sx={{ mr: 2, width: 30, height: 30, }}
-            color="primary">
+          <SvgIcon
+            sx={{ mx: 2, width: 30, height: 30, direction }}
+            color="primary"
+          >
             {selected ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
-          </RtlSvgIcon>
+          </SvgIcon>
           <Box sx={{ flexGrow: 1, }}>
             {typeof title === 'string' ? (
               <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
@@ -55,6 +57,7 @@ const SectionTreeItem = ({ id, title, children, ...props }) => {
       sx={{
         borderBottom: 1,
         borderColor: 'lightgray',
+        bgcolor: 'background.paper'
       }}
       onClick={(e) => setSelected(!selected)}
       {...props}

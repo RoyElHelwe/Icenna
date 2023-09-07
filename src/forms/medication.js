@@ -5,22 +5,20 @@ import { Box } from "@mui/system";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import * as yup from 'yup';
 import { getGeneralSettings } from "../api/settings";
 import { AsyncAutocomplete } from "../components/AsyncAutocomplete";
 import { useSettings } from "../hooks/useSettings";
 
-const schema = yup.object().shape({
-  dose: yup.number().typeError('Dose must be a number').required('Does is required!'),
-  repeat: yup.object().typeError('Error').required('Repeat is required!'),
-  period: yup.object().typeError('Error').required('Period is required!'),
-});
 
-const AddMedicationForm = ({
+const MedicationForm = ({
   values,
   onSubmit,
+  submitLabel,
 }) => {
   const { settings } = useSettings();
+  const { t } = useTranslation();
   const { isLoading, error, data, } = useQuery({
     queryKey: ['getSettings'],
     queryFn: () => getGeneralSettings(settings.language ?? 'en'),
@@ -30,10 +28,16 @@ const AddMedicationForm = ({
 
   const defaultValues = {
     dose: 1,
-    repeat: dosage?.[0] ?? null,
+    dosage: dosage?.[0] ?? null,
     period: dosage_period?.[0] ?? null,
     ...values,
   };
+
+  const schema = yup.object().shape({
+    dose: yup.number().typeError(t('Dose must be a number')).required(t('This field is required!')),
+    dosage: yup.object().typeError(t('Error')).required(t('This field is required!')),
+    period: yup.object().typeError(t('Error')).required(t('This field is required!')),
+  });
 
   const { control, handleSubmit, formState: { errors, }, reset, } = useForm({
     defaultValues, mode: 'onSubmit', resolver: yupResolver(schema),
@@ -53,10 +57,9 @@ const AddMedicationForm = ({
             render={({ field: { value, onChange, onBlur } }) => (
               <TextField
                 fullWidth
-                label='Dose'
+                label={t('Dose')}
                 type='number'
                 InputProps={{ inputProps: { min: 0, } }}
-                placeholder='3'
                 value={value}
                 onBlur={onBlur}
                 onChange={onChange}
@@ -68,13 +71,13 @@ const AddMedicationForm = ({
         </FormControl>
         <FormControl fullWidth>
           <Controller
-            name='repeat'
+            name='dosage'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange, onBlur } }) => (
               <AsyncAutocomplete
                 fullWidth
-                label='Repeat'
+                label={t('Repeat')}
                 loading={isLoading}
                 isOptionEqualToValue={(o, v) => o?.id === v?.id}
                 getOptionLabel={(o) => o?.name ?? ''}
@@ -83,12 +86,12 @@ const AddMedicationForm = ({
                 onBlur={onBlur}
                 onChange={(e, v) => onChange(v)}
                 inputProps={{
-                  error: !!errors.repeat,
+                  error: !!errors.dosage,
                 }}
               />
             )}
           />
-          {errors.repeat && <FormHelperText sx={{ color: 'error.main' }}>{errors.repeat.message}</FormHelperText>}
+          {errors.dosage && <FormHelperText sx={{ color: 'error.main' }}>{errors.dosage.message}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth>
           <Controller
@@ -98,7 +101,7 @@ const AddMedicationForm = ({
             render={({ field: { value, onChange, onBlur } }) => (
               <AsyncAutocomplete
                 fullWidth
-                label='Period'
+                label={t('Period')}
                 loading={isLoading}
                 isOptionEqualToValue={(o, v) => o?.id === v?.id}
                 getOptionLabel={(o) => o?.name ?? ''}
@@ -115,11 +118,11 @@ const AddMedicationForm = ({
           {errors.period && <FormHelperText sx={{ color: 'error.main' }}>{errors.period.message}</FormHelperText>}
         </FormControl>
 
-        <LoadingButton variant='contained' loading={isLoading} type='submit'>Add</LoadingButton>
+        <LoadingButton variant='contained' loading={isLoading} type='submit'>{t(submitLabel ?? 'Add')}</LoadingButton>
       </Box>
     </form >
   );
 };
 
 
-export default AddMedicationForm;
+export default MedicationForm;

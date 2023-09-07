@@ -1,15 +1,20 @@
 import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
+import { useSettings } from '../../hooks/useSettings';
 
 export const DentalCharting = ({ filledTeeth, ...rest }) => {
+  const { settings: { direction } } = useSettings();
+  const { t } = useTranslation();
 
   const upperToothIds = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28,];
   const lowerToothIds = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38,];
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', }}>
-      <Typography variant="body1" sx={{ fontWeight: 'bold', mr: 1, mt: 2 }}>Right</Typography>
+
+    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', direction }}>
+      <Typography variant="body1" sx={{ fontWeight: 'bold', mr: 1, mt: 2 }}>{t('Right')}</Typography>
 
       <Grid container sx={{ flexGrow: 1 }} columns={{ xs: 16 }}>
         {upperToothIds.map((t) => {
@@ -40,7 +45,7 @@ export const DentalCharting = ({ filledTeeth, ...rest }) => {
         ))}
       </Grid>
 
-      <Typography variant="body1" sx={{ fontWeight: 'bold', ml: 1, mt: 2 }}>Left</Typography>
+      <Typography variant="body1" sx={{ fontWeight: 'bold', ml: 1, mt: 2 }}>{t('Left')}</Typography>
     </Box>
   );
 };

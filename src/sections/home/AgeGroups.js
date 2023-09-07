@@ -1,8 +1,10 @@
 import { useTheme } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { ApexChart } from "../../components/ApexChart";
 import { AgeGroupsData } from "../../mocks/AgeGroups";
 
 export const AgeGroups = () => {
+  const { t } = useTranslation();
   const globalTheme = useTheme();
 
   const series = Object.keys(AgeGroupsData).map((i) => AgeGroupsData[i].value);
@@ -30,7 +32,7 @@ export const AgeGroups = () => {
     labels: Object.keys(AgeGroupsData).map((i) => AgeGroupsData[i].name),
     tooltip: {
       y: {
-        formatter: (val) => `${val} patients`,
+        formatter: (val) => `${val} ${t('Patients')}`,
       },
     },
   };

@@ -1,18 +1,21 @@
+import { useTranslation } from "react-i18next";
 import { ApexChart } from "../../components/ApexChart";
 import { PatientAppointmentsData } from "../../mocks/PatientAppointments";
 
 export const PatientAppointments = () => {
+  const { t } = useTranslation();
+
   const series = [
     {
-      name: "Opened",
+      name: t("Opened"),
       data: Object.keys(PatientAppointmentsData).map((d) => PatientAppointmentsData[d].opened),
     },
     {
-      name: "Confirmed",
+      name: t("Confirmed"),
       data: Object.keys(PatientAppointmentsData).map((d) => PatientAppointmentsData[d].confirmed),
     },
     {
-      name: "Checked In",
+      name: t("Checked In"),
       data: Object.keys(PatientAppointmentsData).map((d) => PatientAppointmentsData[d].checkedIn),
     },
   ];
@@ -37,11 +40,11 @@ export const PatientAppointments = () => {
       colors: ['transparent',],
     },
     xaxis: {
-      categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",],
+      categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",].map((d) => t(d)),
     },
     yaxis: {
       title: {
-        text: 'Statuses',
+        text: t('Statuses'),
       },
     },
     fill: {
@@ -50,7 +53,7 @@ export const PatientAppointments = () => {
     tooltip: {
       y: {
         formatter: function (val) {
-          return val + " patients";
+          return `${val} ${t('Patients')}`;
         },
       },
     },
