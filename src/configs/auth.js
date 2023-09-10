@@ -6,7 +6,7 @@ const authConfig = {
   storAccessTokenKey: 'accessToken',
   storRefreshTokenKey: 'refreshToken',
   storUserKeyName: 'userData',
-  onTokenExpiration: 'refreshToken',
+  onTokenExpiration: 'logout',
 };
 
 export default authConfig;

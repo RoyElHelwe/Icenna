@@ -41,8 +41,8 @@ const CalendarView = ({ children, calRef, ...props }) => {
     dayMaxEvents: 2,
     navLinks: true,
     direction,
-    // locales: [arLocale],
-    // locale: language,
+    locales: [arLocale],
+    locale: language,
     ...props,
   };
 
