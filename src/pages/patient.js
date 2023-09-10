@@ -22,7 +22,7 @@ import { Permissions } from '../constants/Permissions';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { pusherClient } from '../lib/pusher';
-import { PatientDetails } from '../sections/doctor/patient-details';
+import { PatientDetails } from '../sections/patient/patient-details';
 
 export const PatientDrawerWidth = 300;
 

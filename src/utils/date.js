@@ -75,3 +75,12 @@ export const getWeekDates = (startDate) => {
 
   return weekDates;
 };
+
+export const compareDatesByDatePart = (date1, date2) => {
+  // Convert both dates to strings in "YYYY-MM-DD" format
+  const dateString1 = date1.toISOString().split('T')[0];
+  const dateString2 = date2.toISOString().split('T')[0];
+
+  // Compare the date strings
+  return dateString1.localeCompare(dateString2);
+}
