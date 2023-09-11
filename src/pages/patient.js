@@ -186,7 +186,7 @@ const Patient = () => {
         </Scrollbar>
       </Drawer>
       {!!selectedPatient?.id ? (
-        <PatientDetails appointment={selectedPatient.appointment} historyOnly={search.length >= 3} />
+        <PatientDetails appointment={selectedPatient.appointment} viewTabs={search.length >= 3 ? ['History'] : undefined} />
       ) : (
         <Centered>
           <Typography variant="h5">

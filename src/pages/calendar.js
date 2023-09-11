@@ -17,9 +17,11 @@ import { Layout as DashboardLayout } from "../layouts/dashboard-layout";
 import { pusherClient } from "../lib/pusher";
 import { compareDatesByDatePart, getWeekDates } from "../utils/date";
 import CalendarView from "../views/calendar-view";
+import { useRouter } from "next/router";
 
 const Calendar = () => {
   const globalTheme = useTheme();
+  const router = useRouter();
   const { t } = useTranslation();
   const statusColor = {
     Open: globalTheme.palette.text.disabled,
@@ -108,6 +110,8 @@ const Calendar = () => {
       update({ id, status: 1 });
     } else if (status === "Confirmed") {
       update({ id, status: 2 });
+    } else if (status === "Checked IN") {
+      router.push(`/encounter/${id}`);
     }
   };
 

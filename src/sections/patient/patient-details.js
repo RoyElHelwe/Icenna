@@ -16,9 +16,14 @@ import { PatientEncounter } from './patient-encounter';
 import { PatientEncounterView } from './patient-encounter-view';
 import { PatientHistory } from './patient-history';
 
+const DefaultTabs = [
+  'History',
+  'Patient Encounter',
+];
+
 export const PatientDetails = ({
   appointment,
-  historyOnly
+  viewTabs,
 }) => {
   const { t } = useTranslation();
 
@@ -32,7 +37,9 @@ export const PatientDetails = ({
     setPatientData(data?.data?.data ?? {});
   }, [data]);
 
-  const [tab, setTab] = useState('1');
+  const tabs = viewTabs ?? DefaultTabs;
+
+  const [tab, setTab] = useState(tabs[0]);
 
   if (isLoading) {
     return <CenteredCircularProgress />;
@@ -44,15 +51,8 @@ export const PatientDetails = ({
     );
   }
 
-  let content
-  if (historyOnly) {
-    content = (
-      <Container sx={{ pt: 3 }} maxWidth={false}>
-      <PatientHistory patientData={patientData} />
-    </Container>
-    );
-  } else {
-    content = (
+  return (
+    <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', }}>
       <TabContext value={tab}>
         <Box
           variant="elevation"
@@ -70,8 +70,9 @@ export const PatientDetails = ({
             pr: 4,
           }}>
             <TabList onChange={(e, newValue) => setTab(newValue)}>
-              <Tab label={t("History")} value="1" />
-              <Tab label={t("Patient Encounter")} value="2" />
+              {tabs.map((tab) => (
+                <Tab key={tab} label={t(tab)} value={tab} />
+              ))}
             </TabList>
             <Box sx={{
               display: 'flex',
@@ -92,10 +93,10 @@ export const PatientDetails = ({
           </Box>
         </Box >
         <Container sx={{ pt: 3 }} maxWidth={false}>
-          <TabPanel value="1">
+          <TabPanel value="History">
             <PatientHistory patientData={patientData} />
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="Patient Encounter">
             {patientData?.status === PatientStatuses.CheckedOUT ? (
               <PatientEncounterView appointmentId={patientData?.appointment} />
             ) : (
@@ -104,13 +105,6 @@ export const PatientDetails = ({
           </TabPanel>
         </Container>
       </TabContext>
-    );
-  }
-
-
-  return (
-    <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', }}>
-      {content}
     </Box>
   );
 };

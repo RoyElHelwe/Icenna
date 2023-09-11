@@ -53,7 +53,6 @@ const AuthProvider = ({ children }) => {
           });
       } else if (currUser) {
         const u = JSON.parse(currUser);
-        console.log("u", u);
         if (u.action === 0) {
           clearLocalStorage();
         } else {

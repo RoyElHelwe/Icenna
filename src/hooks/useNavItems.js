@@ -19,10 +19,13 @@ export const useNavItems = () => {
       title: 'Calendar',
       path: '/calendar',
     }] : []),
+    ...(useHasPermissions(Permissions.CanViewCalendar) ? [{
+      title: 'RCM',
+      path: '/rcm',
+    }] : []),
     ...(useHasPermissions(Permissions.CanViewSettings) ? [{
       title: 'Settings',
       path: '/settings',
     }] : []),
-
   ]
 };
