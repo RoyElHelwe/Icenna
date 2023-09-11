@@ -10,7 +10,7 @@ const Settings = () => {
   const { t } = useTranslation();
 
   return (
-    <Box className='content-center'>
+    <Box>
       <Card sx={{ zIndex: 1, mx: 15, my: 5, }}>
         <CardContent sx={{ p: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 6 }}>

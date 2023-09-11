@@ -4,6 +4,7 @@ export const Permissions = {
   CanViewHealthcare: 'CanViewHealthcare',
   CanViewPatient: 'CanViewPatient',
   CanViewCalendar: 'CanViewCalendar',
+  CanViewRCM: 'CanViewRCM',
   CanViewSettings: 'CanViewSettings',
 };
 
