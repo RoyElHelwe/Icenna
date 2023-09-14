@@ -6,6 +6,7 @@ export const Permissions = {
   CanViewCalendar: 'CanViewCalendar',
   CanViewRCM: 'CanViewRCM',
   CanViewSettings: 'CanViewSettings',
+  CanViewApproval: 'CanViewApproval',
 };
 
 export const UserPermissions = [

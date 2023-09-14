@@ -1,3 +1,4 @@
-export * from './patient-statues';
+export * from './ApprovalStatusColors';
 export * from './WeekDays';
+export * from './patient-statues';
 

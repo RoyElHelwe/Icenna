@@ -48,7 +48,7 @@ const Medications = ({ onUpdate, ...props }) => {
             <Typography sx={{ pt: 2, }} variant="section">{row.original.dose}</Typography>
           </Grid>
           <Grid item xs={1}>
-            {onUpdate && (
+            {!!onUpdate && (
               <IconButton onClick={() => toggleButton(row)}>
                 {editingRow === row ? <CloseIcon /> : <EditIcon />}
               </IconButton>
