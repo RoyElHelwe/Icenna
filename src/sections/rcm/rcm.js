@@ -1,24 +1,33 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Container, Tab as MuiTab } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Permissions } from '../constants/Permissions';
-import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
-import PatientEncounters from '../sections/rcm/PatientEncounters';
+import Approvals from './Approvals';
+import Claims from './Claims';
+import PatientEncounters from './PatientEncounters';
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   textTransform: "none",
 }));
 
-const RCM = () => {
+const RCM = ({ tab }) => {
+  const [activeTab, setActiveTab] = useState(tab);
+
+  const router = useRouter();
   const { t } = useTranslation();
 
-  const [tab, setTab] = useState('1');
+  const handleChange = (event, value) => {
+    setActiveTab(value);
+    router.push({
+      pathname: `/rcm/${value.toLowerCase()}`
+    });
+  };
 
   return (
     <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', }}>
-      <TabContext value={tab}>
+      <TabContext value={activeTab}>
         <Box
           variant="elevation"
           position="sticky"
@@ -34,35 +43,27 @@ const RCM = () => {
             pl: 4,
             pr: 4,
           }}>
-            <TabList onChange={(e, newValue) => setTab(newValue)}>
-              <Tab label={t("Patient Encounters")} value="1" />
-              <Tab label={t("Approvals")} value="2" />
-              <Tab label={t("Claims")} value="3" />
+            <TabList onChange={handleChange}>
+              <Tab label={t("Patient Encounters")} value="patient-encounters" />
+              <Tab label={t("Approvals")} value="approvals" />
+              <Tab label={t("Claims")} value="claims" />
             </TabList>
           </Box>
         </Box >
-        <Container sx={{ pt: 3 }} maxWidth={false}>
-          <TabPanel value="1">
+        <Container maxWidth={false}>
+          <TabPanel value="patient-encounters">
             <PatientEncounters />
           </TabPanel>
-          <TabPanel value="2">
-            <PatientEncounters />
+          <TabPanel value="approvals">
+            <Approvals />
           </TabPanel>
-          <TabPanel value="3">
-            <PatientEncounters />
+          <TabPanel value="claims">
+            <Claims />
           </TabPanel>
         </Container>
       </TabContext>
     </Box>
   );
 };
-
-RCM.getLayout = (page) => (
-  <DashboardLayout>
-    {page}
-  </DashboardLayout>
-);
-
-RCM.access = Permissions.CanViewRCM;
 
 export default RCM;

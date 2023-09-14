@@ -13,7 +13,7 @@ const PatientEncounters = () => {
     { field: 'encounter_date', headerName: 'Encounter Date', width: 250, },
   ];
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ['get_patient_encounters'],
     queryFn: getPatientEncounters,
   });
@@ -25,7 +25,18 @@ const PatientEncounters = () => {
   return (
     <Box>
       <DataGrid
-        sx={{ bgcolor: "background.paper", minHeight: 500 }}
+        sx={{
+          bgcolor: "background.paper",
+          height: '80vh',
+          // disable cell selection style
+          '.MuiDataGrid-cell:focus': {
+            outline: 'none',
+          },
+          // pointer cursor on ALL rows
+          '& .MuiDataGrid-row:hover': {
+            cursor: 'pointer',
+          },
+        }}
         onRowClick={handleRowClick}
         loading={isLoading}
         columns={columns}

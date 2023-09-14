@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://icenna.com/api/:path*",
+        destination: "https://app-dev.icenna.com/api/:path*",
       },
     ];
   },

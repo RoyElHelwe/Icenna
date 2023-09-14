@@ -24,12 +24,12 @@ export const TopNav = ({ withTabs, ...rest }) => {
   const auth = useAuth();
 
   const router = useRouter();
-  const pathname = router.pathname;
+  const pathname = router.pathname?.split('/')[1];
   const [value, setValue] = useState('0');
   const navItems = useNavItems();
 
   useEffect(() => {
-    const index = navItems.findIndex((i) => pathname === i.path);
+    const index = navItems.findIndex((i) => `/${pathname}` === i.path);
     if (index !== -1) {
       setValue(String(index));
     }
