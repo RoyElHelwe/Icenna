@@ -38,7 +38,6 @@ const PatientEncounters = () => {
           },
         }}
         onRowClick={handleRowClick}
-        loading={isLoading}
         columns={columns}
         rows={data?.data?.data ?? []}
       />

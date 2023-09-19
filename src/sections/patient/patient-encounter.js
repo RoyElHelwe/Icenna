@@ -2,7 +2,6 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Popover, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -11,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { checkApproval, encounterCheckout, encounterItem } from '../../api/practitioner';
 import { getGeneralSettings } from '../../api/settings';
 import { AsyncAutocomplete } from '../../components/AsyncAutocomplete';
+import { LinkTypography } from '../../components/LinkTypography';
 import Translations from '../../components/Translations';
 import CustomDialog, { DefaultOptions } from '../../components/custom-dialog';
 import Section from '../../components/section';
@@ -23,11 +23,6 @@ import { AddToEncounter } from './add-to-encounter';
 import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
-
-export const LinkTypography = styled(Typography)(({ theme }) => ({
-  cursor: 'pointer',
-  color: theme.palette.primary.main,
-}));
 
 export const PatientEncounter = ({ patientData, setPatientData }) => {
   useEffect(() => {

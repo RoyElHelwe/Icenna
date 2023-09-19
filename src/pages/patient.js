@@ -4,8 +4,6 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { IconButton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import { styled } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -13,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { findPatient, getPatients } from '../api/practitioner';
 import Centered from '../components/Centered';
+import Drawer from '../components/Drawer';
 import Translations from '../components/Translations';
 import Scrollbar from '../components/scrollbar';
 import SearchBar from '../components/searchbar';
@@ -23,46 +22,6 @@ import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { pusherClient } from '../lib/pusher';
 import { PatientDetails } from '../sections/patient/patient-details';
-
-export const PatientDrawerWidth = 300;
-
-const openedMixin = (theme) => ({
-  width: PatientDrawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(11)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(12)} + 1px)`,
-  },
-});
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: PatientDrawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  }),
-);
 
 const Patient = () => {
   const router = useRouter();
@@ -185,7 +144,7 @@ const Patient = () => {
           }
         </Scrollbar>
       </Drawer>
-      {!!selectedPatient?.id ? (
+      {selectedPatient?.id ? (
         <PatientDetails appointment={selectedPatient.appointment} viewTabs={search.length >= 3 ? ['History'] : undefined} />
       ) : (
         <Centered>

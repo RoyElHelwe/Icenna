@@ -56,7 +56,6 @@ const Claims = () => {
     <Box>
       <ApprovalsTable
         onRowClick={handleRowClick}
-        loading={isLoading}
         rows={data?.data?.data.map((a) => ({
           ...a,
           creation: new Date(a.creation),

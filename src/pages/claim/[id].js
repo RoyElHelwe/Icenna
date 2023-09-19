@@ -4,7 +4,7 @@ import { Permissions } from '../../constants/Permissions';
 import { Layout as DashboardLayout } from '../../layouts/dashboard-layout';
 import ApprovalDetails from '../../sections/approval/ApprovalDetails';
 
-const Approval = () => {
+const Claim = () => {
   const router = useRouter();
 
   return (
@@ -14,12 +14,12 @@ const Approval = () => {
   );
 };
 
-Approval.getLayout = (page) => (
+Claim.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
 
-Approval.access = Permissions.CanViewApproval;
+Claim.access = Permissions.CanViewClaim;
 
-export default Approval;
+export default Claim;

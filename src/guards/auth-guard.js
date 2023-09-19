@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import authConfig from '../configs/auth';
 import { useAuth } from '../hooks/use-auth';
 
 const redirect = (router, to, restPath = false) => {

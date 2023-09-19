@@ -7,6 +7,7 @@ export const Permissions = {
   CanViewRCM: 'CanViewRCM',
   CanViewSettings: 'CanViewSettings',
   CanViewApproval: 'CanViewApproval',
+  CanViewClaim: 'CanViewClaim',
 };
 
 export const UserPermissions = [

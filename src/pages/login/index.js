@@ -77,7 +77,7 @@ const Login = ({ auth_token }) => {
             size='large'
             theme={settings.mode === 'dark' ? 'filled_black' : 'outline'}
             ux_mode='redirect'
-            login_uri={format({ pathname: `${window.location.origin}/login`, query: router.query, })}
+            login_uri={format({ pathname: `${window.location.origin}/api/login`, query: router.query, })}
             useOneTap={false}
           />
           <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }}>or</Divider>
@@ -125,6 +125,7 @@ const Login = ({ auth_token }) => {
 };
 
 Login.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+
 Login.guestGuard = true;
 
 export default Login;
