@@ -41,7 +41,9 @@ const DefaultPalette = (mode, skin, themeColor) => {
       avatarBg: mode === 'light' ? '#F0EFF0' : '#373737',
       darkBg: skin === 'bordered' ? '#211f20' : '#2a2a2a',
       lightBg: skin === 'bordered' ? whiteColor : '#F4F5FA',
-      tableHeaderBg: mode === 'light' ? '#F9FAFC' : '#373737'
+      tableHeaderBg: mode === 'light' ? '#F9FAFC' : '#373737',
+      test: mode === 'light' ? '#FBBDBD' : '#803B3B',
+      development: mode === 'light' ? '#D8EDFD' : '#395973',
     },
     mode: mode,
     common: {

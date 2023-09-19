@@ -91,7 +91,7 @@ const Procedures = ({ department, onUpdate, ...props }) => {
           </Grid>
         </Grid>
       )}
-      onUpdate
+      onUpdate={onUpdate}
       {...props}
     />
   );

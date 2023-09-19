@@ -61,7 +61,9 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       } else {
         clearLocalStorage();
-        await router.replace("/login");
+        if (!router.asPath.startsWith("/login")) {
+          await router.replace("/login");
+        }
         setLoading(false);
       }
     };
@@ -110,7 +112,7 @@ const AuthProvider = ({ children }) => {
       .post(authConfig.signOnEndpoint, params)
       .then(async (response) => {
         storeUser(response.data.data);
-        redirectUser(response.data.data.user);
+        await redirectUser(response.data.data.user);
         setLoading(false);
       })
       .catch((err) => {
@@ -172,7 +174,7 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     axios
       .post("/icenna.user_api.auth.logout")
-      .then(async (response) => {})
+      .then(async (response) => { })
       .catch((err) => {
         console.log(err);
         if (errorCallback) errorCallback(err);

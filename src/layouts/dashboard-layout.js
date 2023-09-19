@@ -1,4 +1,3 @@
-import { useAuth } from "src/hooks/use-auth";
 import Customizer from "../components/customizer";
 import { LayoutContainer } from "./components/layout-container";
 import { LayoutRoot } from "./components/layout-root";
@@ -12,7 +11,9 @@ export const Layout = (props) => {
       <TopNav />
       <Customizer />
       <LayoutRoot>
-        <LayoutContainer>{children}</LayoutContainer>
+        <LayoutContainer>
+          {children}
+        </LayoutContainer>
       </LayoutRoot>
     </>
   );

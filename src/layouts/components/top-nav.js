@@ -22,6 +22,7 @@ export const TOP_NAV_HEIGHT = 60;
 export const TopNav = ({ withTabs, ...rest }) => {
   const accountPopover = usePopover();
   const auth = useAuth();
+  const env = process.env.NEXT_PUBLIC_NODE_ENV;
 
   const router = useRouter();
   const pathname = router.pathname?.split('/')[1];
@@ -32,8 +33,10 @@ export const TopNav = ({ withTabs, ...rest }) => {
     const index = navItems.findIndex((i) => `/${pathname}` === i.path);
     if (index !== -1) {
       setValue(String(index));
+    } else {
+      setValue(false);
     }
-  }, [router.pathname]);
+  }, [router]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -44,7 +47,9 @@ export const TopNav = ({ withTabs, ...rest }) => {
       component="header"
       sx={{
         backdropFilter: 'blur(2px)',
-        backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.8),
+        backgroundColor: (theme) => alpha(
+          theme.palette.customColors[env] ?? theme.palette.background.paper, 0.8
+        ),
         position: 'fixed',
         top: 0,
         left: 0,
@@ -69,7 +74,10 @@ export const TopNav = ({ withTabs, ...rest }) => {
           <Typography variant="h3">iCenna</Typography>
           {(withTabs ?? true) && (
             <TabContext value={value}>
-              <TabList onChange={handleChange} sx={{ minHeight: TOP_NAV_HEIGHT, display: 'flex', alignItems: 'flex-end', }}>
+              <TabList
+                sx={{ minHeight: TOP_NAV_HEIGHT, display: 'flex', alignItems: 'flex-end', }}
+                onChange={handleChange}
+              >
                 {navItems.map((item, i) => (
                   <Tab
                     key={i}

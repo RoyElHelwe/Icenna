@@ -6,6 +6,7 @@ import { Box } from "@mui/system";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { format } from "date-fns";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getAppointments, updateStatus } from "../api/calendar";
@@ -17,7 +18,6 @@ import { Layout as DashboardLayout } from "../layouts/dashboard-layout";
 import { pusherClient } from "../lib/pusher";
 import { compareDatesByDatePart, getWeekDates } from "../utils/date";
 import CalendarView from "../views/calendar-view";
-import { useRouter } from "next/router";
 
 const Calendar = () => {
   const globalTheme = useTheme();
@@ -73,13 +73,38 @@ const Calendar = () => {
   }, []);
 
   const { practitioners, calender } = apps?.data?.data ?? {};
-  const options = [ALL_DOC_OPTION, ...(practitioners ?? [])];
+  const [calendar, setCalendar] = useState([]);
+  useEffect(() => {
+    if (calender) {
+      setCalendar(calender);
+    }
+  }, [calender]);
 
   const { isLoading: isUpdating, mutate: update } = useMutation({
     mutationFn: updateStatus,
     enabled: false,
     onSuccess: (data, vars, ctx) => {
-      refetch();
+      const searchId = data?.data?.data?.id;
+      const appsIndex = calendar.findIndex((a) => !!a.appointments.find((app) => app.id === searchId));
+      const eventIndex = calendar[appsIndex].appointments.findIndex((app) => app.id === searchId);
+      // Update the appointment that was changed if it was found, or refetch
+      if (appsIndex !== -1 && eventIndex !== -1) {
+        const newCalendar = [
+          ...calendar.slice(0, appsIndex),
+          {
+            ...calendar[appsIndex],
+            appointments: [
+              ...calendar[appsIndex].appointments.slice(0, eventIndex),
+              { ...calendar[appsIndex].appointments[eventIndex], ...data?.data?.data, },
+              ...calendar[appsIndex].appointments.slice(eventIndex + 1),
+            ],
+          },
+          ...calendar.slice(appsIndex + 1),
+        ];
+        setCalendar(newCalendar);
+      } else {
+        refetch();
+      }
     },
   });
 
@@ -128,7 +153,7 @@ const Calendar = () => {
     >
       <CalendarView
         calRef={calendarRef}
-        events={calender
+        events={calendar
           ?.filter((obj) => obj.appointments.length !== 0)
           .map(({ time, appointments }) => ({
             id: time,
@@ -253,7 +278,7 @@ const Calendar = () => {
             isOptionEqualToValue={(o, v) => o?.id === v?.id}
             getOptionLabel={(o) => o?.practitioner_name ?? ""}
             onChange={(e, value) => setPractitioner(value)}
-            options={options}
+            options={[ALL_DOC_OPTION, ...(practitioners ?? [])]}
           />
         </Stack>
       </CalendarView>
