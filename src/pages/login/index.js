@@ -26,16 +26,6 @@ const defaultValues = {
   email: '',
 };
 
-export async function getServerSideProps({ req }) {
-  const body = await parseBody(req, '1mb');
-
-  return {
-    props: {
-      auth_token: body?.credential ?? null,
-    },
-  };
-};
-
 const Login = ({ auth_token }) => {
   const auth = useAuth();
   const { settings } = useSettings();
@@ -125,6 +115,18 @@ const Login = ({ auth_token }) => {
 };
 
 Login.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+
+Login.getInitialProps = async ({ req, }) => {
+  if (req?.method !== 'POST') {
+    return {};
+  }
+
+  const body = await parseBody(req, '1mb');
+
+  return {
+    auth_token: body?.credential ?? null,
+  };
+};
 
 Login.guestGuard = true;
 

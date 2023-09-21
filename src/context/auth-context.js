@@ -61,7 +61,7 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       } else {
         clearLocalStorage();
-        if (!router.asPath !== '/' && router.asPath.startsWith("/login")) {
+        if (!router.asPath !== '/' && !router.asPath.startsWith("/login")) {
           await router.replace("/login");
         }
         setLoading(false);
