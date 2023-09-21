@@ -63,7 +63,11 @@ const ExpandTable = ({ actions, onUpdate, muiTableHeadCellProps, ...props }) => 
         {...(!!onUpdate && {
           enableEditing: true,
           editingMode: "table",
-          onEditingRowSave: ({ exitEditingMode, row, table, values }) => console.log('EditSave:', exitEditingMode, row, table, values),
+          muiTableBodyCellEditTextFieldProps: (data) => ({
+            onChange: (event) => {
+              console.log(data, event.target.value);
+            },
+          })
         })}
         {...props}
       />

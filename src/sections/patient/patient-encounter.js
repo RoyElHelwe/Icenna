@@ -1,7 +1,6 @@
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
+
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Popover, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -19,7 +18,7 @@ import DiagnosisDescriptionForm from '../../forms/diagnosis-description';
 import { useSettings } from '../../hooks/useSettings';
 import { pusherClient } from '../../lib/pusher';
 import { CommunicationRequest } from './CommunicationRequest';
-import { AddToEncounter } from './add-to-encounter';
+import EncounterAddButton from './EncounterAddButton';
 import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
@@ -39,9 +38,8 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
 
   const { t } = useTranslation();
   const { settings: ctxSettings } = useSettings();
+
   const ref = useRef(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const popOpen = Boolean(anchorEl);
 
   const [dialogOptions, setDialogOptions] = useState(DefaultOptions);
   const setOpen = (open) => setDialogOptions({ ...dialogOptions, open, });
@@ -129,30 +127,19 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
           {`${t('Add')} ${t("Chief Complaint")}`}
         </Button>
 
-        <LoadingButton
-          variant="contained"
-          startIcon={popOpen ? <CloseIcon /> : <AddIcon />}
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-        >
-          {t(popOpen ? 'Finish' : 'Add')}
-        </LoadingButton>
-        <Popover
-          open={popOpen}
-          anchorEl={anchorEl}
-          onClose={() => setAnchorEl(null)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          PaperProps={{ sx: { width: ref.current?.clientWidth + 30 ?? '', mt: 3, }, }}
-        >
-          <AddToEncounter
-            id={patientData?.id}
-            onItemClick={(params) => updateEncItem({
-              id: patientData?.id, t_type: 'add', ...params,
-            })}
-          />
-        </Popover>
+        <EncounterAddButton
+          parentRef={ref}
+          id={patientData?.id}
+          onAdd={({ i_type }, { id, code, dosage, period, body_site, ...rest }) => updateEncItem({
+            id: patientData?.id, t_type: 'add', i_type,
+            body_site: body_site?.code,
+            code: i_type === 3 ? id : code,
+            dosage: dosage?.id,
+            period: period?.id,
+            route: i_type === 3 ? 'Oral' : undefined,
+            ...rest,
+          })}
+        />
       </Box>
 
       {!!patientData?.chief_complaint?.length && (
@@ -277,7 +264,13 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             sx={{ mr: 15, width: 450, }}
           />
         )}
-        <LoadingButton variant='contained' sx={{ borderRadius: 1.5, textTransform: 'none', px: 15, }} loading={isSubmitting || isChecking} disabled={patientData?.action === 2 && !patientData?.push_payment} onClick={handleCheckout}>
+        <LoadingButton
+          variant='contained'
+          sx={{ borderRadius: 1.5, textTransform: 'none', px: 15, }}
+          loading={isSubmitting || isChecking}
+          disabled={patientData?.action === 2 && !patientData?.push_payment}
+          onClick={handleCheckout}
+        >
           {getCheckoutText()}
         </LoadingButton>
       </Box>

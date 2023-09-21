@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getClaims } from "../../api/rcm";
-import ApprovalsTable, { PageSizes } from "./ApprovalsTable";
+import { PageSizes } from "../../components/DataTable";
+import ApprovalsTable from "./ApprovalsTable";
 
 const Claims = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const Claims = () => {
     pageSize: 25,
   });
 
-  const { isLoading, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ['get_claims', paginationModel.page, paginationModel.pageSize],
     queryFn: (ctx) => getClaims(ctx),
   });

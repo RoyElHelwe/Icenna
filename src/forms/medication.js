@@ -78,6 +78,7 @@ const MedicationForm = ({
               <AsyncAutocomplete
                 fullWidth
                 label={t('Repeat')}
+                name='dosage'
                 loading={isLoading}
                 isOptionEqualToValue={(o, v) => o?.id === v?.id}
                 getOptionLabel={(o) => o?.name ?? ''}

@@ -10,14 +10,19 @@ const Diagnosis = (props) => {
     {
       accessorKey: 'name',
       header: t('Name'),
+      enableEditing: false,
     },
     {
       accessorKey: 'code',
       header: t('Code'),
+      enableEditing: false,
+      size: 50,
     },
     {
-      accessorKey: 'description',
-      header: t('Description'),
+      accessorKey: 'type',
+      header: t('Type'),
+      editVariant: 'select',
+      editSelectOptions: ['Principal', 'Secondary'],
     },
   ], [],);
 

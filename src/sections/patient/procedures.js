@@ -46,7 +46,8 @@ const Procedures = ({ department, onUpdate, ...props }) => {
       {
         accessorKey: 'body_site.code',
         header: t('Tooth code'),
-        enableEditing: false,
+        editVariant: 'select',
+        editSelectOptions: ['Principal', 'Secondary'],
       },
     ] : [])
   ];
