@@ -13,6 +13,12 @@ import SearchBar from '../../components/searchbar';
 import MedicationForm from '../../forms/medication';
 import ProcedureForm from '../../forms/procedure';
 
+export const sections = [
+  { id: 'medical_code', name: 'Medical Codes', i_type: 1, },
+  { id: 'procedure', name: 'Procedures', i_type: 2, },
+  { id: 'drugs', name: 'Medications', i_type: 3, },
+];
+
 export const AddToEncounter = ({
   id,
   onItemClick,
@@ -31,12 +37,6 @@ export const AddToEncounter = ({
   });
   const searchResult = data?.data?.data ?? {};
 
-  const sections = [
-    { id: 'medical_code', name: t('Medical Codes'), code: 1, },
-    { id: 'procedure', name: t('Procedures'), code: 2, },
-    { id: 'drugs', name: t('Medications'), code: 3, },
-  ];
-
   const [expanded, setExpanded] = useState([]);
 
   const getListItems = (sec) => {
@@ -44,66 +44,54 @@ export const AddToEncounter = ({
       return t("Couldn't get search results!");
     }
 
-    return searchResult[sec.id]?.map((item) => (sec.code === sections[0].code ?
-      (
-        <ListItem key={`item-${item.id}`}>
-          <ListItemButton
-            sx={{ py: 0.5, px: 0, mx: 6, }}
-            onClick={() => onItemClick?.({
-              i_type: sec.code,
-              code: item.id,
-            })}
-          >
-            {item.name}
-          </ListItemButton>
-        </ListItem>
-      )
-      : (
-        <ListItem key={`item-${item.id}`}>
-          <ListItemButton disableRipple sx={{ py: 0, px: 0, mx: 6, }}>
-            <TreeItem nodeId={item.id} label={item.name} sx={{
-              width: '100%',
-              '& .MuiTreeItem-content, & .MuiTreeItem-label': {
-                p: 0, m: 0,
-              },
-              '.MuiTreeItem-iconContainer': {
-                display: 'none',
-              },
-            }}>
-              <Card sx={{ p: 2, my: 1, mx: 2, }}>
-                {sec.code === sections[1].code ? (
-                  <ProcedureForm
-                    onSubmit={({ body_site, ...rest }) => {
-                      setExpanded((prev) => prev.filter((id) => id !== item.id));
-                      onItemClick?.({
-                        i_type: sec.code,
-                        code: item.code,
-                        body_site: body_site?.code,
-                        ...rest,
-                      });
-                    }}
-                  />
-                ) : (
-                  <MedicationForm
-                    onSubmit={(data) => {
-                      setExpanded((prev) => prev.filter((id) => id !== item.id));
-                      onItemClick?.({
-                        i_type: sec.code,
-                        code: item.id,
-                        dose: data.dose,
-                        dosage: data.dosage?.id,
-                        period: data.period?.id,
-                        route: 'Oral',
-                      });
-                    }}
-                  />
-                )}
-              </Card>
-            </TreeItem>
-          </ListItemButton>
-        </ListItem>
-      ))
-    );
+    return searchResult[sec.id]?.map((item) => (
+      sec.i_type === sections[0].i_type
+        ? (
+          <ListItem key={`item-${item.id}`}>
+            <ListItemButton
+              sx={{ py: 0.5, px: 0, mx: 6, }}
+              onClick={() => {
+                onItemClick?.(sec, item);
+              }}
+            >
+              {item.name}
+            </ListItemButton>
+          </ListItem>
+        )
+        : (
+          <ListItem key={`item-${item.id}`}>
+            <ListItemButton disableRipple sx={{ py: 0, px: 0, mx: 6, }}>
+              <TreeItem nodeId={item.id} label={item.name} sx={{
+                width: '100%',
+                '& .MuiTreeItem-content, & .MuiTreeItem-label': {
+                  p: 0, m: 0,
+                },
+                '.MuiTreeItem-iconContainer': {
+                  display: 'none',
+                },
+              }}>
+                <Card sx={{ p: 2, my: 1, mx: 2, }}>
+                  {sec.i_type === sections[1].i_type ? (
+                    <ProcedureForm
+                      onSubmit={(data) => {
+                        setExpanded((prev) => prev.filter((id) => id !== item.id));
+                        onItemClick?.(sec, { ...item, ...data });
+                      }}
+                    />
+                  ) : (
+                    <MedicationForm
+                      onSubmit={(data) => {
+                        setExpanded((prev) => prev.filter((id) => id !== item.id));
+                        onItemClick?.(sec, { ...item, ...data });
+                      }}
+                    />
+                  )}
+                </Card>
+              </TreeItem>
+            </ListItemButton>
+          </ListItem>
+        )
+    ));
   };
 
   return (
@@ -125,7 +113,7 @@ export const AddToEncounter = ({
               {sections.map((sec) => (
                 <li key={`section-${sec.id}`}>
                   <ul>
-                    <ListSubheader>{sec.name}</ListSubheader>
+                    <ListSubheader>{t(sec.name)}</ListSubheader>
                     {getListItems(sec)}
                   </ul>
                 </li>

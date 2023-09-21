@@ -8,6 +8,7 @@ export const Permissions = {
   CanViewSettings: 'CanViewSettings',
   CanViewApproval: 'CanViewApproval',
   CanViewClaim: 'CanViewClaim',
+  CanViewEncounter: 'CanViewEncounter',
 };
 
 export const UserPermissions = [

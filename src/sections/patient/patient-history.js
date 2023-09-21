@@ -35,24 +35,26 @@ export const PatientHistory = ({ patientData }) => {
   return (
     <>
       {getDepartmentCharting(patientData?.department, t)}
-      <Section title={`${t('Panorama Image')}`} withDivider>
-        <Carousel
-          autoPlay={false}
-          animation='slide'
-          navButtonsAlwaysVisible
-          swipe={false}
-          NextIcon={(<RtlSvgIcon><ArrowForwardIosIcon /></RtlSvgIcon>)}
-          PrevIcon={(<RtlSvgIcon><ArrowBackIosNewIcon /></RtlSvgIcon>)}
-          sx={{ maxWidth: "100%", minHeight: '500px', bgcolor: 'background.paper', borderRadius: 3, }}>
-          {patientData?.images?.map((img, i) => (
-            <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <Link href="#">
-                <img key={i} src={img.image} width="100%" height={500} />
-              </Link>
-            </Box>
-          ))}
-        </Carousel>
-      </Section>
+      {!!patientData?.images?.length && (
+        <Section title={`${t('Panorama Image')}`} withDivider>
+          <Carousel
+            autoPlay={false}
+            animation='slide'
+            navButtonsAlwaysVisible
+            swipe={false}
+            NextIcon={(<RtlSvgIcon><ArrowForwardIosIcon /></RtlSvgIcon>)}
+            PrevIcon={(<RtlSvgIcon><ArrowBackIosNewIcon /></RtlSvgIcon>)}
+            sx={{ maxWidth: "100%", minHeight: '500px', bgcolor: 'background.paper', borderRadius: 3, }}>
+            {patientData?.images?.map((img, i) => (
+              <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                <Link href="#">
+                  <img src={img.image} width="100%" height={500} />
+                </Link>
+              </Box>
+            ))}
+          </Carousel>
+        </Section>
+      )}
       <Section title="Patient Encounters">
         <SectionList>
           {patientData?.time_line?.map(({ id, status, encounter_date: date, encounter_time: time, appointment }, i) => (

@@ -1,6 +1,5 @@
 import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
 import MenuIcon from '@mui/icons-material/Menu';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import { IconButton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -104,9 +103,6 @@ const Patient = () => {
                   m={3}>
                   <Translations text="Patient List" />
                 </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
-                  <IconButton color="primary" onClick={refetch}><RefreshIcon /></IconButton>
-                </Box>
               </Box>
             )}
           </Box>

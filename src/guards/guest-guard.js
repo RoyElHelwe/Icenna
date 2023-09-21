@@ -13,7 +13,7 @@ const GuestGuard = (props) => {
     }
 
     if (window.localStorage.getItem(authConfig.storUserKeyName)) {
-      router.replace('/');
+      router.replace('/home');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);

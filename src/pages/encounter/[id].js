@@ -10,6 +10,7 @@ import Scrollbar from "../../components/scrollbar";
 import { SideNavItem } from '../../components/side-nav-item';
 import { ApprovalStatusColors } from '../../constants';
 import { ApprovalStatusIcons } from '../../constants/ApprovalStatusIcons';
+import { Permissions } from '../../constants/Permissions';
 import { TOP_NAV_HEIGHT } from '../../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../../layouts/dashboard-layout';
 import { PatientDetails } from "../../sections/patient/patient-details";
@@ -103,5 +104,7 @@ const Encounter = () => {
 };
 
 Encounter.getLayout = (page) => (<DashboardLayout>{page}</DashboardLayout>);
+
+Encounter.access = Permissions.CanViewEncounter;
 
 export default Encounter;

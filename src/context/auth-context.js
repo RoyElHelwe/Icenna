@@ -61,7 +61,7 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       } else {
         clearLocalStorage();
-        if (!router.asPath.startsWith("/login")) {
+        if (!router.asPath !== '/' && router.asPath.startsWith("/login")) {
           await router.replace("/login");
         }
         setLoading(false);
@@ -95,7 +95,7 @@ const AuthProvider = ({ children }) => {
   const redirectUser = async (u) => {
     if (u?.action === 0) {
       const returnUrl = router.query.returnUrl;
-      const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
+      const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/home";
       await router.replace(redirectURL);
     } else {
       const { provider, auth_token, ...rest } = router.query;
