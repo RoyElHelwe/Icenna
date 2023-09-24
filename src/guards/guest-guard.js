@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import authConfig from '../configs/auth';
 import { useAuth } from '../hooks/use-auth';
 
 const GuestGuard = (props) => {
@@ -12,13 +11,10 @@ const GuestGuard = (props) => {
       return;
     }
 
-    if (window.localStorage.getItem(authConfig.storUserKeyName)) {
-      router.replace('/home');
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  if (auth.loading || (!auth.loading && auth.user !== null)) {
+  if (auth.loading) {
     return fallback;
   }
 

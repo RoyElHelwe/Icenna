@@ -1,18 +1,15 @@
 import { Divider, Grid, Stack, Typography } from '@mui/material';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import LandingLayout from '../layouts/LandingLayout';
 
 const Page = () => {
-  const router = useRouter();
-
   return (
     <>
       <Head>
         <title>Terms and Conditions</title>
       </Head>
 
-      <Grid container justifyContent="center" spacing={5} sx={{ px: 3, }}>
+      <Grid container justifyContent="center" spacing={5} sx={{ px: 3, my: 10, }}>
         <Grid item xs={12} lg={6}>
           <Stack direction="column" spacing={5} sx={{ width: '90%' }}>
             <Typography variant="h2">
@@ -24,7 +21,7 @@ const Page = () => {
           </Stack>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <img src="/assets/Terms-Agreement-1.png" height={500} width={500} />
+          <img src="/assets/Terms-Agreement-1.png" height={500} width={500} style={{ maxWidth: '100%' }} />
         </Grid>
 
         <Grid item xs={12}>
@@ -42,7 +39,7 @@ const Page = () => {
           </Stack>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <img src="/assets/Terms-Agreement-2.png" height={500} width={500} />
+          <img src="/assets/Terms-Agreement-2.png" height={500} width={500} style={{ maxWidth: '100%' }} />
         </Grid>
 
         <Grid item xs={12}>
@@ -60,7 +57,7 @@ const Page = () => {
           </Stack>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <img src="/assets/Terms-Agreement-1.png" height={500} width={500} />
+          <img src="/assets/Terms-Agreement-1.png" height={500} width={500} style={{ maxWidth: '100%' }} />
         </Grid>
       </Grid>
     </>
