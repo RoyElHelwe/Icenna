@@ -1,6 +1,6 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Box } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -47,9 +47,19 @@ export const PatientHistory = ({ patientData }) => {
             sx={{ maxWidth: "100%", minHeight: '500px', bgcolor: 'background.paper', borderRadius: 3, }}>
             {patientData?.images?.map((img, i) => (
               <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                <Link href="#">
-                  <img src={img.image} width="100%" height={500} />
-                </Link>
+                {!!img?.gcb_path && <Chip label="Dicom" color="error" sx={{ position: "absolute", top: '4%', right: '2%', }} />}
+                {img?.gcb_path
+                  ? (
+                    <Link href={img?.gcb_path} target="_blank">
+                      <img src={img.image} width="100%" height={500} />
+                    </Link>
+                  )
+                  : (
+                    <Box>
+                      <img src={img.image} width="100%" height={500} />
+                    </Box>
+                  )
+                }
               </Box>
             ))}
           </Carousel>
