@@ -1,20 +1,17 @@
 import { Grid, Link, Stack, Typography } from '@mui/material';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import LandingLayout from '../layouts/LandingLayout';
 
 const Page = () => {
-  const router = useRouter();
-
   return (
     <>
       <Head>
         <title>Contact US</title>
       </Head>
-      <Grid container justifyContent="center" spacing={5} sx={{ px: 3 }}>
+      <Grid container justifyContent="center" spacing={5} sx={{ px: 3, my: 10, }}>
         <Grid item xs={12} lg={5}>
           <Stack direction="column" spacing={5}>
-            <Typography variant="h1">
+            <Typography variant="h2">
               Contact US
             </Typography>
             <Typography sx={{ fontSize: '1.25rem', alignContent: 'center' }}>
@@ -33,7 +30,7 @@ const Page = () => {
         </Grid>
 
         <Grid item xs={12} lg={4} sx={{ p: 5, }}>
-          <img src="/assets/contact-us.png" height={500} />
+          <img src="/assets/contact-us.png" height={500} style={{ maxWidth: '100%' }} />
         </Grid>
       </Grid>
     </>

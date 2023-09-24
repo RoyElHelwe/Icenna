@@ -52,14 +52,14 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
         </LinkTypography>
 
         <Stack alignItems="center" direction="row" spacing={2}>
-          {/* <Button
+          <Button
             variant="contained"
             sx={{ mx: 8 }}
             component={NextLink}
             href={'/login'}
           >
             Login
-          </Button> */}
+          </Button>
         </Stack>
       </Stack>
     </AppBar>
