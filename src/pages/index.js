@@ -22,11 +22,9 @@ const Page = () => {
           PrevIcon={(<RtlSvgIcon><ArrowBackIosNewIcon /></RtlSvgIcon>)}
           sx={{ width: "100%", }}
         >
-          {[1, 2]?.map((n, i) => (
-            <Box key={i} sx={{ height: "450px" }}>
-              <img src={`/assets/landing/${n}.jpg`} width="100%" height={450} />
-            </Box>
-          ))}
+          <Box sx={{ height: "450px" }}>
+            <img src={`/assets/landing/2.jpg`} width="100%" height={450} />
+          </Box>
         </Carousel>
         <Stack alignItems="center" direction="column" spacing={5} sx={{ maxWidth: '42rem' }}>
           <Typography variant="h3">
