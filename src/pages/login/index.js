@@ -118,7 +118,7 @@ Login.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 Login.getInitialProps = async ({ req, }) => {
   if (req?.method !== 'POST') {
-    return {};
+    return { auth_token: null, };
   }
 
   const body = await parseBody(req, '1mb');
