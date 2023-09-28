@@ -93,6 +93,7 @@ const CollapseTable = ({
   headProps,
   actions,
   onRowChange,
+  renderFooter,
 }) => {
   const [openRows, setOpenRows] = useState([]);
 
@@ -280,6 +281,7 @@ const CollapseTable = ({
           })}
         </TableBody>
       </Table>
+      {renderFooter}
     </TableContainer>
   );
 }
@@ -306,6 +308,7 @@ CollapseTable.propTypes = {
     ]),
   }).isRequired).isRequired,
   rows: PropTypes.array,
+  renderFooter: PropTypes.object,
 };
 
 export default CollapseTable;

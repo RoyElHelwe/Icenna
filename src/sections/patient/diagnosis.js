@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import CollapseTable from '../../components/CollapsibleTable';
 
-const Diagnosis = (props) => {
+const Diagnosis = ({ editable, ...props }) => {
   const { t } = useTranslation();
 
   const typeOptions = [{ label: 'Principal', value: 'Principal' }, { label: 'Secondary', value: 'Secondary' }];
@@ -24,7 +24,7 @@ const Diagnosis = (props) => {
       field: 'type',
       headerName: t('Type'),
       width: 300,
-      editable: true,
+      editable: editable,
       type: 'select',
       valueOptions: typeOptions,
     },

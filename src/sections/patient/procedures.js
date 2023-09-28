@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { getDentalCharting } from '../../api/practitioner';
 import CollapseTable from '../../components/CollapsibleTable';
 
-const Procedures = ({ department, onUpdate, nonEditableColumns, ...props }) => {
+const Procedures = ({ department, onUpdate, nonEditableColumns, editable, ...props }) => {
   const cashOption = { value: "Cash", label: "Cash", };
   const statusOptions = [{ value: "Ask For Approval", label: "Ask For Approval" }, cashOption];
   const { t } = useTranslation();
@@ -30,7 +30,7 @@ const Procedures = ({ department, onUpdate, nonEditableColumns, ...props }) => {
       field: 'status',
       headerName: t('Status'),
       width: 200,
-      editable: (row) => (row?.status !== 'Paid'),
+      editable: (row) => (editable && row?.status !== 'Paid'),
       type: 'select',
       valueOptions: (row) => {
         if (row?.status === 'Waiting Response') {
@@ -44,7 +44,7 @@ const Procedures = ({ department, onUpdate, nonEditableColumns, ...props }) => {
       field: 'price',
       headerName: t('Price'),
       width: 150,
-      editable: true,
+      editable: editable,
       type: 'number',
     },
     ...(
@@ -53,7 +53,7 @@ const Procedures = ({ department, onUpdate, nonEditableColumns, ...props }) => {
           field: 'body_site.code',
           headerName: t('Tooth code'),
           width: 350,
-          editable: true,
+          editable: editable,
           type: 'select',
           valueOptions: toothCodeOptions,
           cellRequired: (row) => !!row?.body_site_required,

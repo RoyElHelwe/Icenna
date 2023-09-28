@@ -27,11 +27,10 @@ const ApprovalDetails = ({ id, ...props }) => {
   });
   const { mutate: update } = useMutation({
     mutationFn: updateApproval,
-    // onSuccess,
   });
-  const { mutate: submit } = useMutation({
+  const { isLoading: isSubmitting, mutate: submit } = useMutation({
     mutationFn: submitApproval,
-    // onSuccess,
+    onSuccess,
   });
 
   const [appDetails, setAppDetails] = useState();
@@ -45,17 +44,29 @@ const ApprovalDetails = ({ id, ...props }) => {
     if (window.history?.length > 2) {
       router.back();
     } else {
-      router.push('/rcm/claims');
+      router.push('/calendar');
     }
   };
 
   useEffect(() => {
-    // TODO: Update items
-    // console.log('appDetails:', appDetails);
+    const medical_codes = appDetails?.medical_codes?.medical_codes?.map((mc) => ({
+      medical_code_id: mc.id, diagnosis_type: mc.type,
+    })) ?? [];
+    const procedures = appDetails?.procedures?.items?.map((p) => ({
+      service_item: p.code, qty: 1, price: p.price, tooth_code: ''
+    })) ?? [];
+    
+    if (appDetails?.id) {
+      update({
+        id: appDetails?.id,
+        medical_codes,
+        procedures,
+      })
+    }
   }, [appDetails]);
 
   return (
-    <Box sx={{ mx: 5, my: 3 }}>
+    <Box sx={{ mx: 5, my: 3, width: '100%' }}>
       <Box ref={ref} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', }}>
         <Box flexGrow={1} sx={{ display: "flex", justifyContent: "flex-start" }}>
           <IconButton size="large" onClick={handleGoBack}>
@@ -97,17 +108,19 @@ const ApprovalDetails = ({ id, ...props }) => {
         )}
       </Box>
 
-      {!!appDetails?.medical_codes?.medical_codes && (
+      {!!appDetails?.medical_codes?.medical_codes?.length && (
         <Section title="Diagnosis" withDivider>
           <Diagnosis
             rows={appDetails?.medical_codes?.medical_codes ?? []}
-            initialState={{ density: 'compact' }}
+            editable={true}
             {...(editable && {
               actions: [{
                 name: t('Delete'),
                 onClick: (row) => setAppDetails((prev) => {
                   const medical_codes = prev.medical_codes?.medical_codes;
-                  const new_medical_codes = medical_codes.slice(0, row.index).concat(medical_codes.slice(row.index + 1));
+                  const index = medical_codes.findIndex((i) => i.id === row.id);
+
+                  const new_medical_codes = medical_codes.slice(0, index).concat(medical_codes.slice(index + 1));
 
                   return {
                     ...prev,
@@ -118,18 +131,14 @@ const ApprovalDetails = ({ id, ...props }) => {
                   };
                 }),
               }],
-              onUpdate: (e, { row, column }) => setAppDetails((prev) => {
+              onRowChange: (row, params) => setAppDetails((prev) => {
                 const medical_codes = prev.medical_codes?.medical_codes;
+                const index = medical_codes.findIndex((i) => i.id === row.id);
 
-                let medical_code = medical_codes?.[row.index];
-                medical_code = {
-                  ...medical_code,
-                  [column.columnDef.accessorKey.split('.')?.[0]]: e.target.value,
-                };
                 const new_medical_codes = [
-                  ...medical_codes.slice(0, row.index),
-                  medical_code,
-                  ...medical_codes.slice(row.index + 1),
+                  ...medical_codes.slice(0, index),
+                  row,
+                  ...medical_codes.slice(index + 1),
                 ];
 
                 return {
@@ -141,6 +150,11 @@ const ApprovalDetails = ({ id, ...props }) => {
                 };
               }),
             })}
+            renderFooter={!!appDetails?.medical_codes?.errors?.length && (
+              <Box sx={{ m: 5, }}>
+                <Errors rows={appDetails?.medical_codes?.errors ?? []} />
+              </Box>
+            )}
           />
         </Section>
       )}
@@ -149,7 +163,7 @@ const ApprovalDetails = ({ id, ...props }) => {
         <Section title="Procedures" withDivider>
           <Procedures
             rows={appDetails?.procedures?.items ?? []}
-            initialState={{ density: 'compact' }}
+            editable={true}
             nonEditableColumns={['status']}
             {...(editable && {
               actions: [{
@@ -157,7 +171,7 @@ const ApprovalDetails = ({ id, ...props }) => {
                 onClick: (row) => setAppDetails((prev) => {
                   const items = prev.procedures?.items;
                   const index = items.findIndex((i) => i.id === row.id);
-                  
+
                   const new_items = items.slice(0, index).concat(items.slice(index + 1));
 
                   return {
@@ -170,7 +184,7 @@ const ApprovalDetails = ({ id, ...props }) => {
                 }),
               },],
             })}
-            onRowChange={(row, updatedParams) => setAppDetails((prev) => {
+            onRowChange={(row, params) => setAppDetails((prev) => {
               const items = prev.procedures?.items;
               const index = items.findIndex((i) => i.id === row.id);
 
@@ -188,6 +202,11 @@ const ApprovalDetails = ({ id, ...props }) => {
                 }
               };
             })}
+            renderFooter={!!appDetails?.procedures?.errors?.length && (
+              <Box sx={{ m: 5, }}>
+                <Errors rows={appDetails?.procedures?.errors ?? []} />
+              </Box>
+            )}
           />
         </Section>
       )}
@@ -241,10 +260,7 @@ const ApprovalDetails = ({ id, ...props }) => {
 
       {!!appDetails?.errors?.length && (
         <Section title="Errors" withDivider>
-          <Errors
-            rows={appDetails?.errors ?? []}
-            initialState={{ density: 'compact' }}
-          />
+          <Errors rows={appDetails?.errors ?? []} />
         </Section>
       )}
 
@@ -253,8 +269,8 @@ const ApprovalDetails = ({ id, ...props }) => {
           <LoadingButton
             variant='contained'
             sx={{ borderRadius: 1.5, textTransform: 'none', px: 15, }}
-            loading={false}
-            onClick={submit}
+            loading={isSubmitting}
+            onClick={(e) => submit({ id: appDetails?.id })}
           >
             Submit
           </LoadingButton>

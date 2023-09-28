@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import CollapseTable from '../../components/CollapsibleTable';
 import MedicationForm from '../../forms/medication';
 
-const Medications = ({ onUpdate, ...props }) => {
+const Medications = ({ onUpdate, editable, ...props }) => {
   const { t } = useTranslation();
 
   const columns = useMemo(() => [
@@ -51,7 +51,7 @@ const Medications = ({ onUpdate, ...props }) => {
               <Typography sx={{ pt: 2, }} variant="section">{row.dose}</Typography>
             </Grid>
             <Grid item xs={1}>
-              {!!onUpdate && (
+              {editable && !!onUpdate && (
                 <IconButton onClick={() => toggleButton(row)}>
                   {editingRow === row ? <CloseIcon /> : <EditIcon />}
                 </IconButton>

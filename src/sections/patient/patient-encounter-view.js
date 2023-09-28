@@ -47,8 +47,8 @@ export const PatientEncounterView = ({
           </Box>
 
           <Diagnosis
-            data={patientData?.medical_code ?? []}
-            initialState={{ density: 'compact' }}
+            rows={patientData?.medical_code ?? []}
+            editable={false}
           />
         </Section>
       )}
@@ -58,9 +58,9 @@ export const PatientEncounterView = ({
           {patientData?.procedure?.map((p, i) => (
             <Procedures
               key={p.approval_id}
-              data={p.items ?? []}
-              initialState={{ density: 'compact' }}
+              rows={p.items ?? []}
               {...(i > 0 ? { muiTableHeadCellProps: { sx: { display: 'none' } } } : {})}
+              editable={false}
             />
           ))}
         </Section>
@@ -69,8 +69,8 @@ export const PatientEncounterView = ({
       {!!patientData?.drugs?.length && (
         <Section title="Medications" withDivider>
           <Medications
-            data={patientData?.drugs ?? []}
-            initialState={{ density: 'compact' }}
+            rows={patientData?.drugs ?? []}
+            editable={false}
           />
         </Section>
       )}

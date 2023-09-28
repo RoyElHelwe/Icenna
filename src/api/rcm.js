@@ -45,7 +45,7 @@ export const getApprovalDetails = ({ queryKey }) => {
 };
 
 export const updateApproval = (body) => {
-  return axios.post('/icenna.user_api.rcm.update_claim', body);
+  return axios.post('/icenna.user_api.rcm.update_request', body);
 };
 
 export const submitApproval = (body) => {

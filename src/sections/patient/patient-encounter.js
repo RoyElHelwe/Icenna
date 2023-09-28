@@ -55,7 +55,7 @@ export const PatientEncounter = ({
 
   const { duration_labels } = settings?.data?.data ?? {};
   const labels = [
-    { label: t('No Session'), duration: 0, },
+    { label: t('No Need'), duration: 0, },
     ...duration_labels ?? [],
   ];
 
@@ -182,6 +182,7 @@ export const PatientEncounter = ({
 
             <Diagnosis
               rows={patientData?.medical_code ?? []}
+              editable={true}
               actions={[
                 {
                   name: t('Delete'),
@@ -205,6 +206,7 @@ export const PatientEncounter = ({
             <Procedures
               key={p.approval_id}
               rows={p.items ?? []}
+              editable={true}
               department={patientData?.department}
               // Give header only for the first table
               {...(i > 0 ? { headProps: { sx: { display: 'none' } } } : {})}
@@ -236,6 +238,7 @@ export const PatientEncounter = ({
         <Section title="Medications" withDivider>
           <Medications
             rows={patientData?.drugs ?? []}
+            editable={true}
             actions={[
               {
                 name: t('Delete'),
