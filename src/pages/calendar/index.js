@@ -9,15 +9,16 @@ import { format } from "date-fns";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getAppointments, updateStatus } from "../api/calendar";
-import { AsyncAutocomplete } from "../components/AsyncAutocomplete";
-import RtlSvgIcon from "../components/rtl-svgicon";
-import { WeekDays } from "../constants";
-import { Permissions } from "../constants/Permissions";
-import { Layout as DashboardLayout } from "../layouts/dashboard-layout";
-import { pusherClient } from "../lib/pusher";
-import { compareDatesByDatePart, getWeekDates } from "../utils/date";
-import CalendarView from "../views/calendar-view";
+import { getAppointments, updateStatus } from "../../api/calendar";
+import { AsyncAutocomplete } from "../../components/AsyncAutocomplete";
+import RtlSvgIcon from "../../components/rtl-svgicon";
+import { WeekDays } from "../../constants";
+import { Permissions, UserRoles } from "../../constants/Permissions";
+import { useAuth } from "../../hooks/use-auth";
+import { Layout as DashboardLayout } from "../../layouts/dashboard-layout";
+import { pusherClient } from "../../lib/pusher";
+import { compareDatesByDatePart, getWeekDates } from "../../utils/date";
+import CalendarView from "../../views/calendar-view";
 
 const Calendar = () => {
   const globalTheme = useTheme();
@@ -30,6 +31,8 @@ const Calendar = () => {
     ["Checked OUT"]: globalTheme.palette.text.primary,
     ["No Show"]: "red",
   };
+
+  const { user } = useAuth();
 
   const [date, setDate] = useState(new Date());
   const calendarRef = useRef(null);
@@ -70,6 +73,7 @@ const Calendar = () => {
     return () => {
       pusherClient.unsubscribe("iCenna");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { practitioners, calender } = apps?.data?.data ?? {};
@@ -136,7 +140,12 @@ const Calendar = () => {
     } else if (status === "Confirmed") {
       update({ id, status: 2 });
     } else if (status === "Checked IN") {
-      router.push(`/encounter/${id}`);
+      const userRoles = user?.user_type;
+      if (userRoles === UserRoles.HealthcareAdministrator) {
+        router.push(`/calendar/encounter/${id}`);
+      } else if (userRoles === UserRoles.Practitioner) {
+        router.push(`/patient?appid=${id}`);
+      }
     }
   };
 

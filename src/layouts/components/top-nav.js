@@ -36,6 +36,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
     } else {
       setValue(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const handleChange = (event, newValue) => {

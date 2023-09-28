@@ -1,12 +1,10 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Container, Tab as MuiTab } from '@mui/material';
+import { Box, Tab as MuiTab } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Approvals from './Approvals';
 import Claims from './Claims';
-import PatientEncounters from './PatientEncounters';
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   textTransform: "none",
@@ -44,23 +42,17 @@ const RCM = ({ tab }) => {
             pr: 4,
           }}>
             <TabList onChange={handleChange}>
-              <Tab label={t("Patient Encounters")} value="patient-encounters" />
-              <Tab label={t("Approvals")} value="approvals" />
               <Tab label={t("Claims")} value="claims" />
+              <Tab label={t("Payment")} value="payment" />
             </TabList>
           </Box>
         </Box >
-        <Container maxWidth={false}>
-          <TabPanel value="patient-encounters">
-            <PatientEncounters />
-          </TabPanel>
-          <TabPanel value="approvals">
-            <Approvals />
-          </TabPanel>
-          <TabPanel value="claims">
-            <Claims />
-          </TabPanel>
-        </Container>
+        <TabPanel value="claims" sx={{ m: 0, p: 0, }}>
+          <Claims />
+        </TabPanel>
+        <TabPanel value="payment">
+          Payment
+        </TabPanel>
       </TabContext>
     </Box>
   );

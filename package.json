@@ -49,7 +49,7 @@
     "i18next": "^23.2.11",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.1",
-    "material-react-table": "^1.14.0",
+    "lodash": "^4.17.21",
     "mui-file-input": "^3.0.0",
     "mui-one-time-password-input": "^1.1.2",
     "mui-tel-input": "^3.2.2",

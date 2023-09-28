@@ -2,10 +2,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Customizer from '../components/customizer';
 
-const env = process.env.NEXT_PUBLIC_NODE_ENV;
-
 export const BlankLayoutWrapper = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.customColors[env],
   height: '100vh',
   '& .content-center': {
     display: 'flex',

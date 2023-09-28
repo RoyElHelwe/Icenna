@@ -3,7 +3,7 @@ import {
   Grid,
   Typography
 } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 
@@ -16,17 +16,12 @@ const LinkTypography = styled(Typography)(({ theme }) => ({
 }));
 
 export const LandingFooter = ({ withTabs, ...rest }) => {
-  const env = process.env.NEXT_PUBLIC_NODE_ENV;
-
   return (
     <Box
       component="footer"
       sx={{
         pb: 5,
         backdropFilter: 'blur(2px)',
-        backgroundColor: (theme) => alpha(
-          theme.palette.customColors[env] ?? theme.palette.background.paper,
-        ),
         width: '100%',
         zIndex: (theme) => theme.zIndex.drawer + 1,
         boxShadow: 1,

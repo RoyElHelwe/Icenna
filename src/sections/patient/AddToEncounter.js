@@ -21,6 +21,7 @@ export const sections = [
 
 export const AddToEncounter = ({
   id,
+  department,
   onItemClick,
 }) => {
   const [value, setValue] = useState('0');
@@ -45,7 +46,7 @@ export const AddToEncounter = ({
     }
 
     return searchResult[sec.id]?.map((item) => (
-      sec.i_type === sections[0].i_type
+      sec.i_type === sections[0].i_type || (sec.i_type === sections[1].i_type && (department !== 'Dental' || !item.body_site_required))
         ? (
           <ListItem key={`item-${item.id}`}>
             <ListItemButton

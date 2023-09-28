@@ -38,6 +38,7 @@ const ProcedureForm = ({
   });
   useEffect(() => {
     reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reset, data]);
 
   return (

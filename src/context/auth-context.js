@@ -12,6 +12,8 @@ const defaultProvider = {
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
+  storeUser: () => { },
+  redirectUser: () => Promise.resolve(),
 };
 
 const AuthContext = createContext(defaultProvider);
@@ -136,19 +138,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleVerifyOTP = (params, errorCallback) => {
-    setLoading(true);
-    axios
-      .post("/icenna.user_api.auth.verify_otp", params)
-      .then(async (response) => {
-        storeUser(response.data.data);
-        await redirectUser(response.data.data.user);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        if (errorCallback) errorCallback(err);
-      });
+    return axios.post("/icenna.user_api.auth.verify_otp", params);
   };
 
   const handleAcceptTerms = (params, errorCallback) => {
@@ -194,9 +184,12 @@ const AuthProvider = ({ children }) => {
     verifyOTP: handleVerifyOTP,
     acceptTerms: handleAcceptTerms,
     logout: handleLogout,
+    storeUser,
+    redirectUser,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };
+

@@ -23,12 +23,13 @@ export const getApprovals = ({ queryKey }) => {
 };
 
 export const getClaims = ({ queryKey }) => {
-  const [_, page, page_size] = queryKey;
+  const [_, page, page_size, status] = queryKey;
 
   return axios.get('/icenna.user_api.rcm.get_claims', {
     params: {
       page,
       page_size,
+      status,
     },
   });
 };

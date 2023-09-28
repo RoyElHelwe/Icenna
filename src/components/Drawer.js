@@ -3,10 +3,7 @@ import { styled } from '@mui/material/styles';
 
 export const DrawerWidth = 300;
 
-const env = process.env.NEXT_PUBLIC_NODE_ENV;
-
 const openedMixin = (theme) => ({
-  backgroundColor: theme.palette.customColors[env],
   width: DrawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -16,7 +13,6 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
-  backgroundColor: theme.palette.customColors[env],
   width: `calc(${theme.spacing(11)} + 1px)`,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,

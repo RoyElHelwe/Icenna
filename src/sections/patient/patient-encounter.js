@@ -4,7 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { checkApproval, encounterCheckout, encounterItem } from '../../api/practitioner';
 import { getGeneralSettings } from '../../api/settings';
@@ -16,26 +16,17 @@ import Section from '../../components/section';
 import ChiefComplaintForm from '../../forms/chief-complaint';
 import DiagnosisDescriptionForm from '../../forms/diagnosis-description';
 import { useSettings } from '../../hooks/useSettings';
-import { pusherClient } from '../../lib/pusher';
 import { CommunicationRequest } from './CommunicationRequest';
 import EncounterAddButton from './EncounterAddButton';
 import Diagnosis from './diagnosis';
 import Medications from './medications';
 import Procedures from './procedures';
 
-export const PatientEncounter = ({ patientData, setPatientData }) => {
-  useEffect(() => {
-    const channel = pusherClient.subscribe('iCenna');
-
-    channel.bind('patient_encounter_updates', (data) => {
-      setPatientData(data.message);
-    });
-
-    return () => {
-      pusherClient.unsubscribe('iCenna');
-    };
-  }, []);
-
+export const PatientEncounter = ({
+  patientData,
+  setPatientData,
+  nonEditableColumns,
+}) => {
   const { t } = useTranslation();
   const { settings: ctxSettings } = useSettings();
 
@@ -90,7 +81,9 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
   };
 
   const getCheckoutText = () => {
-    if (patientData?.action === 1) {
+    if (patientData?.action === 0) {
+      return t('Waiting Response');
+    } else if (patientData?.action === 1) {
       return t('Ask for Approval');
     } else if (patientData?.action === 2) {
       const total = patientData?.total_required_to_pay ?? 0;
@@ -130,10 +123,11 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
         <EncounterAddButton
           parentRef={ref}
           id={patientData?.id}
+          department={patientData?.department}
           onAdd={({ i_type }, { id, code, dosage, period, body_site, ...rest }) => updateEncItem({
             id: patientData?.id, t_type: 'add', i_type,
             body_site: body_site?.code,
-            code: i_type === 3 ? id : code,
+            code: i_type === 2 ? code : id,
             dosage: dosage?.id,
             period: period?.id,
             route: i_type === 3 ? 'Oral' : undefined,
@@ -187,15 +181,19 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
             </Box>
 
             <Diagnosis
-              data={patientData?.medical_code ?? []}
+              rows={patientData?.medical_code ?? []}
               actions={[
                 {
                   name: t('Delete'),
                   onClick: (row) => updateEncItem({
-                    id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.original?.id,
+                    id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.id,
                   }),
                 },
               ]}
+              onRowChange={(row, updatedParams) => updateEncItem({
+                id: patientData?.id, i_type: 1, t_type: 'update',
+                code: row?.id, diagnosis_type: row?.type
+              })}
             />
           </>
         )}
@@ -206,16 +204,16 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
           {patientData?.procedure?.map((p, i) => (
             <Procedures
               key={p.approval_id}
-              data={p.items ?? []}
+              rows={p.items ?? []}
               department={patientData?.department}
               // Give header only for the first table
-              {...(i > 0 ? { muiTableHeadCellProps: { sx: { display: 'none' } } } : {})}
-              editable
+              {...(i > 0 ? { headProps: { sx: { display: 'none' } } } : {})}
+              nonEditableColumns={nonEditableColumns?.procedures}
               actions={[
                 {
                   name: t('Delete'),
                   onClick: (row) => updateEncItem({
-                    id: patientData?.id, record_id: row.original.id, i_type: 2, code: row.original.code, t_type: 'delete',
+                    id: patientData?.id, record_id: row?.id, i_type: 2, code: row?.code, t_type: 'delete',
                   }),
                 },
               ]}
@@ -223,9 +221,12 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
                 enableBottomToolbar: true,
                 renderBottomToolbar: () => (<CommunicationRequest data={p.communication_request} onSubmit={(data) => setPatientData(data)} />)
               })}
-              onUpdate={(row, params) => updateEncItem({
-                id: patientData?.id, record_id: row.original.id, i_type: 2, code: row.original.code, t_type: 'update', ...params,
-              })}
+              onRowChange={(row, { body_site, status, }) => {
+                updateEncItem({
+                  id: patientData?.id, record_id: row?.id, i_type: 2, t_type: 'update', code: row?.code,
+                  body_site: Number(body_site?.code) || undefined, status,
+                });
+              }}
             />
           ))}
         </Section>
@@ -234,17 +235,17 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
       {!!patientData?.drugs?.length && (
         <Section title="Medications" withDivider>
           <Medications
-            data={patientData?.drugs ?? []}
+            rows={patientData?.drugs ?? []}
             actions={[
               {
                 name: t('Delete'),
                 onClick: (row) => updateEncItem({
-                  id: patientData?.id, i_type: 3, t_type: 'delete', code: row?.original?.id,
+                  id: patientData?.id, i_type: 3, t_type: 'delete', code: row?.id,
                 }),
               },
             ]}
             onUpdate={(row, params) => updateEncItem({
-              id: patientData?.id, i_type: 3, code: row.original.id, t_type: 'update', ...params,
+              id: patientData?.id, i_type: 3, code: row.id, t_type: 'update', ...params,
             })}
           />
         </Section>
@@ -268,7 +269,7 @@ export const PatientEncounter = ({ patientData, setPatientData }) => {
           variant='contained'
           sx={{ borderRadius: 1.5, textTransform: 'none', px: 15, }}
           loading={isSubmitting || isChecking}
-          disabled={patientData?.action === 2 && !patientData?.push_payment}
+          disabled={patientData?.action === 0 || (patientData?.action === 2 && !patientData?.push_payment)}
           onClick={handleCheckout}
         >
           {getCheckoutText()}

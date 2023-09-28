@@ -1,6 +1,6 @@
-import RCM from '../../sections/rcm/rcm';
-import { Layout as DashboardLayout } from '../../layouts/dashboard-layout';
 import { Permissions } from '../../constants/Permissions';
+import { Layout as DashboardLayout } from '../../layouts/dashboard-layout';
+import RCM from '../../sections/rcm/rcm';
 
 const RCMTab = ({ tab, }) => {
   return <RCM tab={tab} />
@@ -9,9 +9,8 @@ const RCMTab = ({ tab, }) => {
 export const getStaticPaths = () => {
   return {
     paths: [
-      { params: { tab: 'patient-encounters' } },
-      { params: { tab: 'approvals' } },
       { params: { tab: 'claims' } },
+      { params: { tab: 'payment' } },
     ],
     fallback: false,
   }

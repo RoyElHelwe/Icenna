@@ -1,38 +1,42 @@
 import { Box, Typography } from '@mui/material';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ExpandTable from '../../components/expand-table';
+import CollapseTable from '../../components/CollapsibleTable';
 
 const Diagnosis = (props) => {
   const { t } = useTranslation();
 
-  const columns = useMemo(() => [
+  const typeOptions = [{ label: 'Principal', value: 'Principal' }, { label: 'Secondary', value: 'Secondary' }];
+
+  const columns = [
     {
-      accessorKey: 'name',
-      header: t('Name'),
-      enableEditing: false,
+      field: 'name',
+      headerName: t('Name'),
+      width: '100%',
     },
     {
-      accessorKey: 'code',
-      header: t('Code'),
-      enableEditing: false,
+      field: 'code',
+      headerName: t('Code'),
+      width: 300,
       size: 50,
     },
     {
-      accessorKey: 'type',
-      header: t('Type'),
-      editVariant: 'select',
-      editSelectOptions: ['Principal', 'Secondary'],
+      field: 'type',
+      headerName: t('Type'),
+      width: 300,
+      editable: true,
+      type: 'select',
+      valueOptions: typeOptions,
     },
-  ], [],);
+  ];
 
   return (
-    <ExpandTable
+    <CollapseTable
       columns={columns}
-      renderDetailPanel={({ row }) => (
-        <Box sx={{ pb: 1, pl: 5 }}>
+      renderRowDetails={(row) => (
+        <Box sx={{ mx: 5, my: 3, }}>
           <Typography variant="body2">{t('Description')}</Typography>
-          <Typography sx={{ pt: 2, }} variant="section">{row.original.description}</Typography>
+          <Typography sx={{ pt: 2, }} variant="section">{row.description}</Typography>
         </Box>
       )}
       {...props}

@@ -1,98 +1,83 @@
-import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
-import { default as React, useState, } from 'react';
+import { Box, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { default as React } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AsyncAutocomplete } from '../../components/AsyncAutocomplete';
-import ExpandTable from '../../components/expand-table';
-import ProcedureForm from '../../forms/procedure';
+import { getDentalCharting } from '../../api/practitioner';
+import CollapseTable from '../../components/CollapsibleTable';
 
-const Procedures = ({ department, onUpdate, ...props }) => {
-  const approvedOptions = ["Approved", "Cash",];
-  const nonApprovedOptions = ["Ask For Approval", "Cash",];
+const Procedures = ({ department, onUpdate, nonEditableColumns, ...props }) => {
+  const cashOption = { value: "Cash", label: "Cash", };
+  const statusOptions = [{ value: "Ask For Approval", label: "Ask For Approval" }, cashOption];
   const { t } = useTranslation();
 
-  const columns = [
-    {
-      accessorKey: 'name',
-      header: t('Name'),
-      enableEditing: false,
-    },
-    {
-      accessorKey: 'status',
-      header: t('Status'),
-      enableEditing: (row) => (!!onUpdate && row.original.status !== 'Paid'),
-      Edit: ({ cell, column, row, table }) => {
-
-        return (
-          <AsyncAutocomplete
-            fullWidth
-            disableClearable
-            isOptionEqualToValue={(o, v) => o === v}
-            getOptionLabel={(o) => o ?? ''}
-            options={row.original?.status === 'Approved' ? approvedOptions : nonApprovedOptions}
-            value={row.original?.status}
-            onChange={(e, v) => onUpdate(row, { status: v })}
-          />
-        );
-      },
-    },
-    {
-      accessorKey: 'price',
-      header: t('Price'),
-      enableEditing: false,
-    },
-    ...((department === 'Dental') ? [
-      {
-        accessorKey: 'body_site.code',
-        header: t('Tooth code'),
-        editVariant: 'select',
-        editSelectOptions: ['Principal', 'Secondary'],
-      },
-    ] : [])
+  const { data, } = useQuery({
+    queryKey: ['getDentalCharting'],
+    queryFn: getDentalCharting,
+  });
+  const toothCodeOptions = [
+    { value: undefined, label: '', },
+    ...data?.data?.data?.map((d) => ({ value: d.code, label: `${d.code} - ${d.description}`, })) ?? []
   ];
 
-  const [editingRow, setEditingRow] = useState();
+  let columns = [
+    {
+      field: 'name',
+      headerName: t('Name'),
+      width: '100%',
+      editable: false,
+    },
+    {
+      field: 'status',
+      headerName: t('Status'),
+      width: 200,
+      editable: (row) => (row?.status !== 'Paid'),
+      type: 'select',
+      valueOptions: (row) => {
+        if (row?.status === 'Waiting Response') {
+          return [{ value: 'Waiting Response', label: 'Waiting Response' }, cashOption];
+        }
 
-  const toggleButton = (row) => setEditingRow((prev) => prev ? undefined : row);
+        return statusOptions;
+      },
+    },
+    {
+      field: 'price',
+      headerName: t('Price'),
+      width: 150,
+      editable: true,
+      type: 'number',
+    },
+    ...(
+      (department === 'Dental') ? [
+        {
+          field: 'body_site.code',
+          headerName: t('Tooth code'),
+          width: 350,
+          editable: true,
+          type: 'select',
+          valueOptions: toothCodeOptions,
+          cellRequired: (row) => !!row?.body_site_required,
+        },
+      ] : []
+    )
+  ];
+
+  if (nonEditableColumns?.length) {
+    columns = columns.map((c) => ({
+      ...c,
+      editable: nonEditableColumns.includes(c.field) ? false : c.editable,
+    }))
+  }
 
   return (
-    <ExpandTable
+    <CollapseTable
       columns={columns}
-      renderDetailPanel={({ row }) => (
-        <Grid container spacing={5}>
-          <Grid item xs={11}>
-            <Box sx={{ pb: 1, pl: 5 }}>
-              <Typography variant="body2">{t("Clinical Procedures")}</Typography>
-              <Typography sx={{ pt: 2, }} variant="section">{row.original.description}</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={1}>
-            {onUpdate && (
-              <IconButton onClick={() => toggleButton(row)}>
-                {editingRow === row ? <CloseIcon /> : <EditIcon />}
-              </IconButton>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            {editingRow === row && (
-              <ProcedureForm
-                values={{
-                  body_site: row.original.body_site,
-                }}
-                onSubmit={(data) => {
-                  toggleButton(row);
-                  onUpdate?.(row, {
-                    body_site: data.body_site?.code,
-                  });
-                }}
-                submitLabel="Update"
-              />
-            )}
-          </Grid>
-        </Grid>
+      renderRowDetails={(row) => (
+        <Box sx={{ mx: 5, my: 3, }}>
+          <Typography variant="body2">{t("Clinical Procedures")}</Typography>
+          <Typography sx={{ pt: 2, }} variant="section">{row.description}</Typography>
+        </Box>
       )}
-      onUpdate={onUpdate}
       {...props}
     />
   );

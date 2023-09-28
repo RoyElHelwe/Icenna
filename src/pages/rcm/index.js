@@ -8,7 +8,7 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/rcm/patient-encounters');
+    router.push('/rcm/claims');
   }, []);
 
   return (

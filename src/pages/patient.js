@@ -20,7 +20,7 @@ import { Permissions } from '../constants/Permissions';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { pusherClient } from '../lib/pusher';
-import { PatientDetails } from '../sections/patient/patient-details';
+import { PractitionerPatient } from '../sections/patient/PractitionerPatient';
 
 const Patient = () => {
   const router = useRouter();
@@ -42,6 +42,7 @@ const Patient = () => {
     return () => {
       pusherClient.unsubscribe('iCenna');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [openNav, setOpenNav] = useState(false);
@@ -67,7 +68,9 @@ const Patient = () => {
 
   const [selectedPatient, setSelectedPatient] = useState();
   useEffect(() => {
-    setSelectedPatient(patients.find((p) => p.appointment === router.query.appid));
+    const appid = router.query.appid;
+    const patient = patients.find((p) => p.appointment === appid) ?? { appointment: appid };
+    setSelectedPatient(patient);
   }, [patients, router.query.appid]);
 
   return (
@@ -140,8 +143,11 @@ const Patient = () => {
           }
         </Scrollbar>
       </Drawer>
-      {selectedPatient?.id ? (
-        <PatientDetails appointment={selectedPatient.appointment} viewTabs={search.length >= 3 ? ['History'] : undefined} />
+      {selectedPatient?.appointment ? (
+        <PractitionerPatient
+          appointment={selectedPatient.appointment}
+          viewTabs={search.length >= 3 ? ['History'] : undefined}
+        />
       ) : (
         <Centered>
           <Typography variant="h5">

@@ -11,6 +11,16 @@ export const Permissions = {
   CanViewEncounter: 'CanViewEncounter',
 };
 
+export const UserRoles = {
+  Administrator: 'Administrator',
+  HealthcareAdministrator: 'Healthcare Administrator',
+  HealthcareManager: 'Healthcare Manager',
+  SalesUser: 'Sales User',
+  Practitioner: 'Practitioner',
+  Receptionist: 'Receptionist',
+  Patient: 'Patient',
+};
+
 export const UserPermissions = [
   { name: 'Administrator', permissions: Object.keys(Permissions) },
   { name: 'Healthcare Administrator', permissions: Object.keys(Permissions) },

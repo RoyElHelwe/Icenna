@@ -1,27 +1,30 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ExpandTable from '../../components/expand-table';
+import CollapseTable from '../../components/CollapsibleTable';
 
 const Errors = (props) => {
   const { t } = useTranslation();
 
-  const columns = useMemo(() => [
+  const columns = [
     {
-      accessorKey: 'code',
-      header: t('Code'),
+      field: 'code',
+      headerName: t('Code'),
+      width: 175,
     },
     {
-      accessorKey: 'message',
-      header: t('Message'),
+      field: 'message',
+      headerName: t('Message'),
+      width: '50%',
     },
     {
-      accessorKey: 'path',
-      header: t('Path'),
+      field: 'path',
+      headerName: t('Path'),
+      width: '50%',
     },
-  ], [],);
+  ];
 
   return (
-    <ExpandTable
+    <CollapseTable
       columns={columns}
       {...props}
     />

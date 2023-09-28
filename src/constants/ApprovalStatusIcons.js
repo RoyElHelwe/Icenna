@@ -1,15 +1,14 @@
+import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import CheckCircleIcon from '@heroicons/react/24/solid/CheckCircleIcon';
-import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
-import InformationCircleIcon from '@heroicons/react/24/solid/InformationCircleIcon';
-import PauseCircleIcon from '@heroicons/react/24/solid/PauseCircleIcon';
+import QuestionMarkCircleIcon from '@heroicons/react/24/solid/QuestionMarkCircleIcon';
 
 export const ApprovalStatusIcons = {
-  "Approved": <CheckCircleIcon />,
-  "Rejected": <XCircleIcon />,
-  "Partially Approved": <InformationCircleIcon />,
+  "Rejected": <QuestionMarkCircleIcon />,
+  "Partially Approved": <QuestionMarkCircleIcon />,
+  "Error": <QuestionMarkCircleIcon />,
+  "Pended": <ArrowPathIcon />,
+  "Queued": <ArrowPathIcon />,
   "Not Required": <CheckCircleIcon />,
-  "Pended": <PauseCircleIcon />,
   "Submitted Amount": <CheckCircleIcon />,
-  "Error": <XCircleIcon />,
-  "Queued": <PauseCircleIcon />,
+  "Approved": <CheckCircleIcon />,
 };
