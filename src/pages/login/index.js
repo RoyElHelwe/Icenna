@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
@@ -10,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
 import { parseBody } from "next/dist/server/api-utils/node";
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { format } from 'url';
 import * as yup from 'yup';
@@ -41,12 +43,16 @@ const Login = ({ auth_token }) => {
   };
 
   if (!auth.loading && !!auth_token) {
-    login({ auth_token, device_type: 'WEB', from_google: 1, });
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+      login({ auth_token, device_type: 'WEB', from_google: 1, });
+    });
   }
 
   const { control, setError, handleSubmit, formState: { errors, }, } = useForm({
     defaultValues, mode: 'onSubmit', resolver: yupResolver(schema),
   });
+
+  const [continueWithUs, setContinueWithUs] = useState(false);
 
   const onSubmit = (data) => login({ email: data.email });
 
@@ -62,52 +68,72 @@ const Login = ({ auth_token }) => {
             <Typography variant='body2'>Please sign-on to your account</Typography>
           </Box>
 
-          <GoogleLogin
-            text="continue_with"
-            size='large'
-            theme={settings.mode === 'dark' ? 'filled_black' : 'outline'}
-            ux_mode='redirect'
-            login_uri={format({ pathname: `${window.location.origin}/api/login`, query: router.query, })}
-            useOneTap={false}
-          />
-          <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }}>or</Divider>
-          <form noValidate
-            autoComplete='off'
-            onSubmit={handleSubmit(onSubmit)}>
-            <FormControl fullWidth
-              sx={{ mb: 4 }}>
-              <Controller
-                name='email'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    autoFocus
-                    label='Email'
-                    type='email'
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    error={Boolean(errors.email)}
-                    placeholder='john@company.com'
-                  />
-                )}
+          <Box sx={{ display: 'flex', alignItems: 'center', }}>
+            <Box flex={1}>
+              <GoogleLogin
+                text="continue_with"
+                size='large'
+                theme={settings.mode === 'dark' ? 'filled_black' : 'outline'}
+                locale={settings.language || 'en'}
+                ux_mode='redirect'
+                login_uri={format({ pathname: `${window.location.origin}/api/login`, query: router.query, })}
+                useOneTap={false}
               />
-              {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
-            </FormControl>
-            <LoadingButton
+            </Box>
+            {!!auth_token && <CircularProgress size="1.8rem" />}
+          </Box>
+
+          <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }}>or</Divider>
+
+          {!continueWithUs && (
+            <Button
               fullWidth
               size='large'
-              type='submit'
               variant='contained'
-              loading={auth.loading}
-              sx={{
-                mb: 1,
-                mt: 1,
-              }}>
-              Continue with us
-            </LoadingButton>
-          </form>
+              sx={{ my: 1, }}
+              onClick={() => setContinueWithUs(true)}
+            >
+              Continue With Us
+            </Button>
+          )}
+
+          {continueWithUs && (
+            <form noValidate
+              autoComplete='off'
+              onSubmit={handleSubmit(onSubmit)}>
+              <FormControl fullWidth
+                sx={{ mb: 4 }}>
+                <Controller
+                  name='email'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      autoFocus
+                      label='Email'
+                      type='email'
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      error={Boolean(errors.email)}
+                      placeholder='john@company.com'
+                    />
+                  )}
+                />
+                {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+              </FormControl>
+              <LoadingButton
+                fullWidth
+                size='large'
+                type='submit'
+                variant='contained'
+                loading={auth.loading}
+                sx={{ my: 1, }}
+              >
+                Sign in
+              </LoadingButton>
+            </form>
+          )}
         </CardContent>
       </Card>
     </Box>

@@ -98,8 +98,11 @@ const CollapseTable = ({
   const [openRows, setOpenRows] = useState([]);
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (e) => {
+  const [openMenuId, setOpenMenuId] = useState(null);
+  
+  const isOpen = (rowId) => Boolean(anchorEl) && openMenuId === rowId;
+  const handleOpen = (e) => {
+    setOpenMenuId(e.currentTarget?.id);
     setAnchorEl(e.currentTarget);
   };
   const handleClose = () => {
@@ -210,19 +213,20 @@ const CollapseTable = ({
                   {actions && (
                     <TableCell align="center" sx={{ width: 90, }}>
                       <IconButton
-                        onClick={handleClick}
+                        id={r.id}
+                        onClick={handleOpen}
                         size="small"
                         sx={{ ml: 2, }}
-                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-controls={isOpen(r.id) ? `account-menu-${r.id}` : undefined}
                         aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
+                        aria-expanded={isOpen(r.id) ? 'true' : undefined}
                       >
                         <MoreHorizIcon />
                       </IconButton>
                       <Menu
-                        id="account-menu"
+                        id={`account-menu-${r.id}`}
                         anchorEl={anchorEl}
-                        open={open}
+                        open={isOpen(r.id)}
                         onClose={handleClose}
                         onClick={handleClose}
                         PaperProps={{
@@ -254,7 +258,7 @@ const CollapseTable = ({
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                       >
                         {actions.map((a) => (
-                          <MenuItem key={a.name} onClick={() => a.onClick(r)}>
+                          <MenuItem key={`${r.id}-${a.name}`} onClick={() => a.onClick(r)}>
                             {a.name}
                           </MenuItem>
                         ))}

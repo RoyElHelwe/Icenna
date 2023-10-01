@@ -131,6 +131,7 @@ export const PatientEncounter = ({
             dosage: dosage?.id,
             period: period?.id,
             route: i_type === 3 ? 'Oral' : undefined,
+            diagnosis_type: i_type === 1 ? 'Secondary' : undefined,
             ...rest,
           })}
         />
@@ -142,61 +143,61 @@ export const PatientEncounter = ({
         </Section>
       )}
 
-      <Section title={(
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-end',
-        }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mr: 3, }}>
-            <Translations text='Diagnosis' />
-          </Typography>
-          <LinkTypography sx={{ p: 1, }} onClick={() => {
-            if (isWritingDiagnosis) {
-              formRef?.current?.submitForm();
-            } else {
-              setIsWritingDiagnosis((prev) => !prev);
-            }
+      <Section
+        title={(
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-end',
           }}>
-            {t(isWritingDiagnosis ? 'Done' : 'Write Diagnosis')}
-          </LinkTypography>
-        </Box>
-      )} withDivider>
-        {!!patientData?.medical_code?.length && (
-          <>
-            <Box sx={{ mb: 5, }}>
-              {isWritingDiagnosis ? (
-                <DiagnosisDescriptionForm
-                  reference={formRef}
-                  values={{ id: patientData?.id, text: patientData?.diagnosis_description ?? '', }}
-                  onSubmit={(data) => {
-                    setIsWritingDiagnosis((prev) => !prev);
-                    setPatientData(data);
-                  }}
-                />
-              ) : (
-                <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
-              )}
-            </Box>
-
-            <Diagnosis
-              rows={patientData?.medical_code ?? []}
-              editable={true}
-              actions={[
-                {
-                  name: t('Delete'),
-                  onClick: (row) => updateEncItem({
-                    id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.id,
-                  }),
-                },
-              ]}
-              onRowChange={(row, updatedParams) => updateEncItem({
-                id: patientData?.id, i_type: 1, t_type: 'update',
-                code: row?.id, diagnosis_type: row?.type
-              })}
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mr: 3, }}>
+              <Translations text='Diagnosis' />
+            </Typography>
+            <LinkTypography sx={{ p: 1, }} onClick={() => {
+              if (isWritingDiagnosis) {
+                formRef?.current?.submitForm();
+              } else {
+                setIsWritingDiagnosis((prev) => !prev);
+              }
+            }}>
+              {t(isWritingDiagnosis ? 'Done' : 'Write Diagnosis')}
+            </LinkTypography>
+          </Box>
+        )}
+        withDivider
+      >
+        <Box sx={{ mb: 5, }}>
+          {isWritingDiagnosis ? (
+            <DiagnosisDescriptionForm
+              reference={formRef}
+              values={{ id: patientData?.id, text: patientData?.diagnosis_description ?? '', }}
+              onSubmit={(data) => {
+                setIsWritingDiagnosis((prev) => !prev);
+                setPatientData(data);
+              }}
             />
-          </>
+          ) : (
+            <Typography sx={{ mt: 3, mx: 3, }}>{patientData?.diagnosis_description}</Typography>
+          )}
+        </Box>
+        {!!patientData?.medical_code?.length && (
+          <Diagnosis
+            rows={patientData?.medical_code ?? []}
+            editable={true}
+            actions={[
+              {
+                name: t('Remove'),
+                onClick: (row) => updateEncItem({
+                  id: patientData?.id, t_type: 'delete', i_type: 1, code: row?.id,
+                }),
+              },
+            ]}
+            onRowChange={(row, updatedParams) => updateEncItem({
+              id: patientData?.id, i_type: 1, t_type: 'update',
+              code: row?.id, diagnosis_type: row?.type
+            })}
+          />
         )}
       </Section>
 
@@ -213,7 +214,7 @@ export const PatientEncounter = ({
               nonEditableColumns={nonEditableColumns?.procedures}
               actions={[
                 {
-                  name: t('Delete'),
+                  name: t('Remove'),
                   onClick: (row) => updateEncItem({
                     id: patientData?.id, record_id: row?.id, i_type: 2, code: row?.code, t_type: 'delete',
                   }),
@@ -241,7 +242,7 @@ export const PatientEncounter = ({
             editable={true}
             actions={[
               {
-                name: t('Delete'),
+                name: t('Remove'),
                 onClick: (row) => updateEncItem({
                   id: patientData?.id, i_type: 3, t_type: 'delete', code: row?.id,
                 }),

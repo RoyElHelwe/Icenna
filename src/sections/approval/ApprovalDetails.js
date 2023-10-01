@@ -55,7 +55,7 @@ const ApprovalDetails = ({ id, ...props }) => {
     const procedures = appDetails?.procedures?.items?.map((p) => ({
       service_item: p.code, qty: 1, price: p.price, tooth_code: ''
     })) ?? [];
-    
+
     if (appDetails?.id) {
       update({
         id: appDetails?.id,
@@ -115,7 +115,7 @@ const ApprovalDetails = ({ id, ...props }) => {
             editable={true}
             {...(editable && {
               actions: [{
-                name: t('Delete'),
+                name: t('Remove'),
                 onClick: (row) => setAppDetails((prev) => {
                   const medical_codes = prev.medical_codes?.medical_codes;
                   const index = medical_codes.findIndex((i) => i.id === row.id);
@@ -167,7 +167,7 @@ const ApprovalDetails = ({ id, ...props }) => {
             nonEditableColumns={['status']}
             {...(editable && {
               actions: [{
-                name: t('Delete'),
+                name: t('Remove'),
                 onClick: (row) => setAppDetails((prev) => {
                   const items = prev.procedures?.items;
                   const index = items.findIndex((i) => i.id === row.id);

@@ -14,8 +14,8 @@ import { useAuth } from '../../../hooks/use-auth';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
 
 export const Card = styled(MuiCard)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' },
-  [theme.breakpoints.up('md')]: { width: '50rem' },
+  [theme.breakpoints.up('sm')]: { width: '100%' },
+  [theme.breakpoints.up('md')]: { width: '75%' },
 }));
 
 const AcceptTerms = () => {
@@ -25,7 +25,7 @@ const AcceptTerms = () => {
   const { isLoading, data } = useQuery({
     queryKey: ['terms_and_conditions', user.terms_and_conditions_id],
     queryFn: getTerms,
-  })
+  });
 
   const onSubmit = (e) => {
     acceptTerms({ user_id: user.email, id: user.terms_and_conditions_id, }, () => {
@@ -42,18 +42,22 @@ const AcceptTerms = () => {
               <Skeleton height="200px" />
             )}
             {!isLoading && data?.data?.data?.terms && (
-              parse(data.data.data.terms)
+              <Box sx={{ direction: 'rtl' }}>
+                {parse(data.data.data.terms)}
+              </Box>
             )}
             <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }} />
             <Typography sx={{ color: 'text.secondary' }}>
               {t('Do you accept our terms and conditions?')}
             </Typography>
           </Box>
-          <LoadingButton fullWidth
+          <LoadingButton
+            fullWidth
             loading={isLoading}
             variant='contained'
             sx={{ mt: 2 }}
-            onClick={onSubmit}>
+            onClick={onSubmit}
+          >
             Accept Terms
           </LoadingButton>
         </CardContent>
