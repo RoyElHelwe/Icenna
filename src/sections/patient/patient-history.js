@@ -15,7 +15,6 @@ import { DentalCharting } from './dental-charting';
 import { PatientEncounterView } from './patient-encounter-view';
 
 const getDepartmentCharting = (dept, t) => {
-
   if (dept === 'Dental') {
     return (
       <Section title={t("Dental Charting")}>
@@ -32,19 +31,6 @@ export const PatientHistory = ({ patientData }) => {
 
   return (
     <>
-      {patientData?.practitioner && (
-        <Section title="Info" withDivider>
-          <Card>
-            <CardContent>
-              <Typography sx={{ fontWeight: 'bold', }}>{patientData?.practitioner?.clinic}</Typography>
-              <Typography>
-                {patientData?.practitioner?.department}
-                {patientData?.practitioner?.practitioner_name && `, Dr. ${patientData?.practitioner?.practitioner_name}`}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Section>
-      )}
       {getDepartmentCharting(patientData?.department, t)}
       {!!patientData?.images?.length && (
         <Section title={`${t('Panorama Image')}`} withDivider>

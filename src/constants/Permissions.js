@@ -9,6 +9,7 @@ export const Permissions = {
   CanViewApproval: 'CanViewApproval',
   CanViewClaim: 'CanViewClaim',
   CanViewEncounter: 'CanViewEncounter',
+  CanViewPractitionerWithPatient: 'CanViewPractitionerWithPatient',
 };
 
 export const UserRoles = {

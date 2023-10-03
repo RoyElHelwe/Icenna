@@ -21,6 +21,7 @@ import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { pusherClient } from '../lib/pusher';
 import { PractitionerPatient } from '../sections/patient/PractitionerPatient';
+import { useHasPermissions } from '../hooks/useHasPermissions';
 
 const Patient = () => {
   const router = useRouter();
@@ -72,6 +73,8 @@ const Patient = () => {
     const patient = patients.find((p) => p.appointment === appid) ?? { appointment: appid };
     setSelectedPatient(patient);
   }, [patients, router.query.appid]);
+
+  const canViewPractitioner = useHasPermissions(Permissions.CanViewPractitionerWithPatient);
 
   return (
     <Box sx={{ display: 'flex', }}>
@@ -128,7 +131,7 @@ const Patient = () => {
                       </SvgIcon>
                     ))}
                     key={p.id}
-                    title={p.full_name}
+                    title={canViewPractitioner ? `${p.full_name} with ${p.practitioner_data?.practitioner_name}` : p.full_name}
                     onClick={() => {
                       setSelectedPatient(patients.find((patient) => patient.id === p.id));
                       router.push({
