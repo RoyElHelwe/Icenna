@@ -29,7 +29,7 @@ const Page = ({ website }) => {
       </Head>
 
       <Box sx={{ my: 3, }}>
-        <Typography variant="h2">
+        <Typography variant="h2" sx={{ textAlign: 'center' }}>
           Terms and Conditions
         </Typography>
         <Box sx={{ mx: 5, direction: 'rtl' }}>

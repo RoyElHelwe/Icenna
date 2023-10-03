@@ -81,7 +81,9 @@ export const PatientEncounter = ({
   };
 
   const getCheckoutText = () => {
-    if (patientData?.action === 0) {
+    if (patientData?.error?.length > 0) {
+      return patientData?.error;
+    } else if (patientData?.action === 0) {
       return t('Waiting Response');
     } else if (patientData?.action === 1) {
       return t('Ask for Approval');

@@ -43,8 +43,9 @@ const Login = ({ auth_token }) => {
   };
 
   if (!auth.loading && !!auth_token) {
-    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(async () => {
       login({ auth_token, device_type: 'WEB', from_google: 1, });
+      await router.replace('/login');
     });
   }
 
@@ -54,7 +55,7 @@ const Login = ({ auth_token }) => {
 
   const [continueWithUs, setContinueWithUs] = useState(false);
 
-  const onSubmit = (data) => login({ email: data.email });
+  const onSubmit = (data) => login({ email: data.email, device_type: 'WEB', });
 
   return (
     <Box className='content-center'>
