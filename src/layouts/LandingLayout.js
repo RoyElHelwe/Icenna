@@ -4,7 +4,7 @@ import { LandingFooter } from './components/LandingFooter';
 import { LandingTopNav } from './components/LandingTopNav';
 import { TOP_NAV_HEIGHT } from './components/top-nav';
 
-const LandingLayout = ({ children }) => {
+const LandingLayout = ({ website, children }) => {
   return (
     <>
       <BlankLayoutWrapper>
@@ -12,7 +12,7 @@ const LandingLayout = ({ children }) => {
         <Box sx={{ minHeight: '100vh', overflowX: 'hidden', bgcolor: 'background.paper', mt: `${TOP_NAV_HEIGHT}px`, px: 5, pb: 5, }}>
           {children}
         </Box>
-        <LandingFooter />
+        <LandingFooter website={website} />
       </BlankLayoutWrapper>
     </>
   );

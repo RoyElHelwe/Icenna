@@ -3,10 +3,17 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box, Stack, Typography } from '@mui/material';
 import Head from 'next/head';
 import Carousel from 'react-material-ui-carousel';
+import { getWebsite } from '../api/Website';
 import RtlSvgIcon from '../components/rtl-svgicon';
 import LandingLayout from '../layouts/LandingLayout';
 
-const Page = () => {
+export async function getServerSideProps() {
+  const website = await getWebsite();
+
+  return { props: { website: website.data } };
+};
+
+const Page = ({ website }) => {
   return (
     <>
       <Head>
@@ -45,11 +52,15 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => (
-  <LandingLayout>
-    {page}
-  </LandingLayout>
-);
+Page.getLayout = (page) => {
+  const { website } = page.props;
+
+  return (
+    <LandingLayout website={website?.data}>
+      {page}
+    </LandingLayout>
+  );
+};
 
 Page.authGuard = false;
 

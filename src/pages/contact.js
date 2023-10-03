@@ -1,8 +1,28 @@
 import { Grid, Link, Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
+import { getWebsite } from '../api/Website';
 import LandingLayout from '../layouts/LandingLayout';
 
-const Page = () => {
+export async function getServerSideProps() {
+  const website = await getWebsite();
+
+  return { props: { website: website.data } };
+};
+
+const Page = ({ website }) => {
+  const { data } = useQuery({
+    queryKey: ['getWebsite'],
+    queryFn: getWebsite,
+    initialData: website,
+  });
+
+  const {
+    phone,
+    address,
+    email,
+  } = data?.data?.contact ?? {};
+
   return (
     <>
       <Head>
@@ -15,15 +35,15 @@ const Page = () => {
               Contact US
             </Typography>
             <Typography sx={{ fontSize: '1.25rem', alignContent: 'center' }}>
-              JEMA2247 2247 Abdullah Al Tijani-Al Muhammadiyah Dist. Jeddah 23625 Saudi Arabia
+              {address}
             </Typography>
             <Stack direction="row" spacing={2} >
               <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Email:</Typography>
-              <Link href="mailto:sales@icenna.com" underline="hover" sx={{ fontSize: '1.25rem', }}>sales@icenna.com</Link>
+              <Link href={`mailto:${email}`} underline="hover" sx={{ fontSize: '1.25rem', }}>{email}</Link>
             </Stack>
             <Stack direction="row" spacing={2} >
               <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Phone:</Typography>
-              <Link href="tel:+966503648038" underline="hover" sx={{ fontSize: '1.25rem', }}>+966-50-364-8038</Link>
+              <Link href={`tel:${phone}`} underline="hover" sx={{ fontSize: '1.25rem', }}>{phone}</Link>
               <Typography></Typography>
             </Stack>
           </Stack>
@@ -37,11 +57,15 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => (
-  <LandingLayout>
-    {page}
-  </LandingLayout>
-);
+Page.getLayout = (page) => {
+  const { website } = page.props;
+
+  return (
+    <LandingLayout website={website?.data}>
+      {page}
+    </LandingLayout>
+  );
+};
 
 Page.authGuard = false;
 

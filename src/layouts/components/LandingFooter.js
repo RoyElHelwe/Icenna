@@ -15,7 +15,7 @@ const LinkTypography = styled(Typography)(({ theme }) => ({
   textDecoration: 'none',
 }));
 
-export const LandingFooter = ({ withTabs, ...rest }) => {
+export const LandingFooter = ({ withTabs, website, ...rest }) => {
   return (
     <Box
       component="footer"
@@ -29,16 +29,40 @@ export const LandingFooter = ({ withTabs, ...rest }) => {
       <Box sx={{ mx: 6 }}>
         <Grid container sx={{ py: 5, gap: 5, }}>
           <Grid item xs={4} lg={1}>
-            <LinkTypography component={NextLink} target="_blank" href="https://twitter.com/icenna_com">Twitter</LinkTypography>
+            <LinkTypography
+              component={NextLink}
+              target="_blank"
+              href={website?.social_links?.find((l) => l.name === 'twitter')?.url ?? ''}
+            >
+              Twitter
+            </LinkTypography>
           </Grid>
           <Grid item xs={4} lg={1}>
-            <LinkTypography component={NextLink} target="_blank" href="https://www.linkedin.com/company/icenna/about/">Linkedin</LinkTypography>
+            <LinkTypography
+              component={NextLink}
+              target="_blank"
+              href={website?.social_links?.find((l) => l.name === 'linkedin')?.url ?? ''}
+            >
+              Linkedin
+            </LinkTypography>
           </Grid>
           <Grid item xs={4} lg={1}>
-            <LinkTypography component={NextLink} target="_blank" href="https://www.instagram.com/icenna_com/">Instagram</LinkTypography>
+            <LinkTypography
+              component={NextLink}
+              target="_blank"
+              href={website?.social_links?.find((l) => l.name === 'instagram')?.url ?? ''}
+            >
+              Instagram
+            </LinkTypography>
           </Grid>
           <Grid item xs={4} lg={1}>
-            <LinkTypography component={NextLink} target="_blank" href="https://maroof.sa/businesses/details/54371">Maroof</LinkTypography>
+            <LinkTypography
+              component={NextLink}
+              target="_blank"
+              href={website?.social_links?.find((l) => l.name === 'maroof')?.url ?? ''}
+            >
+              Maroof
+            </LinkTypography>
           </Grid>
           <Grid item xs={4} lg={1}>
             <LinkTypography component={NextLink} href="/contact">Contact</LinkTypography>

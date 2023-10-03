@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import authConfig from '../configs/auth';
 import { useSettings } from '../hooks/useSettings';
 
-const baseURL = '/api/method';
+export const baseURL = '/api/method';
 
 const instance = axios.create({
   baseURL,

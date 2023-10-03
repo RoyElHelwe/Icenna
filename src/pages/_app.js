@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
   QueryClient,
-  QueryClientProvider,
+  QueryClientProvider
 } from '@tanstack/react-query';
 import Head from 'next/head';
 import { Toaster } from 'react-hot-toast';
@@ -48,8 +48,9 @@ const Guard = ({ children, authGuard, guestGuard }) => {
 };
 
 const App = (props) => {
-  const { i18n } = useTranslation();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  const { i18n } = useTranslation();
   const setConfig = Component.setConfig ?? undefined;
   const getLayout = Component.getLayout ?? ((page) => page);
   const authGuard = Component.authGuard ?? true;
@@ -67,9 +68,11 @@ const App = (props) => {
           content="initial-scale=1, width=device-width"
         />
       </Head>
+
       <ReactHotToast>
         <Toaster position='top-right' toastOptions={{ className: 'react-hot-toast' }} />
       </ReactHotToast>
+
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
           <AuthProvider>
@@ -100,7 +103,6 @@ const App = (props) => {
           </AuthProvider>
         </GoogleOAuthProvider>
       </QueryClientProvider>
-
     </CacheProvider>
   );
 };
