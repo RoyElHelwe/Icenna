@@ -33,8 +33,8 @@ const Procedures = ({ department, onUpdate, nonEditableColumns, editable, ...pro
       editable: (row) => (editable && row?.status !== 'Paid'),
       type: 'select',
       valueOptions: (row) => {
-        if (row?.status === 'Waiting Response') {
-          return [{ value: 'Waiting Response', label: 'Waiting Response' }, cashOption];
+        if (row?.status === 'Approved') {
+          return [{ value: 'Approved', label: 'Approved' }, cashOption];
         }
 
         return statusOptions;
