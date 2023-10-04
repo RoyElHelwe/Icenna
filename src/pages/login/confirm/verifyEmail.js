@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Card } from '../../../components/auth-card';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
-import VerifyOTP from '../../../sections/login/verify-otp';
+import VerifyOtpForm from '../../../sections/login/VerifyOtpForm';
 
 const ConfirmLogin = () => {
 
@@ -20,7 +20,7 @@ const ConfirmLogin = () => {
               We sent a verification code to your Email. Enter the code from the email in the field below.
             </Typography>
           </Box>
-          <VerifyOTP />
+          <VerifyOtpForm />
         </CardContent>
       </Card>
     </Box>

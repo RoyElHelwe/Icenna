@@ -23,6 +23,23 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(defaultProvider.loading);
 
   const router = useRouter();
+
+  const getToken = () => {
+    try {
+      return JSON.parse(window.localStorage.getItem(authConfig.storTokenKey));
+    } catch (e) {
+      return undefined;
+    }
+  };
+
+  const getUser = () => {
+    try {
+      return JSON.parse(window.localStorage.getItem(authConfig.storUserKeyName));
+    } catch (e) {
+      return undefined;
+    }
+  };
+
   useEffect(() => {
     const channel = pusherClient.subscribe("iCenna");
 
@@ -31,10 +48,10 @@ const AuthProvider = ({ children }) => {
     });
 
     const initAuth = async () => {
-      const token = JSON.parse(window.localStorage.getItem(authConfig.storTokenKey));
-      const currUser = window.localStorage.getItem(authConfig.storUserKeyName);
+      const token = getToken();
+      const currUser = getUser();
 
-      if (token?.[authConfig.storAccessTokenKey]) {
+      if (token) {
         setLoading(true);
         await axios
           .get(authConfig.meEndpoint)
@@ -47,19 +64,18 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
           })
           .catch(async (e) => {
-            clearLocalStorage();
             setLoading(false);
-            if (authConfig.onTokenExpiration === "logout" && !router.pathname.includes("login")) {
-              await router.replace("/login");
+            if (e?.response?.data?.message === "Not Authorized") {
+              // Only remove token when it expires
+              clearLocalStorage();
+              if (authConfig.onTokenExpiration === "logout" && !router.pathname.includes("login")) {
+                await router.replace("/login");
+              }
             }
           });
       } else if (currUser) {
-        const u = JSON.parse(currUser);
-        if (u.action === 0) {
-          clearLocalStorage();
-        } else {
-          setUser(u);
-        }
+        // NTOE: In case the user removed the token you must logout to get new token
+        setUser(currUser);
         setLoading(false);
       } else {
         clearLocalStorage();
@@ -81,14 +97,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const storeUser = (data) => {
-    window.localStorage.setItem(
-      authConfig.storTokenKey,
-      JSON.stringify({
-        [authConfig.storAccessTokenKey]: data.access_token,
-      }),
-    );
-    window.localStorage.setItem(authConfig.storUserKeyName, JSON.stringify(data.user));
-    setUser({ ...data.user });
+    window.localStorage.setItem(authConfig.storTokenKey, JSON.stringify(data?.access_token));
+    window.localStorage.setItem(authConfig.storUserKeyName, JSON.stringify(data?.user));
+    setUser({ ...data?.user });
   };
 
   const redirectUser = async (u) => {
@@ -103,22 +114,6 @@ const AuthProvider = ({ children }) => {
         query: rest,
       });
     }
-  };
-
-  const handleLogin = (params, errorCallback) => {
-    setLoading(true);
-    axios
-      .post(authConfig.signOnEndpoint, params)
-      .then(async (response) => {
-        storeUser(response.data.data);
-        await redirectUser(response.data.data.user);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        if (errorCallback) errorCallback(err);
-      });
   };
 
   const handleAddMobile = (params, errorCallback) => {
@@ -137,10 +132,6 @@ const AuthProvider = ({ children }) => {
       });
   };
 
-  const handleVerifyOTP = (params, errorCallback) => {
-    return axios.post("/icenna.user_api.auth.verify_otp", params);
-  };
-
   const handleAcceptTerms = (params, errorCallback) => {
     setLoading(true);
     axios
@@ -157,21 +148,22 @@ const AuthProvider = ({ children }) => {
       });
   };
 
-  const handleLogout = (errorCallback) => {
-    setLoading(true);
-    axios
-      .post("/icenna.user_api.auth.logout")
-      .then(async (response) => { })
-      .catch((err) => {
-        console.log(err);
-        if (errorCallback) errorCallback(err);
-      })
-      .finally(() => {
-        router.push("/login");
-        clearLocalStorage();
-        googleLogout();
-        setLoading(false);
-      });
+  const handleLogout = async (errorCallback) => {
+    const token = getToken();
+
+    if (token) {
+      axios
+        .post("/icenna.user_api.auth.logout")
+        .then(async (res) => { })
+        .catch((err) => {
+          console.log(err);
+          if (errorCallback)
+            errorCallback(err);
+        })
+    }
+    await router.push("/login");
+    clearLocalStorage();
+    googleLogout();
   };
 
   const values = {
@@ -179,9 +171,7 @@ const AuthProvider = ({ children }) => {
     loading,
     setUser,
     setLoading,
-    login: handleLogin,
     addMobile: handleAddMobile,
-    verifyOTP: handleVerifyOTP,
     acceptTerms: handleAcceptTerms,
     logout: handleLogout,
     storeUser,

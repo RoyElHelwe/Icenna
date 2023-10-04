@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { Card } from '../../../components/auth-card';
 import { useAuth } from '../../../hooks/use-auth';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
-import VerifyOTP from '../../../sections/login/verify-otp';
+import VerifyOtpForm from '../../../sections/login/VerifyOtpForm';
 
 const ConfirmLogin = () => {
   const { user, } = useAuth();
@@ -23,7 +23,7 @@ const ConfirmLogin = () => {
             </Typography>
             <Typography sx={{ mt: 2, fontWeight: 700 }}>{`${'*'.repeat(mobile_no.length - 4)}${mobile_no.slice(-4)}`}</Typography>
           </Box>
-          <VerifyOTP />
+          <VerifyOtpForm />
         </CardContent>
       </Card>
     </Box>

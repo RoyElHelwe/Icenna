@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import Spinner from '../../../components/spinner';
 import { useAuth } from '../../../hooks/use-auth';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
 
@@ -12,7 +11,8 @@ export const confirmStatusRoute = {
 };
 
 const ConfirmLogin = () => {
-  const { user, } = useAuth();
+  const auth = useAuth();
+  const { user } = auth;
   const router = useRouter();
 
   useEffect(() => {
@@ -31,9 +31,9 @@ const ConfirmLogin = () => {
         query: rest,
       });
     }
-  }, []);
+  }, [auth]);
 
-  return <Spinner />;
+  return (<></>);
 };
 
 ConfirmLogin.getLayout = (page) => <ConfirmLoginLayout>{page}</ConfirmLoginLayout>;

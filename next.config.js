@@ -7,7 +7,7 @@ module.exports = {
       },
     ];
   },
-  transpilePackages: ['mui-file-input'],
+  transpilePackages: ['mui-file-input', 'mui-one-time-password-input'],
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if your project has ESLint errors.

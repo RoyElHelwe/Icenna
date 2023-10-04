@@ -39,9 +39,9 @@ const clientSideEmotionCache = createEmotionCache();
 
 const Guard = ({ children, authGuard, guestGuard }) => {
   if (guestGuard) {
-    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
+    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>;
   } else if (!guestGuard && !authGuard) {
-    return <>{children}</>
+    return <>{children}</>;
   } else {
     return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>;
   }
@@ -95,7 +95,7 @@ const App = (props) => {
                           </Guard>
                         </AxiosInterceptor>
                       </ThemeComponent>
-                    )
+                    );
                   }}
                 </SettingsConsumer>
               </SettingsProvider>

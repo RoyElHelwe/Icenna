@@ -1,10 +1,16 @@
+import MenuIcon from '@mui/icons-material/Menu';
 import { TabContext, TabList } from '@mui/lab';
 import {
   AppBar,
   Avatar,
+  IconButton,
+  MenuItem,
+  MenuList,
+  Popover,
   Stack,
   Tab,
-  Typography
+  Typography,
+  useMediaQuery
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import NextLink from 'next/link';
@@ -21,6 +27,7 @@ export const TOP_NAV_HEIGHT = 60;
 
 export const TopNav = ({ withTabs, ...rest }) => {
   const accountPopover = usePopover();
+  const tabsPopover = usePopover();
   const auth = useAuth();
   const env = process.env.NEXT_PUBLIC_NODE_ENV;
 
@@ -28,6 +35,14 @@ export const TopNav = ({ withTabs, ...rest }) => {
   const pathname = router.pathname?.split('/')[1];
   const [value, setValue] = useState('0');
   const navItems = useNavItems();
+
+  const mdUp = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  useEffect(() => {
+    if (!mdUp && tabsPopover.open) {
+      tabsPopover.handleClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mdUp]);
 
   useEffect(() => {
     const index = navItems.findIndex((i) => `/${pathname}` === i.path);
@@ -71,9 +86,10 @@ export const TopNav = ({ withTabs, ...rest }) => {
         <Stack
           alignItems="center"
           direction="row"
-          spacing={35}>
+          spacing={30}
+        >
           <Typography variant="h3">iCenna</Typography>
-          {(withTabs ?? true) && (
+          {(withTabs ?? true) && mdUp && (
             <TabContext value={value}>
               <TabList
                 sx={{ minHeight: TOP_NAV_HEIGHT, display: 'flex', alignItems: 'flex-end', }}
@@ -95,28 +111,70 @@ export const TopNav = ({ withTabs, ...rest }) => {
             </TabContext>
           )}
         </Stack>
-        <Stack
-          alignItems="center"
-          direction="row"
-          spacing={2}>
-          <Avatar
-            onClick={accountPopover.handleOpen}
-            ref={accountPopover.anchorRef}
-            sx={{
-              cursor: 'pointer',
-              height: 50,
-              width: 50,
-            }}
-            src={auth.user?.image ?? "/assets/errors/error-401.png"}
-          />
-        </Stack>
+        {auth.user && (
+          <Stack
+            alignItems="center"
+            direction="row"
+            spacing={2}
+          >
+            {!mdUp && (
+              <IconButton
+                onClick={tabsPopover.handleOpen}
+                ref={tabsPopover.anchorRef}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Avatar
+              onClick={accountPopover.handleOpen}
+              ref={accountPopover.anchorRef}
+              sx={{
+                cursor: 'pointer',
+                height: 50,
+                width: 50,
+              }}
+              src={auth.user?.image ?? "/assets/errors/error-401.png"}
+            />
+          </Stack>
+        )}
       </Stack>
       <AccountPopover
         anchorEl={accountPopover.anchorRef.current}
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
-    </AppBar>
+      <Popover
+        anchorEl={tabsPopover.anchorRef.current}
+        open={tabsPopover.open}
+        onClose={tabsPopover.handleClose}
+        anchorOrigin={{
+          horizontal: 'left',
+          vertical: 'bottom',
+        }}
+      >
+        <MenuList
+          disablePadding
+          dense
+          sx={{
+            p: '8px',
+            '& > *': {
+              borderRadius: 1,
+            },
+          }}
+        >
+          {navItems.map((item, i) => (
+            <MenuItem
+              key={i}
+              component={NextLink}
+              href={item.path}
+              selected={value === `${i}`}
+            >
+              <Translations text={item.title} />
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Popover>
+    </AppBar >
   );
 };
 

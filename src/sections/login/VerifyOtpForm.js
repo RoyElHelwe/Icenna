@@ -8,25 +8,27 @@ import { MuiOtpInput } from 'mui-one-time-password-input';
 import { useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { verify_otp } from '../../api/auth';
 import { useAuth } from '../../hooks/use-auth';
 
-const schema = yup.object().shape({
-  code: yup.string().matches(/[0-9]{6}/, 'Code is not valid'),
-});
-
-const defaultValues = {
-  code: '',
-};
-
-const VerifyOTP = () => {
-  const { user, verifyOTP, storeUser, redirectUser, loading, setLoading } = useAuth();
-  const { otp_token } = user;
+const VerifyOtpForm = ({
+  values
+}) => {
+  const { user, storeUser, redirectUser } = useAuth();
 
   const { isLoading, error, data, mutate, } = useMutation({
-    queryKey: ['verifyOTP'],
-    mutationFn: verifyOTP,
+    mutationFn: verify_otp,
+    enabled: false,
   });
-  const otpRef = useRef(null);
+
+  const defaultValues = {
+    ...values,
+    code: '',
+  };
+
+  const schema = yup.object().shape({
+    code: yup.string().matches(/[0-9]{6}/, 'Code is not valid'),
+  });
 
   const {
     control,
@@ -40,15 +42,13 @@ const VerifyOTP = () => {
     resolver: yupResolver(schema),
   });
 
+  const otpRef = useRef(null);
+
   useEffect(() => {
-    (async () => {
-      if (data?.data?.data && !loading) {
-        setLoading(true);
-        storeUser(data.data.data);
-        await redirectUser(data.data.data.user);
-        setLoading(false);
-      }
-    })();
+    if (!isLoading && data?.data?.data) {
+      storeUser(data.data.data);
+      redirectUser(data.data.data.user);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -62,15 +62,15 @@ const VerifyOTP = () => {
     }
   }, [error, setError]);
 
-  const onSubmit = ({ code }) => {
-    mutate({ code, otp_token });
-  };
+  const onSubmit = ({ code }) => mutate({ code, otp_token: user?.otp_token });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography sx={{ fontWeight: 600, color: 'text.secondary', mb: 2, }}>Type your 6 digit security code</Typography>
-      <FormControl fullWidth
-        sx={{ mb: 4 }}>
+      <FormControl
+        fullWidth
+        sx={{ mb: 4 }}
+      >
         <Controller
           name='code'
           control={control}
@@ -99,4 +99,4 @@ const VerifyOTP = () => {
   );
 };
 
-export default VerifyOTP;
+export default VerifyOtpForm;

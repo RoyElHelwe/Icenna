@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { MuiTelInput } from 'mui-tel-input';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { addMobile } from '../../../api/auth';
 import { Card } from '../../../components/auth-card';
 import { useAuth } from '../../../hooks/use-auth';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
@@ -23,11 +24,21 @@ const defaultValues = {
 };
 
 const ConfirmLogin = () => {
-  const { user, loading, addMobile } = useAuth();
+  const { user, storeUser, redirectUser } = useAuth();
+
+  const { isLoading, mutate, } = useMutation({
+    mutationFn: addMobile,
+    onSuccess: async (data, vars, ctx) => {
+      const userData = data?.data?.data;
+      if (!!userData) {
+        storeUser(userData);
+        await redirectUser(userData);
+      }
+    },
+  });
 
   const {
     control,
-    setError,
     handleSubmit,
     formState: { errors, },
   } = useForm({
@@ -36,15 +47,7 @@ const ConfirmLogin = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (values) => {
-    const { mobile, } = values;
-    addMobile({ id: user.email, mobile_no: mobile, }, () => {
-      setError('email', {
-        type: 'manual',
-        message: 'Unable to add mobile! Try again later.'
-      });
-    });
-  };
+  const onSubmit = ({ mobile, }) => mutate({ id: user.email, mobile_no: mobile, });
 
   return (
     <Box className='content-center'>
@@ -86,7 +89,7 @@ const ConfirmLogin = () => {
               size='large'
               type='submit'
               variant='contained'
-              loading={loading}
+              loading={isLoading}
               sx={{
                 mb: 1,
                 mt: 1,

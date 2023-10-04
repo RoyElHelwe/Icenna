@@ -18,14 +18,15 @@ const AxiosInterceptor = ({ children }) => {
       config.headers['Language'] = language ?? 'en';
 
       const token = JSON.parse(window.localStorage.getItem(authConfig.storTokenKey));
-      if (token?.[authConfig.storAccessTokenKey]) {
-        config.headers.Authorization = `Bearer ${token[authConfig.storAccessTokenKey]}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
 
       return config;
     });
 
     return () => instance.interceptors.request.eject(interceptor);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return children;

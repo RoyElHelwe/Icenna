@@ -32,7 +32,6 @@ const AuthGuard = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, loading]);
 
-
   if (loading || user === null || (user?.action !== 0 && !router.pathname.includes('login/confirm'))) {
     return fallback;
   }

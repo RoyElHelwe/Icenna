@@ -13,7 +13,7 @@ export async function getServerSideProps() {
   return { props: { website: website.data } };
 };
 
-const Page = ({ website }) => {
+const Index = ({ website }) => {
   return (
     <>
       <Head>
@@ -52,7 +52,7 @@ const Page = ({ website }) => {
   );
 };
 
-Page.getLayout = (page) => {
+Index.getLayout = (page) => {
   const { website } = page.props;
 
   return (
@@ -62,6 +62,6 @@ Page.getLayout = (page) => {
   );
 };
 
-Page.authGuard = false;
+Index.authGuard = false;
 
-export default Page;
+export default Index;
