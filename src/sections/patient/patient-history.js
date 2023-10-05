@@ -1,6 +1,6 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -62,7 +62,7 @@ export const PatientHistory = ({ patientData }) => {
           </Carousel>
         </Section>
       )}
-      {patientData?.time_line && (
+      {(patientData?.time_line && patientData?.department === 'Opthalmic') && (
         <Section title="Patient Encounters">
           <SectionList>
             {patientData?.time_line?.map(({ id, status, encounter_date: date, encounter_time: time, appointment }, i) => (

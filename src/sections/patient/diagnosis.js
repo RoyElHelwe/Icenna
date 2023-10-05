@@ -17,7 +17,7 @@ const Diagnosis = ({ editable, ...props }) => {
     {
       field: 'code',
       headerName: t('Code'),
-      width: 300,
+      width: 200,
       size: 50,
     },
     {
@@ -26,7 +26,13 @@ const Diagnosis = ({ editable, ...props }) => {
       width: 300,
       editable: editable,
       type: 'select',
-      valueOptions: typeOptions,
+      valueOptions: (row, rows) => {
+        if (rows?.filter((r) => r.type === 'Principal')?.length > 0) {
+          return [{ value: 'Secondary', label: 'Secondary' }];
+        }
+
+        return typeOptions;
+      },
     },
   ];
 

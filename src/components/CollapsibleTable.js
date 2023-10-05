@@ -21,7 +21,7 @@ const TableCell = styled(MuiTableCell)(({ theme }) => ({
   borderLeft: `1px solid ${theme.palette.divider}`,
 }));
 
-const getEditCell = (col, row, val, onRowChange) => {
+const getEditCell = (col, row, val, onRowChange, rows) => {
   const newRow = { ...row };
   const updatedParams = {};
 
@@ -43,7 +43,7 @@ const getEditCell = (col, row, val, onRowChange) => {
     // Add the value to option if not exist
     let options = col.valueOptions;
     if (typeof col.valueOptions === 'function') {
-      options = col.valueOptions?.(row);
+      options = col.valueOptions?.(row, rows);
     }
 
     const valueInOptions = Boolean(options?.find((o) => o.value === val || o.label == val));
@@ -200,7 +200,7 @@ const CollapseTable = ({
                     if (c.cellRequired?.(r) === false) {
                       content = 'Not Required';
                     } else if (isEditable) {
-                      content = getEditCell(c, r, cellValue, onRowChange);
+                      content = getEditCell(c, r, cellValue, onRowChange, rows);
                       editableCellSx = { padding: 1, };
                     }
 
