@@ -2,8 +2,9 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import CollapseTable from '../../components/CollapsibleTable';
+import DotAvatar from '../../components/DotAvatar';
 
-const Diagnosis = ({ editable, ...props }) => {
+const Diagnosis = ({ editable, visibleColumns, ...props }) => {
   const { t } = useTranslation();
 
   const typeOptions = [{ label: 'Principal', value: 'Principal' }, { label: 'Secondary', value: 'Secondary' }];
@@ -13,6 +14,30 @@ const Diagnosis = ({ editable, ...props }) => {
       field: 'name',
       headerName: t('Name'),
       width: '100%',
+    },
+    {
+      field: 'error',
+      headerName: t('Errors'),
+      width: 200,
+      editable: false,
+      visible: !!visibleColumns?.includes('error') && !!props.rows?.find((r) => !!r.error),
+      renderCell: (row) => {
+        if (row?.error) {
+          return (
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, }}>
+              <DotAvatar sx={{ bgcolor: 'error.main' }}>{''}</DotAvatar>
+              <Typography>{row?.error}</Typography>
+            </Box>
+          );
+        }
+
+        return (
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, }}>
+            <DotAvatar sx={{ bgcolor: 'success.main' }}>{''}</DotAvatar>
+            <Typography>No Error</Typography>
+          </Box>
+        );
+      }
     },
     {
       field: 'code',

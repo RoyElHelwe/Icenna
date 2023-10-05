@@ -18,15 +18,26 @@ const ApprovalDetails = ({ id, ...props }) => {
   const { t } = useTranslation();
 
   const ref = useRef(null);
+  const [error, setError] = useState();
 
   const onSuccess = (data, vars, ctx) => setAppDetails(data?.data?.data);
+  const onSettled = (data, err, vars, ctx) => {
+    if (!data?.data?.data?.medical_codes?.medical_codes?.find((mc) => mc.type === 'Principal')) {
+      setError("Please choose just 1 medical code principal");
+    } else {
+      setError(null);
+    }
+  };
 
   const { data } = useQuery({
     queryKey: ['get_approval_details', id],
     queryFn: getApprovalDetails,
+    onSettled,
   });
+
   const { mutate: update } = useMutation({
     mutationFn: updateApproval,
+    onSettled,
   });
   const { isLoading: isSubmitting, mutate: submit } = useMutation({
     mutationFn: submitApproval,
@@ -50,7 +61,7 @@ const ApprovalDetails = ({ id, ...props }) => {
 
   useEffect(() => {
     const medical_codes = appDetails?.medical_codes?.medical_codes?.map((mc) => ({
-      medical_code_id: mc.id, diagnosis_type: mc.type,
+      medical_code_id: mc.id, diagnosis_type: mc.type?.toLowerCase(),
     })) ?? [];
     const procedures = appDetails?.procedures?.items?.map((p) => ({
       service_item: p.code, qty: 1, price: p.price, tooth_code: ''
@@ -66,7 +77,7 @@ const ApprovalDetails = ({ id, ...props }) => {
   }, [appDetails]);
 
   return (
-    <Box sx={{ mx: 5, my: 3, width: '100%' }}>
+    <Box sx={{ px: 5, my: 3, width: '100%' }}>
       <Box ref={ref} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', }}>
         <Box flexGrow={1} sx={{ display: "flex", justifyContent: "flex-start" }}>
           <IconButton size="large" onClick={handleGoBack}>
@@ -112,7 +123,8 @@ const ApprovalDetails = ({ id, ...props }) => {
         <Section title="Diagnosis" withDivider>
           <Diagnosis
             rows={appDetails?.medical_codes?.medical_codes ?? []}
-            editable={true}
+            editable={editable}
+            visibleColumns={['error']}
             {...(editable && {
               actions: [{
                 name: t('Remove'),
@@ -163,7 +175,8 @@ const ApprovalDetails = ({ id, ...props }) => {
         <Section title="Procedures" withDivider>
           <Procedures
             rows={appDetails?.procedures?.items ?? []}
-            editable={true}
+            editable={editable}
+            visibleColumns={['error']}
             nonEditableColumns={['status']}
             {...(editable && {
               actions: [{
@@ -271,8 +284,9 @@ const ApprovalDetails = ({ id, ...props }) => {
             sx={{ borderRadius: 1.5, textTransform: 'none', px: 15, }}
             loading={isSubmitting}
             onClick={(e) => submit({ id: appDetails?.id })}
+            disabled={!!error}
           >
-            Submit
+            {error ? error : 'Submit'}
           </LoadingButton>
         </Box>
       )}

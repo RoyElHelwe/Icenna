@@ -87,7 +87,7 @@ const getEditCell = (col, row, val, onRowChange, rows) => {
 };
 
 const CollapseTable = ({
-  columns,
+  columns: cols,
   rows,
   renderRowDetails,
   headProps,
@@ -95,11 +95,21 @@ const CollapseTable = ({
   onRowChange,
   renderFooter,
 }) => {
+  const columns = cols.filter((c) => {
+    if (typeof c.visible === 'boolean') {
+      return c.visible;
+    } else if (typeof c.visible === 'function') {
+      return c.visible?.();
+    }
+
+    return true;
+  });
+
   const [openRows, setOpenRows] = useState([]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
-  
+
   const isOpen = (rowId) => Boolean(anchorEl) && openMenuId === rowId;
   const handleOpen = (e) => {
     setOpenMenuId(e.currentTarget?.id);
@@ -196,6 +206,10 @@ const CollapseTable = ({
                     }
 
                     let content = cellValue;
+                    if (typeof c.renderCell === 'function') {
+                      content = c.renderCell?.(r, c);
+                    }
+
                     let editableCellSx = {};
                     if (c.cellRequired?.(r) === false) {
                       content = 'Not Required';
@@ -302,6 +316,11 @@ CollapseTable.propTypes = {
       PropTypes.bool,
       PropTypes.func,
     ]),
+    visible: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.func,
+    ]),
+    renderCell: PropTypes.func,
     type: PropTypes.oneOf(['string', 'number', 'select']),
     valueOptions: PropTypes.oneOfType([
       PropTypes.shape({
