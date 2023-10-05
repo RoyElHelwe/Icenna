@@ -44,17 +44,17 @@ const Login = ({ auth_token }) => {
       const userData = data?.data?.data;
       if (!!userData) {
         auth.storeUser(userData);
-        await auth.redirectUser(userData);
+        await auth.redirectUser(userData?.user);
       } else {
         setError("Couldn't sign in! Try again later.");
       }
     },
     onError: (err, vars, ctx) => {
-      setError(err?.response?.data?.message);
+      setError(err?.response?.data?.message ?? "Internal server error!");
     }
   });
 
-  if (!auth.loading && !!auth_token) {
+  if (!auth.loading && !isLoading && !!auth_token) {
     new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
       mutate({ auth_token, device_type: 'WEB', from_google: 1, });
       router.replace('/login');
@@ -100,7 +100,7 @@ const Login = ({ auth_token }) => {
                 useOneTap={false}
               />
             </Box>
-            {!!auth_token && <CircularProgress size="1.8rem" />}
+            {(!!auth_token || (isLoading && !continueWithUs)) && <CircularProgress size="1.8rem" />}
           </Box>
 
           <Divider sx={{ my: theme => `${theme.spacing(3)} !important` }}>or</Divider>

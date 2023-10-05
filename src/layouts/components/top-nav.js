@@ -111,7 +111,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
             </TabContext>
           )}
         </Stack>
-        {auth.user && (
+        {(auth.user && router.pathname !== '/login') && (
           <Stack
             alignItems="center"
             direction="row"

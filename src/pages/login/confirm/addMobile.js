@@ -32,7 +32,7 @@ const ConfirmLogin = () => {
       const userData = data?.data?.data;
       if (!!userData) {
         storeUser(userData);
-        await redirectUser(userData);
+        await redirectUser(userData?.user);
       }
     },
   });

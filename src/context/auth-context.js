@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 import axios from "../api/axios-instance";
 import authConfig from "../configs/auth";
+import { redirectToAuth } from "../guards/auth-guard";
+import { getUserBack } from "../guards/guest-guard";
 import { pusherClient } from "../lib/pusher";
 
 const defaultProvider = {
@@ -104,9 +106,7 @@ const AuthProvider = ({ children }) => {
 
   const redirectUser = async (u) => {
     if (u?.action === 0) {
-      const returnUrl = router.query.returnUrl;
-      const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/home";
-      await router.replace(redirectURL);
+      getUserBack(router);
     } else {
       const { provider, auth_token, ...rest } = router.query;
       await router.replace({
@@ -151,6 +151,12 @@ const AuthProvider = ({ children }) => {
   const handleLogout = async (errorCallback) => {
     const token = getToken();
 
+    const logoutCallback = () => {
+      redirectToAuth(router, '/login', router.pathname.includes('/login'));
+      clearLocalStorage();
+      googleLogout();
+    };
+
     if (token) {
       axios
         .post("/icenna.user_api.auth.logout")
@@ -159,11 +165,12 @@ const AuthProvider = ({ children }) => {
           console.log(err);
           if (errorCallback)
             errorCallback(err);
+        }).finally(() => {
+          logoutCallback();
         })
+    } else {
+      logoutCallback();
     }
-    await router.push("/login");
-    clearLocalStorage();
-    googleLogout();
   };
 
   const values = {

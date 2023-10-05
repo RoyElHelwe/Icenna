@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { getUserBack } from '../../../guards/guest-guard';
 import { useAuth } from '../../../hooks/use-auth';
 import ConfirmLoginLayout from '../../../layouts/confirm-login-layout';
 
@@ -19,9 +20,7 @@ const ConfirmLogin = () => {
     if (!user) {
       router.replace('/login');
     } else if (user.action === 0) {
-      const returnUrl = router.query.returnUrl;
-      const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
-      router.replace(redirectURL);
+      getUserBack(router);
     } else if (user?.action && router.pathname === '/login/confirm') {
       const { provider, auth_token, ...rest } = router.query;
 

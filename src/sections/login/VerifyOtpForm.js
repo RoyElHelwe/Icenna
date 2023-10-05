@@ -14,11 +14,18 @@ import { useAuth } from '../../hooks/use-auth';
 const VerifyOtpForm = ({
   values
 }) => {
-  const { user, storeUser, redirectUser } = useAuth();
+  const { user, storeUser, redirectUser, } = useAuth();
 
   const { isLoading, error, data, mutate, } = useMutation({
     mutationFn: verify_otp,
     enabled: false,
+    onSuccess: async (data, vars, ctx) => {
+      const userData = data?.data?.data;
+      if (!!userData) {
+        storeUser(userData);
+        await redirectUser(userData?.user);
+      }
+    },
   });
 
   const defaultValues = {
@@ -43,13 +50,6 @@ const VerifyOtpForm = ({
   });
 
   const otpRef = useRef(null);
-
-  useEffect(() => {
-    if (!isLoading && data?.data?.data) {
-      storeUser(data.data.data);
-      redirectUser(data.data.data.user);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (error) {

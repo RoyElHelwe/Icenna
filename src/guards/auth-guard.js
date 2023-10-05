@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '../hooks/use-auth';
 
-const redirect = (router, to, restPath = false) => {
+export const redirectToAuth = (router, to, restPath = false) => {
   if (router.asPath !== '/' && !restPath) {
     router.replace({
       pathname: to,
@@ -24,9 +24,9 @@ const AuthGuard = (props) => {
     }
 
     if (!loading && !user) {
-      redirect(router, '/login', router.pathname.includes('/login'));
+      redirectToAuth(router, '/login', router.pathname.includes('/login'));
     } else if (user && user?.action !== 0 && !router.pathname.includes('login/confirm')) {
-      redirect(router, '/login/confirm');
+      redirectToAuth(router, '/login/confirm');
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
