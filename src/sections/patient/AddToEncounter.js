@@ -13,6 +13,7 @@ import { search } from '../../api/practitioner';
 import SearchBar from '../../components/searchbar';
 import MedicationForm from '../../forms/medication';
 import ProcedureForm from '../../forms/procedure';
+import { useSearchData } from '../../hooks/useSearchData';
 
 export const sections = [
   { id: 'medical_code', name: 'Medical Codes', i_type: 1, },
@@ -31,22 +32,24 @@ export const AddToEncounter = ({
   };
 
   const { t } = useTranslation();
+  const { cachedData, setCachedData } = useSearchData();
 
-  const [searchData, setSearchData] = useState({});
   const { data, } = useQuery({
     queryKey: ['search', id, ''],
     queryFn: (ctx) => search(ctx),
-    enabled: searchData?.[department]?.length !== 0,
+    enabled: cachedData[department]?.length === 0,
   });
 
   useEffect(() => {
-    setSearchData((prev) => {
-      return {
-        ...prev,
-        [department ?? 'data']: data?.data?.data,
-      }
-    });
-  }, [data, department]);
+    if (data?.data?.data) {
+      setCachedData((prev) => {
+        return {
+          ...prev,
+          [department ?? 'data']: data?.data?.data,
+        }
+      });
+    }
+  }, [data, department, setCachedData]);
 
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState();
@@ -54,7 +57,7 @@ export const AddToEncounter = ({
     setFilteredData((prev) => {
       const search = searchText.trim().toLowerCase();
       if (!search.length) {
-        return searchData;
+        return cachedData;
       }
 
       const data = prev?.[department ?? 'data'];
@@ -81,7 +84,7 @@ export const AddToEncounter = ({
         },
       }
     });
-  }, [department, searchText, searchData]);
+  }, [department, searchText, cachedData]);
 
   const searchResult = filteredData?.[department] ?? {};
   const groupResult = [].concat(...sections.map((sec) => (searchResult?.[sec?.id] ?? [])));

@@ -14,6 +14,7 @@ import 'simplebar-react/dist/simplebar.min.css';
 import { AxiosInterceptor } from '../api/axios-instance';
 import Spinner from '../components/spinner';
 import '../configs/i18n';
+import { SearchDataProvider } from '../context/SerachDataContext';
 import { AuthProvider } from '../context/auth-context';
 import { SettingsConsumer, SettingsProvider } from '../context/settings-context';
 import AclGuard from '../guards/AcGuard';
@@ -90,7 +91,9 @@ const App = (props) => {
                         <AxiosInterceptor>
                           <Guard authGuard={authGuard} guestGuard={guestGuard}>
                             <AclGuard access={access} guestGuard={guestGuard}>
-                              {getLayout(<Component {...pageProps} />)}
+                              <SearchDataProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                              </SearchDataProvider>
                             </AclGuard>
                           </Guard>
                         </AxiosInterceptor>
