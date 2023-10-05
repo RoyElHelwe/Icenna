@@ -35,6 +35,7 @@ const CalendarView = ({ children, calRef, ...props }) => {
     },
     nowIndicator: true,
     scrollTime: format(new Date().setHours(new Date().getHours() - 1), 'HH:mm:sss'),
+    scrollTimeReset: false,
     editable: false,
     eventResizableFromStart: true,
     dragScroll: true,

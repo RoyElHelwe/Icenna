@@ -17,11 +17,11 @@ import SearchBar from '../components/searchbar';
 import { SideNavItem } from '../components/side-nav-item';
 import { PatientStatuses } from '../constants';
 import { Permissions } from '../constants/Permissions';
+import { useHasPermissions } from '../hooks/useHasPermissions';
 import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
 import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
 import { pusherClient } from '../lib/pusher';
 import { PractitionerPatient } from '../sections/patient/PractitionerPatient';
-import { useHasPermissions } from '../hooks/useHasPermissions';
 
 const Patient = () => {
   const router = useRouter();
@@ -30,6 +30,7 @@ const Patient = () => {
   const { isLoading, error, data, refetch, isFetching, } = useQuery({
     queryKey: ['getPatients'],
     queryFn: getPatients,
+    refetchOnMount: true,
   });
 
   const [patients, setPatients] = useState([]);
