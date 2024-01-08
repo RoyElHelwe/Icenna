@@ -17,7 +17,7 @@ const Index = ({ website }) => {
   return (
     <>
       <Head>
-        <title>iCenna</title>
+        <title>ICenna</title>
       </Head>
       <Stack alignItems="center" direction="column" spacing={5}>
         <Carousel
