@@ -1,6 +1,6 @@
 import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import { Button, IconButton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useQuery } from '@tanstack/react-query';
@@ -8,20 +8,20 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { findPatient, getPatients } from '../api/practitioner';
-import Centered from '../components/Centered';
-import Drawer from '../components/Drawer';
-import Translations from '../components/Translations';
-import Scrollbar from '../components/scrollbar';
-import SearchBar from '../components/searchbar';
-import { SideNavItem } from '../components/side-nav-item';
-import { PatientStatuses } from '../constants';
-import { Permissions } from '../constants/Permissions';
-import { useHasPermissions } from '../hooks/useHasPermissions';
-import { TOP_NAV_HEIGHT } from '../layouts/components/top-nav';
-import { Layout as DashboardLayout } from '../layouts/dashboard-layout';
-import { pusherClient } from '../lib/pusher';
-import { PractitionerPatient } from '../sections/patient/PractitionerPatient';
+import { findPatient, getPatients } from '../../api/practitioner';
+import Centered from '../../components/Centered';
+import Drawer from '../../components/Drawer';
+import Translations from '../../components/Translations';
+import Scrollbar from '../../components/scrollbar';
+import SearchBar from '../../components/searchbar';
+import { SideNavItem } from '../../components/side-nav-item';
+import { PatientStatuses } from '../../constants';
+import { Permissions } from '../../constants/Permissions';
+import { useHasPermissions } from '../../hooks/useHasPermissions';
+import { TOP_NAV_HEIGHT } from '../../layouts/components/top-nav';
+import { Layout as DashboardLayout } from '../../layouts/dashboard-layout';
+import { pusherClient } from '../../lib/pusher';
+import { PractitionerPatient } from '../../sections/patient/PractitionerPatient';
 
 const Patient = () => {
   const router = useRouter();
@@ -54,6 +54,7 @@ const Patient = () => {
   }, [lgUp]);
 
   const [search, setSearch] = useState('');
+  const [searchPatients, setSearchPatients] = useState('');
   const { error: searchError, data: searchData, } = useQuery({
     queryKey: ['find_patient', (search.length >= 3 ? search : '')],
     queryFn: (ctx) => findPatient(ctx),
@@ -155,8 +156,18 @@ const Patient = () => {
       ) : (
         <Centered>
           <Typography variant="h5">
-            {t("Please select a Patient from the list")}
+            {t("Please select a Patient from the list Or search for a Patient")}
           </Typography>
+          <SearchBar sx={{ mx: 2, my: 4 }} onChange={(e) => setSearchPatients(e.target.value)} />
+          <Button disabled={searchPatients.length == 0} sx={{
+            mx: 'auto',
+            display: 'block',
+          }} variant="contained" onClick={() =>{
+            // navigate to
+            router.push("/patient/search?search=" + searchPatients)
+          }}>
+            {t("Search Patient")}
+          </Button>
         </Centered>
       )}
     </Box>

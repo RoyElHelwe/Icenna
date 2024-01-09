@@ -69,3 +69,13 @@ export const findPatient = ({ queryKey }) => {
     }
   });
 };
+
+export const findPatients = ({ queryKey }) => {
+  const [_, search] = queryKey;
+
+  return axios.get('/icenna.user_api.practitioner.find_patient', {
+    params: {
+      search,
+    }
+  });
+};
