@@ -212,8 +212,6 @@ const Patient = () => {
                 label="Search"
                 value={searchPatients}
                 onChange={(e) => {
-                  console.log(e.target.value)
-                  setSearchPatients(e.target.value)
                   handleSearch(e.target.value)
                 }}
               />
