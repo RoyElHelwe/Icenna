@@ -44,7 +44,7 @@ export const PatientHistory = ({ patientData }) => {
             sx={{ maxWidth: "100%", minHeight: '500px', bgcolor: 'background.paper', borderRadius: 3, }}>
             {patientData?.images?.map((img, i) => (
               <Box key={i} sx={{ height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                {!!img?.gcb_path && <Chip label="Dicom" color="error" sx={{ position: "absolute", top: '4%', right: '2%', }} />}
+                {!!img?.gcb_path && <Chip onClick={() => window.open(img.gcb_path, '_black')} label="Dicom" color="error" sx={{ position: "absolute", top: '4%', right: '2%', }} />}
                 {img?.gcb_path
                   ? (
                     <Link href={img?.gcb_path} target="_blank">
