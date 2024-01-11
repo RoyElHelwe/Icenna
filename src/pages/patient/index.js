@@ -1,6 +1,6 @@
 import CheckBadgeIcon from '@heroicons/react/24/solid/CheckBadgeIcon';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Button, IconButton, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import { Autocomplete, Button, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Stack, SvgIcon, TextField, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useQuery } from '@tanstack/react-query';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { findPatient, getPatients } from '../../api/practitioner';
+import { findPatient, findPatients, getPatients } from '../../api/practitioner';
 import Centered from '../../components/Centered';
 import Drawer from '../../components/Drawer';
 import Translations from '../../components/Translations';
@@ -55,11 +55,13 @@ const Patient = () => {
 
   const [search, setSearch] = useState('');
   const [searchPatients, setSearchPatients] = useState('');
+  const [resultPatients, setResultPatients] = useState([]);
   const { error: searchError, data: searchData, } = useQuery({
     queryKey: ['find_patient', (search.length >= 3 ? search : '')],
     queryFn: (ctx) => findPatient(ctx),
     enabled: search.length >= 3,
   });
+
 
   useEffect(() => {
     if (searchData) {
@@ -68,6 +70,33 @@ const Patient = () => {
       setPatients(data?.data?.data ?? []);
     }
   }, [data, searchData]);
+
+  const { data: searchPatientData } = useQuery({
+    queryKey: ['find_patients'],
+    queryFn: (ctx) => findPatients(ctx),
+  });
+  const handleSearch = (value) => {
+    setSearchPatients(value);
+    customSearch(value, searchPatientData?.data.data);
+    setResultPatients(customSearch(value, searchPatientData?.data.data));
+  };
+  const customSearch = (searchValue, data) => {
+    const results = [];
+    const lowercaseSearchValue = searchValue.toLowerCase();
+    data.forEach(patient => {
+
+      if (patient.patient_name.toLowerCase().includes(lowercaseSearchValue)) {
+        results.push({ id: patient.id, patient_name: patient.patient_name, latest_appointment_id: patient.latest_appointment_id });
+      } else if (patient.name_in_arabic.toLowerCase().includes(lowercaseSearchValue)) {
+        results.push({ id: patient.id, name_in_arabic: patient.name_in_arabic, latest_appointment_id: patient.latest_appointment_id });
+      } else if (patient.national_id.toLowerCase().includes(lowercaseSearchValue)) {
+        results.push({ id: patient.id, national_id: patient.national_id, latest_appointment_id: patient.latest_appointment_id });
+      }
+    });
+
+    return results;
+
+  };
 
   const [selectedPatient, setSelectedPatient] = useState();
   useEffect(() => {
@@ -158,16 +187,26 @@ const Patient = () => {
           <Typography variant="h5">
             {t("Please select a Patient from the list Or search for a Patient")}
           </Typography>
-          <SearchBar sx={{ mx: 2, my: 4 }} onChange={(e) => setSearchPatients(e.target.value)} />
-          <Button disabled={searchPatients.length == 0} sx={{
-            mx: 'auto',
-            display: 'block',
-          }} variant="contained" onClick={() =>{
-            // navigate to
-            router.push("/patient/search?search=" + searchPatients)
-          }}>
-            {t("Search Patient")}
-          </Button>
+
+         
+          <Autocomplete
+            sx={{ mx: 2, my: 4 }}
+            options={resultPatients ? resultPatients : []}
+            getOptionLabel={(option) => option.patient_name || option.name_in_arabic || option.national_id}
+            onChange={(e, value) => {
+              setSearchPatients(e.target.value)
+              router.push('/patient?appid=' + value.latest_appointment_id)
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search"
+                value={searchPatients}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+            )}
+          />
+
         </Centered>
       )}
     </Box>
