@@ -28,7 +28,7 @@ const getDepartmentCharting = (dept, t) => {
 
 export const PatientHistory = ({ patientData }) => {
   const { t } = useTranslation();
-
+  console.log(patientData)
   return (
     <>
       {getDepartmentCharting(patientData?.department, t)}
@@ -63,6 +63,21 @@ export const PatientHistory = ({ patientData }) => {
         </Section>
       )}
       {(patientData?.time_line && patientData?.department === 'Opthalmic') && (
+        <Section title="Patient Encounters">
+          <SectionList>
+            {patientData?.time_line?.map(({ id, status, encounter_date: date, encounter_time: time, appointment }, i) => (
+              <SectionTreeItem
+                key={id}
+                id={id}
+                title={`${timeAgo(timeToDate(date?.split(' ')?.[0], time))} (${date?.split(' ')?.[0]})`}
+              >
+                <PatientEncounterView appointmentId={appointment} />
+              </SectionTreeItem>
+            ))}
+          </SectionList>
+        </Section>
+      )}
+      {(patientData?.time_line && patientData?.department === 'Dental') && (
         <Section title="Patient Encounters">
           <SectionList>
             {patientData?.time_line?.map(({ id, status, encounter_date: date, encounter_time: time, appointment }, i) => (
