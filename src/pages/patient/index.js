@@ -190,12 +190,18 @@ const Patient = () => {
             {t("Please select a Patient from the list Or search for a Patient")}
           </Typography>
 
-         
+
           <Autocomplete
             sx={{ mx: 2, my: 4 }}
             options={resultPatients ? resultPatients : []}
-            getOptionLabel={(option) => 
-              option.phone ? option.phone + "(" + option.patient_name + ")" : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name}
+            getOptionLabel={(option) => (
+              option.phone ? option.phone  : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name
+            )}
+            renderOption={(props, option) => (
+              <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0, }, }} {...props}>
+                {option.phone ?  option.patient_name  : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name}
+              </Box>
+            )}
             onChange={(e, value) => {
               setSearchPatients(e.target.value)
               router.push('/patient?appid=' + value.latest_appointment_id)
@@ -205,7 +211,11 @@ const Patient = () => {
                 {...params}
                 label="Search"
                 value={searchPatients}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => {
+                  console.log(e.target.value)
+                  setSearchPatients(e.target.value)
+                  handleSearch(e.target.value)
+                }}
               />
             )}
           />
