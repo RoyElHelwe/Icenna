@@ -31,7 +31,7 @@ export const PatientHistory = ({ patientData }) => {
   console.log(patientData)
   return (
     <>
-      {getDepartmentCharting(patientData?.department, t)}
+      {/* {getDepartmentCharting(patientData?.department, t)} */}
       {!!patientData?.images?.length && (
         <Section title={`${t('Panorama Image')}`} withDivider>
           <Carousel
