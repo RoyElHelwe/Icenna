@@ -195,11 +195,11 @@ const Patient = () => {
             sx={{ mx: 2, my: 4 }}
             options={resultPatients ? resultPatients : []}
             getOptionLabel={(option) => (
-              option.phone ? option.phone  : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name
+              option.phone ? option.phone + "(" + option.patient_name + ")" : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name
             )}
             renderOption={(props, option) => (
               <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0, }, }} {...props}>
-                {option.phone ?  option.patient_name  : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name}
+                {option.phone ? option.patient_name : option.name_in_arabic ? option.name_in_arabic : option.national_id ? option.national_id : option.patient_name}
               </Box>
             )}
             onChange={(e, value) => {
@@ -212,6 +212,7 @@ const Patient = () => {
                 label="Search"
                 value={searchPatients}
                 onChange={(e) => {
+                  setSearchPatients(e.target.value)
                   handleSearch(e.target.value)
                 }}
               />
