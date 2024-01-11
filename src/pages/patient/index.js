@@ -91,6 +91,8 @@ const Patient = () => {
         results.push({ id: patient.id, name_in_arabic: patient.name_in_arabic, latest_appointment_id: patient.latest_appointment_id });
       } else if (patient.national_id.toLowerCase().includes(lowercaseSearchValue)) {
         results.push({ id: patient.id, national_id: patient.national_id, latest_appointment_id: patient.latest_appointment_id });
+      } else if (patient.phone.toLowerCase().includes(lowercaseSearchValue)) {
+        results.push({ id: patient.id, phone: patient.phone, latest_appointment_id: patient.latest_appointment_id });
       }
     });
 
@@ -192,7 +194,7 @@ const Patient = () => {
           <Autocomplete
             sx={{ mx: 2, my: 4 }}
             options={resultPatients ? resultPatients : []}
-            getOptionLabel={(option) => option.patient_name || option.name_in_arabic || option.national_id}
+            getOptionLabel={(option) => option.patient_name || option.name_in_arabic || option.national_id || option.phone || ''}
             onChange={(e, value) => {
               setSearchPatients(e.target.value)
               router.push('/patient?appid=' + value.latest_appointment_id)
