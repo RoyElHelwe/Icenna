@@ -68,7 +68,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
             <LinkTypography component={NextLink} href="/contact">Contact</LinkTypography>
           </Grid>
           <Grid item xs={4} lg={2}>
-            <LinkTypography component={NextLink} href="/tc">Terms and Conditions</LinkTypography>
+            <LinkTypography component={NextLink} href="/privacy">Terms and Conditions</LinkTypography>
           </Grid>
         </Grid>
         <Typography variant="subtitle2">© iCenna</Typography>
