@@ -75,7 +75,7 @@ const Login = ({ auth_token }) => {
 
   return (
     <Box className='content-center'>
-      {/* <Card sx={{ zIndex: 1 }}>
+      <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ p: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5'
@@ -158,7 +158,7 @@ const Login = ({ auth_token }) => {
             </form>
           )}
         </CardContent>
-      </Card> */}
+      </Card>
     </Box>
   )
 };
