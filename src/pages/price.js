@@ -9,7 +9,7 @@ const Price = () => {
     const data = [
         {
             type: '5 users',
-            price: 'Free',
+            price: 'SAR 0',
             text: 'Up to 5 users',
             list: [
                 'Healthcare Administration',
@@ -109,14 +109,14 @@ const Price = () => {
                 },
                 {
                     title: "Accept MasterCard/Mada and cash",
-                    free: "MasterCard/Mada",
-                    premium: "MasterCard/Mada",
+                    free: "Ready",
+                    premium: "Ready",
                     enterprise: "",
                 },
                 {
                     title: "Accept STCPay and ApplePay",
-                    free: "STCPay/ApplePay",
-                    premium: "STCPay/ApplePay",
+                    free: "Ready",
+                    premium: "Ready",
                     enterprise: "",
                 },
                 {
@@ -132,24 +132,24 @@ const Price = () => {
             list: [
                 {
                     title: "Comply with all Saudi Healthcare Standard from CHI, nphies and NHC",
-                    free: "Unlimited",
-                    premium: "Unlimited",
-                    enterprise: "",
-                },
-                {
-                    title: "Saudi Healthcare Standard",
-                    free: "Unlimited",
-                    premium: "Unlimited",
-                    enterprise: "",
-                },
-                {
-                    title: "NPHIES and CHI Ready",
                     free: "Ready",
                     premium: "Ready",
                     enterprise: "",
                 },
                 {
-                    title: "Absher/Yaqeen Ready",
+                    title: "Saudi Healthcare Standard",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: "",
+                },
+                {
+                    title: "NPHIES and CHI Integration",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: "",
+                },
+                {
+                    title: "Absher/Yaqeen Integration",
                     free: "Ready",
                     premium: "Ready",
                     enterprise: "",
@@ -304,7 +304,7 @@ const Price = () => {
                                 5 users
                             </Typography>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '20px', }, fontWeight: '600', paddingBottom: '20px' }}>
-                                Free
+                                SAR 0
                             </Typography>
                         </Grid>
                         <Grid item xs={2} borderRight={1} borderBottom={1} borderColor={'#D8D8D8'}>
@@ -312,7 +312,7 @@ const Price = () => {
                                 6+ Users
                             </Typography>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '20px', }, fontWeight: '600', paddingBottom: '20px' }}>
-                                SA199
+                                SAR 199
                             </Typography>
                         </Grid>
                         <Grid item xs={2} borderRight={1} borderBottom={1} borderColor={'#D8D8D8'}>
@@ -386,7 +386,7 @@ const Price = () => {
                         variant='contained'
                         sx={{ textWrap: 'nowrap', backgroundColor: type === 'free' ? 'blue' : 'initial', color: type === 'free' ? 'white' : 'black' }}
                     >
-                        Free
+                        SAR 0
                     </Button>
                     <Button
                         onClick={() => setType('6')}
