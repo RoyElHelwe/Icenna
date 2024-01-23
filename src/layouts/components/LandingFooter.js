@@ -259,7 +259,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
               </Link>
               <Link href={"/tc"} style={{ textDecoration: 'none' }} >
                 <Typography variant="h6" sx={{ fontSize: { xs: '', md: '16px' } }}>
-                  Terms and Condition
+                  Terms and Conditions
                 </Typography>
               </Link>
             </Stack>
