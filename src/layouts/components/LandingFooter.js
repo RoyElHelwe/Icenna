@@ -292,7 +292,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
             </Link>
           </Box>
         </Stack>
-        <Stack direction={'Column'} spacing={2}>
+        {/* <Stack direction={'Column'} spacing={2}>
           <Box>
             <Typography variant="h6" sx={{ mt: 2, mb: 2, fontSize: { xs: '', md: '16px' } }}>
               To Download the App
@@ -310,7 +310,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
               </Link>
             </Box>
           </Stack>
-        </Stack>
+        </Stack> */}
       </Stack>
     </Container>
   );
