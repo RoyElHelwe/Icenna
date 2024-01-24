@@ -25,7 +25,7 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
       href: '/feature'
     },
     {
-      name: 'Price',
+      name: 'Pricing',
       href: '/pricing',
     },
     {
