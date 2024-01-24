@@ -21,17 +21,17 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
   const env = process.env.NEXT_PUBLIC_NODE_ENV;
   const pages = [
     {
+      name: 'Feature',
+      href: '/feature'
+    },
+    {
       name: 'Price',
       href: '/pricing',
     },
     {
-      name:'Feature',
-      href:'/feature'
-    },
-    {
       name: 'Support',
       href: '/support',
-    }, 
+    },
     {
       name: 'Contact',
       href: '/contact',
@@ -119,12 +119,12 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
                 style={{
                   width: '100%', // Use 100% width for responsiveness
                   height: 'auto', // Maintain aspect ratio
-                  
+
                 }}
               />
             </Link>
           </Box>
-          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap:5 }}>
             {pages.map((page) => (
               <Button
                 key={page.name}
