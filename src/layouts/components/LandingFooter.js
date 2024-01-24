@@ -271,7 +271,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
           </Stack>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Stack spacing={3} alignItems={{xs:'center', md:"flex-end"}}>
+          {/* <Stack spacing={3} alignItems={{xs:'center', md:"flex-end"}}>
             <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
               Download App
             </Typography>
@@ -287,7 +287,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
                 </Link>
               </Box>
             </Stack>
-          </Stack>
+          </Stack> */}
         </Grid>
       </Grid>
       <Divider color={"#E5E5E5"} sx={{my:10}} />

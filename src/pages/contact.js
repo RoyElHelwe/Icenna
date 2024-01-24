@@ -1,8 +1,11 @@
-import { Grid, Link, Stack, Typography } from '@mui/material';
+import { Button, Container, Grid, Link, Modal, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import { getWebsite } from '../api/Website';
 import LandingLayout from '../layouts/LandingLayout';
+import Image from 'next/image';
+import ContactModel from 'src/components/contact'
+import React from 'react';
 
 export async function getServerSideProps() {
   const website = await getWebsite();
@@ -23,36 +26,58 @@ const Page = ({ website }) => {
     email,
   } = data?.data?.contact ?? {};
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <>
       <Head>
         <title>Contact US</title>
       </Head>
-      <Grid container justifyContent="center" spacing={5} sx={{ px: 3, my: 10, }}>
-        <Grid item xs={12} lg={5}>
-          <Stack direction="column" spacing={5}>
-            <Typography variant="h2">
-              Contact US
+      <Container maxWidth="lg" sx={{ pt: "72px" }}>
+        <Stack direction={{ xs: "column", md: 'row' }} spacing={4} justifyContent={'space-between'} >
+          <Stack spacing={{ xs: "16px", md: "24px" }} >
+            <Typography variant="h1" sx={{ fontSize: { xs: '2.25rem', md: '4.5rem', }, fontWeight: 'bold', textWrap: 'nowrap' }}>
+              Contact Us
             </Typography>
-            <Typography sx={{ fontSize: '1.25rem', alignContent: 'center' }}>
-              {address}
+            <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', } }}>
+              We are here to help you
             </Typography>
-            <Stack direction="row" spacing={2} >
-              <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Email:</Typography>
-              <Link href={`mailto:${email}`} underline="hover" sx={{ fontSize: '1.25rem', }}>{email}</Link>
-            </Stack>
-            <Stack direction="row" spacing={2} >
-              <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Phone:</Typography>
-              <Link href={`tel:${phone}`} underline="hover" sx={{ fontSize: '1.25rem', }}>{phone}</Link>
-              <Typography></Typography>
-            </Stack>
+            <Button variant='contained' color='primary' sx={{
+                                backgroundColor: '#0F4B64',
+                                color: 'white',
+                                //  onHover
+                                '&:hover': {
+                                    backgroundColor: '#0F4B64',
+                                },
+                            }}
+                                onClick={handleOpen}
+                            >
+                                Contact Us
+                            </Button>
           </Stack>
-        </Grid>
-
-        <Grid item xs={12} lg={4} sx={{ p: 5, }}>
-          <img src="/assets/contact-us.png" height={500} style={{ maxWidth: '100%' }} />
-        </Grid>
-      </Grid>
+          <div style={{ maxWidth: '100%', height: 'auto' }}>
+            <Image
+              src="/assets/landing/contactus.png"
+              alt="support"
+              width={500}
+              height={500}
+              layout="responsive"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
+        </Stack>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ContactModel handleClose={handleClose} />
+        </Modal>
+      </Container>
     </>
   );
 };

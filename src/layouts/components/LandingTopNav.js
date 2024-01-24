@@ -24,14 +24,18 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
       name: 'Price',
       href: '/pricing',
     },
-    // {
-    //   name: 'Support',
-    //   href: '/support',
-    // }, 
-    // {
-    //   name: 'Contact',
-    //   href: '/contact',
-    // },
+    {
+      name:'Feature',
+      href:'/feature'
+    },
+    {
+      name: 'Support',
+      href: '/support',
+    }, 
+    {
+      name: 'Contact',
+      href: '/contact',
+    },
   ]
   const [anchorElNav, setAnchorElNav] = useState(null);
 
