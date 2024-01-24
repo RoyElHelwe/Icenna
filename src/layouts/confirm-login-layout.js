@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Customizer from '../components/customizer';
 import { BlankLayoutWrapper } from './BlankLayout';
 import { TopNav } from './components/top-nav';
+import { LandingFooter } from './components/LandingFooter';
 
 const ConfirmLoginLayout = ({ children }) => {
   return (
@@ -11,6 +12,9 @@ const ConfirmLoginLayout = ({ children }) => {
       <Box className='app-content'
         sx={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative' }}>
         {children}
+      </Box>
+      <Box sx={{ bgcolor: '#0F4B64' }}>
+        <LandingFooter  />
       </Box>
     </BlankLayoutWrapper>
   );

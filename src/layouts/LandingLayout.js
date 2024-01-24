@@ -12,7 +12,9 @@ const LandingLayout = ({ website, children }) => {
         <Box sx={{ minHeight: '100vh', overflowX: 'hidden', bgcolor: 'background.paper', mt: `${TOP_NAV_HEIGHT}px`, px: 5, pb: 5, }}>
           {children}
         </Box>
-        <LandingFooter website={website} />
+        <Box sx={{ bgcolor: '#0F4B64' }}>
+          <LandingFooter website={website} />
+        </Box>
       </BlankLayoutWrapper>
     </>
   );

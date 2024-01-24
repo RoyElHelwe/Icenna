@@ -3,16 +3,16 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-const PricePage = () => {
+const BlogPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/pricing');
+    router.push('/');
   }, []);
 
   return null;
 };
 
-PricePage.authGuard = false;
+BlogPage.authGuard = false;
 
-export default PricePage;
+export default BlogPage;

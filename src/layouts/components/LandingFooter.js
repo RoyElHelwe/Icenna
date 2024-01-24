@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  Divider,
   Grid,
   Stack,
   Typography
@@ -11,14 +12,6 @@ import Link from 'next/link';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 
-const LinkTypography = styled(Typography)(({ theme }) => ({
-  cursor: 'pointer',
-  '&:hover': {
-    color: theme.palette.primary.main,
-  },
-  textDecoration: 'none',
-  display: 'flex'
-}));
 
 import React from 'react';
 
@@ -31,6 +24,7 @@ const InstagramIcon = () => {
       x="0"
       y="0"
       viewBox="0 0 24 24"
+      style={{ fill: 'white' }}
     >
       <path d="M8 3a5 5 0 00-5 5v8a5 5 0 005 5h8a5 5 0 005-5V8a5 5 0 00-5-5H8zm10 2a1 1 0 110 2 1 1 0 010-2zm-6 2a5 5 0 11-.001 10.001A5 5 0 0112 7zm0 2a3 3 0 00-3 3 3 3 0 003 3 3 3 0 003-3 3 3 0 00-3-3z"></path>
     </svg>
@@ -47,6 +41,7 @@ const TwitterIcon = () => {
       x="0"
       y="0"
       viewBox="0 0 24 24"
+      style={{ fill: 'white' }}
     >
       <path d="M22 3.999c-.78.463-2.345 1.094-3.265 1.276-.027.007-.049.016-.075.023A4.5 4.5 0 0011 8.499c0 .131-.011.372 0 .5-3.353 0-5.905-1.756-7.735-4-.199.5-.286 1.29-.286 2.032 0 1.401 1.095 2.777 2.8 3.63-.314.081-.66.139-1.02.139A2.686 2.686 0 013 10.183v.051c0 1.958 2.078 3.291 3.926 3.662-.375.221-1.131.243-1.5.243-.26 0-1.18-.119-1.426-.165.514 1.605 2.368 2.507 4.135 2.539-1.382 1.084-2.341 1.486-5.171 1.486H2C3.788 19.145 6.065 20 8.347 20 15.777 20 20 14.337 20 8.999l-.005-.447c0-.018.005-.035.005-.053 0-.027-.008-.053-.008-.08a18.384 18.384 0 00-.009-.329A8.217 8.217 0 0022 5.999a8.07 8.07 0 01-2.32.636c.834-.5 2.019-1.692 2.32-2.636z"></path>
     </svg>
@@ -62,6 +57,7 @@ const LinkedInIcon = () => {
       x="0"
       y="0"
       viewBox="0 0 24 24"
+      style={{ fill: 'white' }}
     >
       <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H6.477v-7H9v7zM7.694 8.717c-.771 0-1.286-.514-1.286-1.2s.514-1.2 1.371-1.2c.771 0 1.286.514 1.286 1.2s-.514 1.2-1.371 1.2zM18 17h-2.442v-3.826c0-1.058-.651-1.302-.895-1.302s-1.058.163-1.058 1.302V17h-2.523v-7h2.523v.977c.325-.57.976-.977 2.197-.977S18 10.977 18 13.174V17z"></path>
     </svg>
@@ -116,6 +112,7 @@ const FacebookIcon = () => {
       x="0"
       y="0"
       viewBox="0 0 24 24"
+      style={{ fill: 'white' }}
     >
       <path d="M12 2C6.477 2 2 6.477 2 12c0 5.013 3.693 9.153 8.505 9.876V14.65H8.031v-2.629h2.474v-1.749c0-2.896 1.411-4.167 3.818-4.167 1.153 0 1.762.085 2.051.124v2.294h-1.642c-1.022 0-1.379.969-1.379 2.061v1.437h2.995l-.406 2.629h-2.588v7.247C18.235 21.236 22 17.062 22 12c0-5.523-4.477-10-10-10z"></path>
     </svg>
@@ -234,83 +231,105 @@ const AppleIcon = () => {
 }
 export const LandingFooter = ({ withTabs, website, ...rest }) => {
   return (
-    <Container maxWidth="lg" sx={{ mt: 'auto', py: 5 }}>
-      <Stack spacing={{ xs: 2 }} direction={{ xs: 'column', md: 'row' }} justifyContent={"space-between"} alignItems={{ xs: 'flex-start', md: "center" }}>
-        <Stack spacing={5}>
-          <Stack alignItems={"center"} direction={"row"} spacing={2}>
-            <Box >
-              <Link href="/">
-                <Image src="/assets/logo/png-01.png" alt="iCenna" width={150} height={150} style={{ width: 150, height: 50 }} />
-              </Link>
-            </Box>
-          </Stack>
-          <Stack spacing={2} alignItems={"flex-start"}>
-            <Typography variant="h6" sx={{ mt: 2, mb: 2, fontSize: { xs: '', md: '16px' } }}>
-              AviCenna for Information Technology | Commercial Registration: 4030497928
+    <Container maxWidth="lg" sx={{ mt: 'auto', py: 5, color: 'white', textAlign:{xs:'center', md:'initial'} }}>
+      <Grid container rowSpacing={3} >
+        <Grid item xs={12} md={6}>
+          <Stack spacing={3}>
+            <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
+              About Us
             </Typography>
-            <Typography variant="h6" sx={{ mt: 2, mb: 2, fontSize: { xs: '', md: '16px' } }}>
-              شركة افي سينا لتقنية المعلومات | سجل تجاري 4030497928
-            </Typography>
-            <Stack spacing={2}>
-              <Link href={"/privacy"} style={{ textDecoration: 'none' }} >
-                <Typography variant="h6" sx={{ fontSize: { xs: '', md: '16px' } }}>
-                  Privacy Policy
-                </Typography>
-              </Link>
-              <Link href={"/tc"} style={{ textDecoration: 'none' }} >
-                <Typography variant="h6" sx={{ fontSize: { xs: '', md: '16px' } }}>
-                  Terms and Conditions
-                </Typography>
-              </Link>
+            <Stack spacing={1}>
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
+                AviCenna for Information Technology | Commercial
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
+                Registration: 4030497928
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
+                شركة افي سينا لتقنية المعلومات | سجل تجاري 4030497928
+              </Typography>
             </Stack>
           </Stack>
-        </Stack>
-        <Stack direction={'row'} spacing={2}>
-          <Box>
-            <Link href="https://www.linkedin.com/company/icenna/" target='_blank'>
-              <LinkedInIcon />
-            </Link>
-          </Box>
-          <Box>
-            <Link href="https://twitter.com/iCenna_Official" target='_blank'>
-              <TwitterIcon />
-            </Link>
-          </Box>
-          <Box>
-            <Link href="https://www.instagram.com/icenna_official/" target='_blank'>
-              <InstagramIcon />
-            </Link>
-          </Box>
-          <Box>
-            <Link href="https://www.facebook.com/iCenna.Official" target='_blank'>
-              <FacebookIcon />
-            </Link>
-          </Box>
-          <Box>
-            <Link href="https://maroof.sa/businesses/details/54371/" target='_blank'>
-              <Maroof />
-            </Link>
-          </Box>
-        </Stack>
-        {/* <Stack direction={'Column'} spacing={2}>
-          <Box>
-            <Typography variant="h6" sx={{ mt: 2, mb: 2, fontSize: { xs: '', md: '16px' } }}>
-              To Download the App
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Stack spacing={3}>
+            <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
+              Legal
             </Typography>
-          </Box>
-          <Stack direction={'row'} spacing={2} justifyContent={"space-between"}>
+            <Stack spacing={1}>
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
+                <Link href={"/tc"} underline="hover" color="inherit" style={{ textDecoration: 'none', color: 'white' }}>
+                  Terms & Conditions
+                </Link>
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
+                <Link href="/privacy" underline="hover" color="inherit" style={{ textDecoration: 'none', color: 'white' }}>
+                  Privacy Policy
+                </Link>
+              </Typography>
+            </Stack>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Stack spacing={3} alignItems={{xs:'center', md:"flex-end"}}>
+            <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
+              Download App
+            </Typography>
+            <Stack spacing={10} direction={'row'} alignItems={"flex-start"}>
+              <Box>
+                <Link href="https://apps.apple.com/sa/app/icenna/id6446591202" target='_blank'>
+                  <AppleIcon />
+                </Link>
+              </Box>
+              <Box>
+                <Link href="https://play.google.com/store/apps/details?id=com.icenna" target='_blank'>
+                  <GoogleIocn />
+                </Link>
+              </Box>
+            </Stack>
+          </Stack>
+        </Grid>
+      </Grid>
+      <Divider color={"#E5E5E5"} sx={{my:10}} />
+      <Stack direction={{xs:'column', md:'row'}} spacing={4} justifyContent={'space-between'} alignItems={"center"} >
+        <Stack spacing={6} direction={"row"} alignItems={"center"}>
+          <Link href="/">
+            <Image src="/assets/logo/white-01.png" alt="iCenna" width={150} height={150} style={{ width: 150, height: 50 }} />
+          </Link>
+          <Typography variant='body2' sx={{ color: 'white' }}>
+            © 2021 iCenna. All rights reserved
+          </Typography>
+        </Stack>
+        <Stack spacing={2} direction={"row"}>
+          {/* Social Media */}
+          <Stack direction={'row'} spacing={2}>
             <Box>
-              <Link href="https://play.google.com/store/apps/details?id=com.icenna" target='_blank'>
-                <GoogleIocn />
+              <Link href="https://www.linkedin.com/company/icenna/" target='_blank'>
+                <LinkedInIcon />
               </Link>
             </Box>
             <Box>
-              <Link href="https://apps.apple.com/sa/app/icenna/id6446591202" target='_blank'>
-                <AppleIcon />
+              <Link href="https://twitter.com/iCenna_Official" target='_blank'>
+                <TwitterIcon />
+              </Link>
+            </Box>
+            <Box>
+              <Link href="https://www.instagram.com/icenna_official/" target='_blank'>
+                <InstagramIcon />
+              </Link>
+            </Box>
+            <Box>
+              <Link href="https://www.facebook.com/iCenna.Official" target='_blank'>
+                <FacebookIcon />
+              </Link>
+            </Box>
+            <Box>
+              <Link href="https://maroof.sa/businesses/details/54371/" target='_blank'>
+                <Maroof />
               </Link>
             </Box>
           </Stack>
-        </Stack> */}
+        </Stack>
       </Stack>
     </Container>
   );
