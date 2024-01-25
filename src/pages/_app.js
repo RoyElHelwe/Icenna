@@ -23,6 +23,7 @@ import GuestGuard from '../guards/guest-guard';
 import ReactHotToast from '../styles/ReactHotToast';
 import ThemeComponent from '../theme/ThemeComponent';
 import { createEmotionCache } from '../utils/create-emotion-cache';
+import 'src/styles/input.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
