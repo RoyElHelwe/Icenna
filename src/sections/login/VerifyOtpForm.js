@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Typography } from '@mui/material';
+import { Input, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useMutation } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { verify_otp } from '../../api/auth';
 import { useAuth } from '../../hooks/use-auth';
+import OTPInput from 'src/components/otpInput';
 
 const VerifyOtpForm = ({
   values
@@ -35,6 +36,9 @@ const VerifyOtpForm = ({
 
   const schema = yup.object().shape({
     code: yup.string().matches(/[0-9]{6}/, 'Code is not valid'),
+    // code must be number and its betwenn 100000 and 999999
+    // code: yup.number().integer().min(100000).max(999999).required('Code is required'),
+
   });
 
   const {
@@ -69,24 +73,45 @@ const VerifyOtpForm = ({
       <Typography sx={{ fontWeight: 600, color: 'text.secondary', mb: 2, }}>Type your 6 digit security code</Typography>
       <FormControl
         fullWidth
-        sx={{ mb: 4 }}
+        sx={{ mb: 4, direction: 'rtl !important' }}
       >
         <Controller
           name='code'
           control={control}
-          rules={{ required: true }}
+          rules={{ required: true, valueAsNumber: true }}
           render={({ field: { value, onChange, onBlur, } }) => (
-            <MuiOtpInput
-              autoFocus
-              ref={otpRef}
-              value={value}
-              length={6}
-              validateChar={(c) => !isNaN(c)}
-              onBlur={onBlur}
+            // <MuiOtpInput
+            //   autoFocus
+            //   ref={otpRef}
+            //   value={value}
+            //   length={6}
+            //   validateChar={(c) => !isNaN(c)}
+            //   onBlur={onBlur}
+            //   onChange={onChange}
+            //   type="number"
+            //   patern="[0-9]*"
+            //   inputMode="numeric"
+            //   isInpNum={true}
+            //   onComplete={handleSubmit(onSubmit)}
+            //   error={errors.code}
+            // />
+            <OTPInput
+              inputStyle={{
+                width: '3rem', height: '3rem', fontSize: '1.5rem', borderRadius: 4, border: '1px solid rgba(0, 0, 0, 0.3)',
+                // screen phone
+                '@media (max-width: 600px)': {
+                  width: '2rem', height: '2rem', fontSize: '1rem',
+                },
+              }}
+              numInputs={6}
               onChange={onChange}
-              type="number"
+              renderSeparator={<span>-</span>}
+              value={value}
+              placeholder={"123456"}
+              inputType={"number"}
+              renderInput={(props) => <input style={{ width: '100%' }} {...props} />}
+              shouldAutoFocus
               onComplete={handleSubmit(onSubmit)}
-              error={errors.code}
             />
           )}
         />
