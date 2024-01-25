@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import { verify_otp } from '../../api/auth';
 import { useAuth } from '../../hooks/use-auth';
 import OTPInput from 'src/components/otpInput';
+import { useSettings } from 'src/hooks/useSettings';
 
 const VerifyOtpForm = ({
   values
@@ -53,8 +54,11 @@ const VerifyOtpForm = ({
     resolver: yupResolver(schema),
   });
 
+  const { settings } = useSettings()
   const otpRef = useRef(null);
-
+  const {
+    language,
+  } = settings;
   useEffect(() => {
     if (error) {
       setError('code',
@@ -73,7 +77,7 @@ const VerifyOtpForm = ({
       <Typography sx={{ fontWeight: 600, color: 'text.secondary', mb: 2, }}>Type your 6 digit security code</Typography>
       <FormControl
         fullWidth
-        sx={{ mb: 4, direction: 'rtl !important' }}
+        sx={{ mb: 4, direction: `${language == 'ar' ? 'rtl !important' : 'ltr !important'}` }}
       >
         <Controller
           name='code'
