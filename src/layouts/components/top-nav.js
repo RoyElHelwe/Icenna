@@ -100,7 +100,7 @@ export const TopNav = ({ withTabs, ...rest }) => {
           </Box>
 
           <Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-            {/* <LanguageButton /> */}
+            <LanguageButton />
             {(auth.user && router.pathname !== '/login') && (
               <Stack
                 alignItems="center"
