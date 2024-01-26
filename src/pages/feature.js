@@ -26,7 +26,7 @@ const Feature = () => {
       <Container maxWidth="md" sx={{ pt: "72px" }}>
         <Stack spacing={{ xs: "16px", md: "24px" }} sx={{ textAlign: 'center' }}>
           <Typography variant="h1" sx={{ fontSize: { xs: '2.25rem', md: '4.5rem', }, fontWeight: 'bold', }}>
-            {t("Comprehensive Accounting Software Solutions")}
+            {t("Comprehensive Healthcare Software Solutions")}
           </Typography>
           <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', } }}>
             {t("Powered by Artificial Intelligence, Machine Learning For Your Business")}
