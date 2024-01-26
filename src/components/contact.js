@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, Button, Typography, Box, FormControl, FormHelperText } from "@mui/material";
+import { TextField, Typography, Box, FormControl, FormHelperText } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { sendEmail } from "src/api/contactusmail";
 import * as yup from 'yup';
@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
+import { LoadingButton } from "@mui/lab";
 
 
 const schema = yup.object().shape({
@@ -34,12 +35,9 @@ export default function ContactForm({ handleClose }) {
         enabled: false,
         onSuccess: async (data, vars, ctx) => {
             setMessage({
-                message: "We have got your contact and we will contact you soon.",
+                message: "We have received you contact and we will get back to you.",
                 type: "success",
             });
-           setTimeout(() => {
-                handleClose();
-            }, 1000);
         },
         onError: (err, vars, ctx) => {
             setMessage({
@@ -156,21 +154,30 @@ export default function ContactForm({ handleClose }) {
                             )}
                         />
                         {errors.phone_no && <FormHelperText sx={{ color: 'error.main' }}>{errors.phone_no.message}</FormHelperText>}
-                        <Button
+                        {
+                            message.type == 'success' ?
+                            <LoadingButton
                             disabled={isLoading}
                             fullWidth
-                            type="submit"
-                            sx={{
-                                mt: 2,
-                                backgroundColor: "#000",
-                                color: "#fff",
-                                "&:hover": {
-                                    backgroundColor: "#111",
-                                },
-                            }}
+                            size='medium'
+                            variant='contained'
+                            onClick={() => handleClose()}
+                            sx={{ my: 1, backgroundColor: 'green', '&:hover': { backgroundColor: 'green' } }}
                         >
-                            Submit
-                        </Button>
+                            Done
+                        </LoadingButton>
+                                :
+                                <LoadingButton
+                                    disabled={isLoading}
+                                    fullWidth
+                                    type="submit"
+                                    size='medium'
+                                    variant='contained'
+                                    sx={{ my: 1, backgroundColor: '#0F4B64', '&:hover': { backgroundColor: '#0F4B64' } }}
+                                >
+                                    Submit
+                                </LoadingButton>
+                        }
                     </FormControl>
                 </form>
             </Box>

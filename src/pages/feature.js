@@ -32,7 +32,7 @@ const Feature = () => {
             {t("Powered by Artificial Intelligence, Machine Learning For Your Business")}
           </Typography>
         </Stack>
-        <Stack direction={{xs:'column', md:"row"}} justifyContent={"space-between"} alignItems={"center"} sx={{ pt: '7.5rem' }}>
+        <Stack direction={{ xs: 'column', md: "row" }} justifyContent={"space-between"} alignItems={"center"} sx={{ pt: '7.5rem' }}>
           <Stack spacing={2}>
             <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', md: '2.25rem', }, fontWeight: 'bold', }}>
               {t("Automated Bookkeeping Process")}
@@ -49,7 +49,7 @@ const Feature = () => {
             objectPosition="center"
             style={{ width: '600', height: '480px' }} />
         </Stack>
-        <Stack direction={{xs:'column', md:"row"}} justifyContent={"space-between"} alignItems={"center"}>
+        <Stack direction={{ xs: 'column', md: "row" }} justifyContent={"space-between"} alignItems={"center"}>
           <Image src={"/assets/landing/feature2.png"}
             width={500}
             height={480}
@@ -66,7 +66,7 @@ const Feature = () => {
             </Typography>
           </Stack>
         </Stack>
-        <Stack direction={{xs:'column', md:"row"}} justifyContent={"space-between"} sx={{pt:'3rem'}}>
+        <Stack direction={{ xs: 'column', md: "row" }} justifyContent={"space-between"} sx={{ pt: '3rem' }}>
           <Stack>
             <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', md: '2.25rem', textAlign: 'center' }, fontWeight: 'bold', }}>
               {t("Other")}
@@ -94,10 +94,10 @@ const Feature = () => {
         </Stack>
         {/* <Stack spacing={8} sx={{ mt: 10 }}>
           <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', md: '2.25rem', textAlign: 'center' }, fontWeight: 'bold', }}>
-            iCenna App Brings Everything You Need In Medical Life
+            {t("iCenna App Brings Everything You Need In Medical Life")}
           </Typography>
           <Typography variant="body2" sx={{ fontSize: { xs: '1rem', md: '1.2rem', textAlign: 'center' } }}>
-            Appointments, reports, and medical records. Download now for a comprehensive experience of convenience
+            {t("Appointments, reports, and medical records. Download now for a comprehensive experience of convenience")}
           </Typography>
           <Stack direction={"row"} spacing={4} alignItems={"center"} justifyContent={"center"}>
             <Button variant='outlined' color='secondary'>

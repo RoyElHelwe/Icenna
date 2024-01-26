@@ -1,9 +1,10 @@
 import { Button, Card, Container, Grid, Modal, Stack, Typography } from '@mui/material'
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import LandingLayout from 'src/layouts/LandingLayout'
 import Faqs from 'src/components/faqs'
 import Contact from 'src/components/contact'
+import { useTranslation } from 'react-i18next'
 
 const Price = () => {
     const data = [
@@ -12,13 +13,13 @@ const Price = () => {
             price: 'SAR 0',
             text: 'Up to 5 users',
             list: [
+                'NPHIS Connect',
                 'Healthcare Administration',
                 'Booking Appointment',
                 'Customer Service',
                 'Medical Record Management',
-                'Finance and Accounting ',
+                'Finance and Accounting',
                 'Stock and inventory Management',
-                'NPHIS Connect ',
                 'Training',
                 '24/7 support'
             ]
@@ -29,13 +30,13 @@ const Price = () => {
             month: 'user/month',
             text: '6 users and more',
             list: [
+                'NPHIS Connect',
                 'Healthcare Administration',
                 'Booking Appointment',
                 'Customer Service',
                 'Medical Record Management',
-                'Finance and Accounting ',
+                'Finance and Accounting',
                 'Stock and inventory Management',
-                'NPHIS Connect ',
                 'Training',
                 '24/7 support'
             ]
@@ -51,6 +52,41 @@ const Price = () => {
         },
     ]
     const data2 = [
+        {
+            title: "NPHIS Connect",
+            list: [
+                {
+                    title: "Eligibility check",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: ""
+                },
+                {
+                    title: "Beneficiary details",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: ""
+                },
+                {
+                    title: "Approval/preauthorization",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: ""
+                },
+                {
+                    title: "Claims Management",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: ""
+                },
+                {
+                    title: "Payment notice and reconciliation",
+                    free: "Ready",
+                    premium: "Ready",
+                    enterprise: ""
+                }
+            ]
+        },
         {
             title: 'Healthcare Management',
             list: [
@@ -225,6 +261,7 @@ const Price = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { t } = useTranslation();
     return (
         <>
             <Head>
@@ -242,7 +279,7 @@ const Price = () => {
             </Head>
             <Container maxWidth="lg" sx={{ pt: "72px" }}>
                 <Typography variant="h1" sx={{ textAlign: 'center', fontSize: { xs: '2.25rem', md: '4.5rem', }, fontWeight: 'bold', }}>
-                    Pricing Plans
+                    {t("Pricing Plans")}
                 </Typography>
                 <Stack spacing={{ xs: '24px' }} direction={{ xs: 'column', md: 'row' }} justifyContent={"space-between"} sx={{ width: '100%', border: '1px', pt: { md: '72px', xs: '50px' } }} >
                     {data.map((item, index) => (
@@ -250,15 +287,15 @@ const Price = () => {
                             <Stack spacing={"50px"}>
                                 <Stack spacing={'20px'}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: '18px', md: '18px', }, fontWeight: 'bold', }}>
-                                        {item.type}
+                                        {t(item.type)}
                                     </Typography>
                                     <Typography variant="h6" sx={{ fontSize: { xs: '48px', md: '48px', }, fontWeight: 'bold', }}>
-                                        {item.price} <Typography variant="span" sx={{ textAlign: 'center', fontSize: { xs: '10px', md: '12px', }, fontWeight: 'normal', display: 'inline' }}> {item?.month}</Typography>
+                                        {t(item.price)} <Typography variant="span" sx={{ textAlign: 'center', fontSize: { xs: '10px', md: '12px', }, fontWeight: 'normal', display: 'inline' }}> {t(item?.month)}</Typography>
                                     </Typography>
                                 </Stack>
                                 <Stack spacing={"25px"}>
                                     <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '14px', }, fontWeight: '500', }}>
-                                        {item.text}
+                                        {t(item.text)}
                                     </Typography>
                                     <Stack spacing={"12px"}>
                                         {item?.list?.map((list, index) => (
@@ -267,14 +304,14 @@ const Price = () => {
                                                     <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
                                                 </svg>
                                                 <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', }}>
-                                                    {list}
+                                                    {t(list)}
                                                 </Typography>
                                             </Stack>
                                         ))}
                                         {item?.contact?.map((list, index) => (
                                             <Stack spacing={2} direction={"row"} key={index}>
                                                 <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', }}>
-                                                    {list}
+                                                    {t(list)}
                                                 </Typography>
                                             </Stack>
                                         ))}
@@ -291,7 +328,7 @@ const Price = () => {
                             }}
                                 onClick={handleOpen}
                             >
-                                Contact Us
+                                {t("Contact Us")}
                             </Button>
                         </Card>
                     ))}
@@ -302,31 +339,31 @@ const Price = () => {
                     <Grid container item spacing={3}>
                         <Grid item xs={6} borderRight={1} borderBottom={1} borderColor={'#D8D8D8'}>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '24px', }, fontWeight: '700', paddingBottom: '20px' }}>
-                                Plan comparison
+                                {t("Plan comparison")}
                             </Typography>
                         </Grid>
                         <Grid item xs={2} borderRight={1} borderBottom={1} borderColor={'#D8D8D8'}>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '700', paddingBottom: '20px' }}>
-                                5 users
+                                {t("5 users")}
                             </Typography>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '20px', }, fontWeight: '600', paddingBottom: '20px' }}>
-                                SAR 0
+                                {t("SAR")} 0
                             </Typography>
                         </Grid>
                         <Grid item xs={2} borderRight={1} borderBottom={1} borderColor={'#D8D8D8'}>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '700', paddingBottom: '20px' }}>
-                                6+ Users
+                                {t("6+ Users")}
                             </Typography>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '20px', }, fontWeight: '600', paddingBottom: '20px' }}>
-                                SAR 199
+                                {t("SAR")} 199
                             </Typography>
                         </Grid>
                         <Grid item xs={2} borderRight={1} borderBottom={1} borderColor={'#D8D8D8'}>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '700', paddingBottom: '20px' }}>
-                                Enterprise Solution
+                                {t("Enterprise Solution")}
                             </Typography>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '600', paddingBottom: '20px' }}>
-                                Contact us
+                                {t("Contact us")}
                                 sales@iCenna.com
                             </Typography>
                         </Grid>
@@ -337,7 +374,7 @@ const Price = () => {
                                 <Grid container item spacing={3}>
                                     <Grid item xs={6} borderRight={1} borderColor={'#D8D8D8'}>
                                         <Typography variant="h6" sx={{ fontSize: { xs: '18px', md: '24px', }, fontWeight: 'bold', paddingBottom: '30px' }}>
-                                            {item.title}
+                                            {t(item.title)}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={2} borderRight={1} borderColor={'#D8D8D8'} sx={{ paddingBottom: '30px' }}>
@@ -354,28 +391,28 @@ const Price = () => {
                                     <Grid container item spacing={3}>
                                         <Grid item xs={6} borderRight={1} borderColor={'#D8D8D8'}>
                                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', paddingBottom: '20px' }}>
-                                                {list.title}
+                                                {t(list.title)}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={2} borderRight={1} borderColor={'#D8D8D8'}>
                                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', paddingBottom: '20px' }}>
                                                 {list.free == "true" ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
-                                                </svg> : list.free}
+                                                </svg> : t(list.free)}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={2} borderRight={1} borderColor={'#D8D8D8'}>
                                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', paddingBottom: '20px' }}>
                                                 {list.premium == "true" ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
-                                                </svg> : list.premium}
+                                                </svg> : t(list.premium)}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={2} borderRight={1} borderColor={'#D8D8D8'}>
                                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', paddingBottom: '20px' }}>
                                                 {list.enterprise == "true" ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
-                                                </svg> : list.enterprise}
+                                                </svg> : t(list.enterprise)}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -392,21 +429,21 @@ const Price = () => {
                         variant='contained'
                         sx={{ textWrap: 'nowrap', backgroundColor: type === 'free' ? 'blue' : 'initial', color: type === 'free' ? 'white' : 'black' }}
                     >
-                        SAR 0
+                        {t("SAR")} 0
                     </Button>
                     <Button
                         onClick={() => setType('6')}
                         variant='contained'
                         sx={{ textWrap: 'nowrap', backgroundColor: type === '6' ? 'blue' : 'initial', color: type === '6' ? 'white' : 'black' }}
                     >
-                        6 users +
+                        {t("6 users +")}
                     </Button>
                     <Button
                         onClick={() => setType('enterprise')}
                         variant='contained'
                         sx={{ textWrap: 'nowrap', backgroundColor: type === 'enterprise' ? 'blue' : 'initial', color: type === 'enterprise' ? 'white' : 'black' }}
                     >
-                        Enterprise
+                        {t("Enterprise")}
                     </Button>
                 </Stack>
                 <Grid container spacing={1} sx={{ pt: '60px' }}>
@@ -416,7 +453,7 @@ const Price = () => {
                                 <Grid container item spacing={3}>
                                     <Grid item xs={12} >
                                         <Typography variant="h6" sx={{ fontSize: { xs: '18px', md: '24px', }, fontWeight: 'bold', paddingBottom: '30px' }}>
-                                            {item.title}
+                                            {t(item.title)}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -424,7 +461,7 @@ const Price = () => {
                                     <Grid container item justifyContent={"space-between"}>
                                         <Grid item xs={6}>
                                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '400', paddingBottom: '20px' }}>
-                                                {list.title}
+                                                {t(list.title)}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={6} sx={{ justifyContent: 'flex-end', display: 'flex' }} >
@@ -432,13 +469,13 @@ const Price = () => {
                                                 {
                                                     type == 'free' ? list.free == "true" ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                         <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
-                                                    </svg> : list.free
+                                                    </svg> : t(list.free)
                                                         : type == '6' ? list.premium == "true" ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                             <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
-                                                        </svg> : list.premium
+                                                        </svg> : t(list.premium)
                                                             : list.enterprise == "true" ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                                 <path fillRule="evenodd" clipRule="evenodd" d="M9.00016 16.1701L4.83016 12.0001L3.41016 13.4101L9.00016 19.0001L21.0002 7.00009L19.5902 5.59009L9.00016 16.1701Z" fill="#006D31" />
-                                                            </svg> : list.enterprise
+                                                            </svg> : t(list.enterprise)
                                                 }
                                             </Typography>
                                         </Grid>

@@ -2,6 +2,7 @@ import { Container, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 import LandingLayout from 'src/layouts/LandingLayout'
 
 
@@ -163,15 +164,16 @@ function Icon() {
 }
 
 const Support = () => {
+    const { t } = useTranslation('');
     return (
         <Container maxWidth="lg" sx={{ pt: "72px" }}>
             <Stack direction={{ xs: "column", md: 'row' }} spacing={4} justifyContent={'space-between'} >
                 <Stack spacing={{ xs: "16px", md: "24px" }} >
                     <Typography variant="h1" sx={{ fontSize: { xs: '2.25rem', md: '4.5rem', }, fontWeight: 'bold', }}>
-                        24 Hours Support
+                        {t("24 Hours Support")}
                     </Typography>
                     <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', } }}>
-                        if you need any technical help, please contact us at
+                        {t("if you need any technical help, please contact us at")}
                     </Typography>
                     <Link style={{ textDecoration: 'none' }} href="mailto:support@iCenna.com" passHref>
                         <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', } }}>

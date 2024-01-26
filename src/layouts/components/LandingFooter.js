@@ -6,14 +6,13 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const InstagramIcon = () => {
   return (
@@ -30,8 +29,6 @@ const InstagramIcon = () => {
     </svg>
   );
 };
-
-
 const TwitterIcon = () => {
   return (
     <svg
@@ -47,7 +44,6 @@ const TwitterIcon = () => {
     </svg>
   );
 };
-
 const LinkedInIcon = () => {
   return (
     <svg
@@ -62,8 +58,7 @@ const LinkedInIcon = () => {
       <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H6.477v-7H9v7zM7.694 8.717c-.771 0-1.286-.514-1.286-1.2s.514-1.2 1.371-1.2c.771 0 1.286.514 1.286 1.2s-.514 1.2-1.371 1.2zM18 17h-2.442v-3.826c0-1.058-.651-1.302-.895-1.302s-1.058.163-1.058 1.302V17h-2.523v-7h2.523v.977c.325-.57.976-.977 2.197-.977S18 10.977 18 13.174V17z"></path>
     </svg>
   );
-}
-
+};
 const Maroof = () => {
   return (
     <svg
@@ -102,7 +97,6 @@ const Maroof = () => {
     </svg>
   );
 }
-
 const FacebookIcon = () => {
   return (
     <svg
@@ -229,21 +223,23 @@ const AppleIcon = () => {
     </svg>
   );
 }
+
 export const LandingFooter = ({ withTabs, website, ...rest }) => {
+  const { t } = useTranslation();
   return (
-    <Container maxWidth="lg" sx={{ mt: 'auto', py: 5, color: 'white', textAlign:{xs:'center', md:'initial'} }}>
+    <Container maxWidth="lg" sx={{ mt: 'auto', py: 5, color: 'white', textAlign: { xs: 'center', md: 'initial' } }}>
       <Grid container rowSpacing={3} >
         <Grid item xs={12} md={6}>
           <Stack spacing={3}>
             <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
-              About Us
+              {t("About Us")}
             </Typography>
             <Stack spacing={1}>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
-                AviCenna for Information Technology | Commercial
+                {t("AviCenna for Information Technology | Commercial")}
               </Typography>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
-                Registration: 4030497928
+                {t("Registration: 4030497928")}
               </Typography>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
                 شركة افي سينا لتقنية المعلومات | سجل تجاري 4030497928
@@ -254,26 +250,26 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
         <Grid item xs={12} md={3}>
           <Stack spacing={3}>
             <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
-              Legal
+              {t("Legal")}
             </Typography>
             <Stack spacing={1}>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
                 <Link href={"/tc"} underline="hover" color="inherit" style={{ textDecoration: 'none', color: 'white' }}>
-                  Terms & Conditions
+                  {t("Terms & Conditions")}
                 </Link>
               </Typography>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
                 <Link href="/privacy" underline="hover" color="inherit" style={{ textDecoration: 'none', color: 'white' }}>
-                  Privacy Policy
+                  {t("Privacy Policy")}
                 </Link>
               </Typography>
             </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={12} md={3}>
-          {/* <Stack spacing={3} alignItems={{xs:'center', md:"flex-end"}}>
+        {/* <Grid item xs={12} md={3}>
+          <Stack spacing={3} alignItems={{ xs: 'center', md: "flex-end" }}>
             <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
-              Download App
+              {t("Download App")}
             </Typography>
             <Stack spacing={10} direction={'row'} alignItems={"flex-start"}>
               <Box>
@@ -287,17 +283,17 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
                 </Link>
               </Box>
             </Stack>
-          </Stack> */}
-        </Grid>
+          </Stack>
+        </Grid> */}
       </Grid>
-      <Divider color={"#E5E5E5"} sx={{my:10}} />
-      <Stack direction={{xs:'column', md:'row'}} spacing={4} justifyContent={'space-between'} alignItems={"center"} >
+      <Divider color={"#E5E5E5"} sx={{ my: 10 }} />
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} justifyContent={'space-between'} alignItems={"center"} >
         <Stack spacing={6} direction={"row"} alignItems={"center"}>
           <Link href="/">
             <Image src="/assets/logo/white-01.png" alt="iCenna" width={150} height={150} style={{ width: 150, height: 50 }} />
           </Link>
           <Typography variant='body2' sx={{ color: 'white' }}>
-            © 2021 iCenna. All rights reserved
+            {t(" © 2021 iCenna. All rights reserved")}
           </Typography>
         </Stack>
         <Stack spacing={2} direction={"row"}>

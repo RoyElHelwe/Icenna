@@ -5,6 +5,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Container, Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function ControlledAccordions() {
     const data = [
@@ -48,7 +49,7 @@ export default function ControlledAccordions() {
         }
     ]
     const [expanded, setExpanded] = React.useState(false);
-
+    const {t} = useTranslation();
     const handleChange =
         (panel) => (event, isExpanded) => {
             setExpanded(isExpanded ? panel : false);
@@ -58,7 +59,7 @@ export default function ControlledAccordions() {
         <Container maxWidth="lg" sx={{ mt: 20 }}>
             <Stack spacing={12}>
                 <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 700, mb: 2 }}>
-                    Any questions?
+                    {t("Any questions?")}
                     sales@iCenna.com
                 </Typography>
                 <Stack>
@@ -76,14 +77,14 @@ export default function ControlledAccordions() {
                                     id={`panel${index}bh-header`}
                                 >
                                     <Typography sx={{ width: '90%', fontWeight: 700, flexShrink: 0 }}>
-                                        {item.question}
+                                        {t(item.question)}
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Typography>
                                         {item.answers.map((answer, index1) => (
                                             <Typography key={index1} variant="span" gutterBottom sx={{fontSize:'14px'}}>
-                                                {answer}
+                                                {t(answer)}
                                             </Typography>
                                         ))}
                                     </Typography>

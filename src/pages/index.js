@@ -22,6 +22,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 
 import { FreeMode, Autoplay } from 'swiper/modules';
+import { useSettings } from 'src/hooks/useSettings';
 
 
 export async function getServerSideProps() {
@@ -32,6 +33,10 @@ export async function getServerSideProps() {
 
 const Index = ({ website }) => {
   const { t } = useTranslation();
+  const { settings, saveSettings } = useSettings();
+  const {
+    language,
+  } = settings;
   return (
     <>
       <Head>
@@ -136,6 +141,8 @@ const Index = ({ website }) => {
             }}
             modules={[FreeMode, Autoplay]}
             className="mySwiper"
+            dir={language == 'ar' ? "rtl" : "ltr"}
+            key={language}
           >
             <SwiperSlide><Image src="/assets/partners/ApplePay.png" alt="Apple Pay" width={100} height={100} style={{ height: '30px', width: 'auto' }} /></SwiperSlide>
             <SwiperSlide><Image src="/assets/partners/chi.png" alt="CHI" width={100} height={100} style={{ height: '30px', width: 'auto' }} /></SwiperSlide>
@@ -185,7 +192,7 @@ const Index = ({ website }) => {
         </Stack>
         <Stack spacing={12} sx={{ my: '7.5rem' }}>
           <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 700, mb: 2 }}>
-            Receive Bookings and Manage Patient Cases Through iCenna Mobile App
+            {t("Receive Bookings and Manage Patient Cases Through iCenna Mobile App")}
           </Typography>
           <Stack direction={{ xs: "column", md: 'row' }} justifyContent={"space-between"} alignItems={"center"}>
             <Stack spacing={5}>

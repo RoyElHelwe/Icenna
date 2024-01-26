@@ -12,6 +12,7 @@ import { verify_otp } from '../../api/auth';
 import { useAuth } from '../../hooks/use-auth';
 import OTPInput from 'src/components/otpInput';
 import { useSettings } from 'src/hooks/useSettings';
+import { useTranslation } from 'react-i18next';
 
 const VerifyOtpForm = ({
   values
@@ -71,10 +72,12 @@ const VerifyOtpForm = ({
   }, [error, setError]);
 
   const onSubmit = ({ code }) => mutate({ code, otp_token: user?.otp_token });
-
+  const { t } = useTranslation();
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={{ fontWeight: 600, color: 'text.secondary', mb: 2, }}>Type your 6 digit security code</Typography>
+      <Typography sx={{ fontWeight: 600, color: 'text.secondary', mb: 2, }}>
+        {t("Type your 6 digit security code")}
+        </Typography>
       <FormControl
         fullWidth
         sx={{ mb: 4, direction: `${language == 'ar' ? 'rtl !important' : 'ltr !important'}` }}
@@ -111,7 +114,6 @@ const VerifyOtpForm = ({
               onChange={onChange}
               renderSeparator={<span>-</span>}
               value={value}
-              placeholder={"123456"}
               inputType={"number"}
               renderInput={(props) => <input style={{ width: '100%' }} {...props} />}
               shouldAutoFocus
@@ -121,7 +123,12 @@ const VerifyOtpForm = ({
         />
         {errors.code && <FormHelperText sx={{ color: 'error.main' }}>{errors.code.message}</FormHelperText>}
       </FormControl>
-      <LoadingButton fullWidth loading={isLoading} type='submit' variant='contained' sx={{ mt: 4 }}>
+      <LoadingButton
+        fullWidth
+        loading={isLoading}
+        size='medium'
+        type='submit'
+        variant='contained' sx={{ mt: 4, backgroundColor: '#0F4B64', '&:hover': { backgroundColor: '#0F4B64' } }}>
         Verify
       </LoadingButton>
     </form>

@@ -16,23 +16,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import LanguageButton from 'src/components/languageButton';
+import { useSettings } from 'src/hooks/useSettings';
+import { useTranslation } from 'react-i18next';
 
 export const LandingTopNav = ({ withTabs, ...rest }) => {
   const env = process.env.NEXT_PUBLIC_NODE_ENV;
+  const { t } = useTranslation();
   const pages = [
     {
-      name: 'Feature',
-      href: '/feature'
+      name: 'Price',
+      href: '/pricing',
     },
     {
-      name: 'Pricing',
-      href: '/pricing',
+      name: 'Feature',
+      href: '/feature',
     },
     {
       name: 'Support',
       href: '/support',
-    },
-    {
+    }, {
       name: 'Contact',
       href: '/contact',
     },
@@ -45,6 +48,8 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const {settings} = useSettings();
+
   return (
     <AppBar
       component="header"
@@ -60,6 +65,7 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
         width: '100%',
         zIndex: (theme) => theme.zIndex.drawer + 1,
         boxShadow: 1,
+        direction: `${settings?.language == 'ar' ? 'rtl' : 'ltr'}`,
       }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -102,7 +108,7 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Link style={{ textDecoration: 'none' }} href={page.href}>
                     <Typography textAlign="center">
-                      {page.name}
+                      {t(page.name)}
                     </Typography>
                   </Link>
                 </MenuItem>
@@ -119,12 +125,12 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
                 style={{
                   width: '100%', // Use 100% width for responsiveness
                   height: 'auto', // Maintain aspect ratio
-
+                  
                 }}
               />
             </Link>
           </Box>
-          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap:5 }}>
+          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page.name}
@@ -132,15 +138,16 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
                 sx={{ my: 2, color: 'black', display: 'block' }}
               >
                 <Link style={{ textDecoration: 'none' }} href={page.href}>
-                  <Typography>{page.name}</Typography>
+                  <Typography>{t(page.name)}</Typography>
                 </Link>
               </Button>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display:'flex' }}>
+            <LanguageButton />
             {/* <Button color="primary" sx={{ color: 'black' }}>
               <Link style={{ textDecoration: 'none' }} href="/login">
-                <Typography>Login</Typography>
+                <Typography>{t("Login")}</Typography>
               </Link>
             </Button> */}
           </Box>
