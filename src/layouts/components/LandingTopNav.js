@@ -144,7 +144,7 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0, display:'flex' }}>
-            <LanguageButton />
+            {/* <LanguageButton /> */}
             {/* <Button color="primary" sx={{ color: 'black' }}>
               <Link style={{ textDecoration: 'none' }} href="/login">
                 <Typography>{t("Login")}</Typography>
