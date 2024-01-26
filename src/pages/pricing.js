@@ -363,7 +363,7 @@ const Price = () => {
                                 {t("Enterprise Solution")}
                             </Typography>
                             <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '16px', }, fontWeight: '600', paddingBottom: '20px' }}>
-                                {t("Contact us")}
+                                {t("Contact us")}&nbsp;
                                 sales@iCenna.com
                             </Typography>
                         </Grid>

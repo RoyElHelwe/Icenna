@@ -101,7 +101,7 @@ const Page = ({ website }) => {
               {t("Contact Us")}
             </Typography>
             <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', } }}>
-              {t("Fill up the form our team will get back to you within 24 Hours")}
+              {t("Fill up the form our team will get back to you")}
             </Typography>
             {message && (
               <Typography variant="body1" sx={{ color: message.type == 'success' ? 'green' : 'red' }}>
