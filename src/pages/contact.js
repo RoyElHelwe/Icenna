@@ -1,4 +1,4 @@
-import { Button, Container, FormControl, Grid, Link, Stack, TextField, Typography } from '@mui/material';
+import { Button, Container, FormControl, FormHelperText, Grid, Link, Stack, TextField, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import { getWebsite } from '../api/Website';
@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { sendEmail } from 'src/api/contactusmail';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { MuiTelInput } from 'mui-tel-input';
+import { MuiTelInput, matchIsValidTel } from 'mui-tel-input';
 import { LoadingButton } from '@mui/lab';
 import { useTranslation } from 'react-i18next';
 
@@ -49,9 +49,6 @@ const Page = ({ website }) => {
         message: "We have received you contact and we will get back to you.",
         type: "success",
       });
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
     },
     onError: (err, vars, ctx) => {
       setMessage({
