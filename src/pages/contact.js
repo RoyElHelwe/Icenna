@@ -93,21 +93,8 @@ const Page = ({ website }) => {
       <Container maxWidth="lg" sx={{ pt: "72px" }}>
         <Stack direction={{ xs: "column-reverse", md: 'row' }} spacing={4} alignItems={{ xs: 'flex-start', md: "center" }} >
           <Stack sx={{ maxWidth: '100%', height: 'auto', minWidth: { xs: '100%', md: '50%' } }}>
-            <Link style={{ position: 'relative' }} target='_blanc' href='https://www.google.com/maps/place/iCenna/@21.6479375,39.127661,15z/data=!4m2!3m1!1s0x0:0x3ac06bd9bf2040fc?sa=X&ved=2ahUKEwihtNbS0_qDAxUMfKQEHfwKDkcQ_BJ6BAhbEAA'>
-              <Image
-                src="/assets/landing/location.png"
-                alt="support"
-                width={500}
-                height={200}
-                layout="responsive"
-                objectFit="contain"
-                objectPosition="center"
-                style={{ borderRadius: '10px', boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)' }}
-              />
-              <Typography variant="h6" sx={{ fontSize: { xs: '2rem', md: '2.2rem', }, position: 'absolute', inset: 0, pb: 30, zIndex: 5, display: "flex", justifyContent: 'center', alignItems: 'center', boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)' }}>
-                {t("See on Google Maps")}
-              </Typography>
-            </Link>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14833.636415732042!2d39.127661!3d21.6479375!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3dbda60fe634d%3A0x3ac06bd9bf2040fc!2siCenna!5e0!3m2!1sen!2slb!4v1706272599924!5m2!1sen!2slb" width={600} height={450} style={{border:'none'}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              
           </Stack>
           <Stack spacing={{ xs: "16px", md: "24px" }} sx={{ minWidth: { xs: '100%', md: '40%' }, p: 2 }} >
             <Typography variant="h1" sx={{ fontSize: { xs: '2.25rem', md: '4.5rem', }, fontWeight: 'bold', textWrap: 'nowrap' }}>
