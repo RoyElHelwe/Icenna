@@ -36,7 +36,7 @@ export default function BasicMenu() {
                 color: '#fff',
                 transform: 'translateX(22px)',
                 '& .MuiSwitch-thumb:before': {
-                    content: `${language == 'ar' ? "'Ar'" : "'En'"}`,
+                    content: `${language == 'ar' ? "'En'" : "'Ar'"}`,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
