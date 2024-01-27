@@ -25,7 +25,7 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
   const { t } = useTranslation();
   const pages = [
     {
-      name: 'Price',
+      name: 'Pricing',
       href: '/pricing',
     },
     {
@@ -130,7 +130,7 @@ export const LandingTopNav = ({ withTabs, ...rest }) => {
               />
             </Link>
           </Box>
-          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'none', md: 'flex' }, direction:'ltr' }}>
             {pages.map((page) => (
               <Button
                 key={page.name}

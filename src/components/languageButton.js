@@ -3,6 +3,7 @@ import { useSettings } from 'src/hooks/useSettings';
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import Button from '@mui/material/Button'
 
 
 
@@ -23,54 +24,54 @@ export default function BasicMenu() {
         language,
     } = settings;
 
-    const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-        width: 62,
-        height: 34,
-        padding: 7,
-        direction: language == 'ar' ? 'rtl' : 'ltr',
-        '& .MuiSwitch-switchBase': {
-            margin: 1,
-            padding: 0,
-            transform: 'translateX(6px)',
-            '&.Mui-checked': {
-                color: '#fff',
-                transform: 'translateX(22px)',
-                '& .MuiSwitch-thumb:before': {
-                    content: `${language == 'ar' ? "'En'" : "'Ar'"}`,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                },
-                '& + .MuiSwitch-track': {
-                    opacity: 1,
-                    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-                },
-            },
-        },
-        '& .MuiSwitch-thumb': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
-            width: 32,
-            height: 32,
-            '&::before': {
-                content: "'En'",
-                position: 'absolute',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-                left: 0,
-                top: 0,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-            },
-        },
-        '& .MuiSwitch-track': {
-            opacity: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-            borderRadius: 20 / 2,
-        },
-    }));
+    // const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+    //     width: 62,
+    //     height: 34,
+    //     padding: 7,
+    //     direction: language == 'ar' ? 'rtl' : 'ltr',
+    //     '& .MuiSwitch-switchBase': {
+    //         margin: 1,
+    //         padding: 0,
+    //         transform: 'translateX(6px)',
+    //         '&.Mui-checked': {
+    //             color: '#fff',
+    //             transform: 'translateX(22px)',
+    //             '& .MuiSwitch-thumb:before': {
+    //                 content: `${language == 'ar' ? "'En'" : "'Ar'"}`,
+    //                 display: 'flex',
+    //                 justifyContent: 'center',
+    //                 alignItems: 'center',
+    //             },
+    //             '& + .MuiSwitch-track': {
+    //                 opacity: 1,
+    //                 backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    //             },
+    //         },
+    //     },
+    //     '& .MuiSwitch-thumb': {
+    //         backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+    //         width: 32,
+    //         height: 32,
+    //         '&::before': {
+    //             content: "'En'",
+    //             position: 'absolute',
+    //             display: 'flex',
+    //             justifyContent: 'center',
+    //             alignItems: 'center',
+    //             width: '100%',
+    //             height: '100%',
+    //             left: 0,
+    //             top: 0,
+    //             backgroundRepeat: 'no-repeat',
+    //             backgroundPosition: 'center',
+    //         },
+    //     },
+    //     '& .MuiSwitch-track': {
+    //         opacity: 1,
+    //         backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    //         borderRadius: 20 / 2,
+    //     },
+    // }));
     const handleChange = (field, value) => {
         saveSettings({ ...settings, [field]: value });
     };
@@ -102,20 +103,9 @@ export default function BasicMenu() {
                 <MenuItem onClick={() => (handleClose(), setName('ar'), handleChange('language','ar'))}>Arabic</MenuItem>
             </Menu> */}
 
-            <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onChange={
-                    () => {
-                        if (name == 'en') {
-                            setName('ar')
-                            handleChange('language', 'ar')
-                        } else {
-                            setName('en')
-                            handleChange('language', 'en')
-                        }
-                    }
-                } />}
-            />
-
+            <Button variant="text" color="primary" onClick={() => name == 'en' ?( setName('ar'), handleChange('language','ar')) :( setName('en'), handleChange('language','en')) }>
+                {name == 'en' ? "Arabic" : "English"}
+            </Button>
         </div>
     );
 }
