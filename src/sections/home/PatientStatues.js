@@ -31,10 +31,10 @@ export const PatientStatues = () => {
     dataLabels: {
       enabled: false,
     },
-    labels: ["Checked In", "Checked Out", "Confirmed", "Opened", "Out"].map((l) => t(l)),
+    labels: ["Checked In", "Checked Out", "Confirmed", "Opened", "Out"].map((l) => l),
     tooltip: {
       y: {
-        formatter: (val) => `${val} ${t('Patients')}`,
+        formatter: (val) => `${val} ${'Patients'}`,
       },
     },
   };

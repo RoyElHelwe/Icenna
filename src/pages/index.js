@@ -81,7 +81,7 @@ const Index = ({ website }) => {
             <PieCustom />
           </Grid>
           <Grid item xs={12} lg={4}>
-            <Sales title="$135,312" subtitle={t("Profits")} colors={['#4CAF50']} />
+            <Sales title="$135,312" subtitle={"Profits"} colors={['#4CAF50']} />
           </Grid>
           <Grid item xs={12} lg={4}>
             <PatientStatues />

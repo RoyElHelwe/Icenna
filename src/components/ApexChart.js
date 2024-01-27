@@ -33,7 +33,7 @@ export const ApexChart = ({ title, children, options, ...rest }) => {
 
   return (
     <Card sx={{ m: 2, height: '100%', width: '100%' }} elevation={3}>
-      <CardHeader title={t(title)} sx={{ textAlign: "center", mt: 5, }} />
+      <CardHeader title={title} sx={{ textAlign: "center", mt: 5, }} />
       <CardContent>
         {children}
         <ReactApexChart

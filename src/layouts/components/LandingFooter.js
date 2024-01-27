@@ -236,13 +236,13 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
             </Typography>
             <Stack spacing={1}>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
-                {t("AviCenna for Information Technology | Commercial")}
+                {t("AviCenna for Information Technology")}
               </Typography>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
-                {t("Registration: 4030497928")}
+                شركة افي سينا لتقنية المعلومات 
               </Typography>
               <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', md: '1rem', color: 'white' } }}>
-                شركة افي سينا لتقنية المعلومات | سجل تجاري 4030497928
+                {t("Commercial Registration: 4030497928")}
               </Typography>
             </Stack>
           </Stack>

@@ -10,7 +10,7 @@ const Price = () => {
     const data = [
         {
             type: '5 users',
-            price: 'SAR 0',
+            price: 'Free',
             text: 'Up to 5 users',
             list: [
                 'NPHIS Connect',
@@ -209,35 +209,6 @@ const Price = () => {
                     enterprise: "",
                 },
             ],
-        },
-        {
-            title: "Revenue Cycle Management",
-            list: [
-                {
-                    title: "Manage Eligibility check",
-                    free: "Unlimited",
-                    premium: "Unlimited",
-                    enterprise: "",
-                },
-                {
-                    title: "Manage Approval",
-                    free: "Unlimited",
-                    premium: "Unlimited",
-                    enterprise: "",
-                },
-                {
-                    title: "Manage claims",
-                    free: "Unlimited",
-                    premium: "Unlimited",
-                    enterprise: "",
-                },
-                {
-                    title: "One solution and automated",
-                    free: "Unlimited",
-                    premium: "Unlimited",
-                    enterprise: "",
-                },
-            ]
         },
         {
             title: 'Accounting',
