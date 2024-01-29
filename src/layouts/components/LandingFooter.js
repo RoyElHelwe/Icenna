@@ -266,17 +266,17 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
             </Stack>
           </Stack>
         </Grid>
-        {/* <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={3}>
           <Stack spacing={3} alignItems={{ xs: 'center', md: "flex-end" }}>
             <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.2rem', fontWeight: '700', color: 'white' } }}>
               {t("Download App")}
             </Typography>
             <Stack spacing={10} direction={'row'} alignItems={"flex-start"}>
-              <Box>
+              {/* <Box>
                 <Link href="https://apps.apple.com/sa/app/icenna/id6446591202" target='_blank'>
                   <AppleIcon />
                 </Link>
-              </Box>
+              </Box> */}
               <Box>
                 <Link href="https://play.google.com/store/apps/details?id=com.icenna" target='_blank'>
                   <GoogleIocn />
@@ -284,7 +284,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
               </Box>
             </Stack>
           </Stack>
-        </Grid> */}
+        </Grid>
       </Grid>
       <Divider color={"#E5E5E5"} sx={{ my: 10 }} />
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} justifyContent={'space-between'} alignItems={"center"} >

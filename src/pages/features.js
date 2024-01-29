@@ -92,7 +92,7 @@ const Feature = () => {
               style={{ width: '600', height: '480px' }} />
           </Stack>
         </Stack>
-        {/* <Stack spacing={8} sx={{ mt: 10 }}>
+        <Stack spacing={8} sx={{ mt: 10 }}>
           <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', md: '2.25rem', textAlign: 'center' }, fontWeight: 'bold', }}>
             {t("iCenna App Brings Everything You Need In Medical Life")}
           </Typography>
@@ -100,7 +100,7 @@ const Feature = () => {
             {t("Appointments, reports, and medical records. Download now for a comprehensive experience of convenience")}
           </Typography>
           <Stack direction={"row"} spacing={4} alignItems={"center"} justifyContent={"center"}>
-            <Button variant='outlined' color='secondary'>
+            {/* <Button variant='outlined' color='secondary'>
               <Link style={{ textDecoration: 'none' }} href="https://apps.apple.com/sa/app/icenna/id6446591202" target="_blank" >
                 <Typography variant="body2" sx={{ fontSize: { xs: '1rem', md: '1.2rem', textAlign: 'center', display: 'flex', alignItems: 'center' } }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -108,7 +108,7 @@ const Feature = () => {
                   </svg>&nbsp; App Store
                 </Typography>
               </Link>
-            </Button>
+            </Button> */}
             <Button variant='outlined' color='secondary'>
               <Link style={{ textDecoration: 'none' }} href="https://play.google.com/store/apps/details?id=com.icenna" target="_blank" >
                 <Typography variant="body2" sx={{ fontSize: { xs: '1rem', md: '1.2rem', textAlign: 'center', display: 'flex', alignItems: 'center' } }}>
@@ -119,7 +119,7 @@ const Feature = () => {
               </Link>
             </Button>
           </Stack>
-        </Stack> */}
+        </Stack>
       </Container>
     </>
   )
