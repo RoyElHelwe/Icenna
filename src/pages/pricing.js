@@ -13,7 +13,7 @@ const Price = () => {
             price: 'Free',
             text: 'Up to 5 users',
             list: [
-                'NPHIS Connect',
+                'NPHIES Connect',
                 'Healthcare Administration',
                 'Booking Appointment',
                 'Customer Service',
@@ -30,7 +30,7 @@ const Price = () => {
             month: 'user/month',
             text: '6 users and more',
             list: [
-                'NPHIS Connect',
+                'NPHIES Connect',
                 'Healthcare Administration',
                 'Booking Appointment',
                 'Customer Service',
@@ -53,7 +53,7 @@ const Price = () => {
     ]
     const data2 = [
         {
-            title: "NPHIS Connect",
+            title: "NPHIES Connect",
             list: [
                 {
                     title: "Eligibility check",
