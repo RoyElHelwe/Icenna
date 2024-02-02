@@ -56,13 +56,13 @@ const Price = () => {
             title: "NPHIES Connect",
             list: [
                 {
-                    title: "Eligibility check",
+                    title: "Beneficiary details",
                     free: "Ready",
                     premium: "Ready",
                     enterprise: ""
                 },
                 {
-                    title: "Beneficiary details",
+                    title: "Eligibility check",
                     free: "Ready",
                     premium: "Ready",
                     enterprise: ""
