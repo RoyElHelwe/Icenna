@@ -12,11 +12,11 @@ const Feature = () => {
     <>
       <Head>
         <title>An AI Healthcare Product</title>
-        <meta name="description" content="iCenna is an Artificial Intelligence and Machine learning healthcare product built for Healthcare providers and patients to connect them into one platform, using a sophisticated algorithm" key="desc" />
+        <meta name="description" content="iCenna is an Artificial Intelligence and Machine learning healthcare product for providers and patients using NPHIES" key="desc" />
         <meta property="og:title" content="An AI Healthcare Product" />
         <meta
           property="og:description"
-          content="iCenna is an Artificial Intelligence and Machine learning healthcare product built for Healthcare providers and patients to connect them into one platform, using a sophisticated algorithm"
+          content="iCenna is an Artificial Intelligence and Machine learning healthcare product for providers and patients using NPHIES"
         />
         <meta
           property="og:image"

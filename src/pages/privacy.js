@@ -2,24 +2,26 @@ import { Box, Stack, Typography } from '@mui/material';
 import Head from 'next/head';
 import { getWebsite } from '../api/Website';
 import LandingLayout from '../layouts/LandingLayout';
+import { useSettings } from 'src/hooks/useSettings';
 
 export async function getServerSideProps() {
     const website = await getWebsite();
-
     return { props: { website: website.data } };
 };
 
 const Index = ({ website }) => {
+    const { settings } = useSettings()
+
     return (
         <>
             <Head>
                 <title>Privacy</title>
             </Head>
-            <Box sx={{ my: 3, }}>
+            <Box sx={{ my: 3, direction: settings?.language === 'ar' ? 'ltr' : 'rtl' }}>
                 <Typography variant="h2" sx={{ textAlign: 'center' }}>
                     سياسة الخصوصية
                 </Typography>
-                <Box sx={{ my: 3, mx: 5, direction: 'rtl' }}>
+                <Box sx={{ my: 3, mx: 5 }}>
                     <Typography variant='h5'>
                         نلتزم في iCenna باحترام خصوصيتك وحماية معلوماتك الشخصية. يمكنك الاطلاع على سياسة الخصوصية الكاملة أدناه لمساعدتك في فهم كيفية استخدامنا لمعلوماتك الشخصية.
                     </Typography>

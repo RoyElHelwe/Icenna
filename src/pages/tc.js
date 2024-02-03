@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import { getWebsite } from '../api/Website';
 import LandingLayout from '../layouts/LandingLayout';
+import { useSettings } from 'src/hooks/useSettings';
 
 
 export async function getServerSideProps() {
@@ -21,18 +22,18 @@ const Page = ({ website }) => {
   const {
     terms_and_conditions
   } = data?.data?.contact ?? {};
-
+  const { settings } = useSettings()
   return (
     <>
       <Head>
         <title>Terms and Conditions</title>
       </Head>
 
-      <Box sx={{ my: 10, }}>
+      <Box sx={{ my: 10, direction: settings?.language === 'ar' ? 'ltr' : 'rtl' }}>
         <Typography variant="h2" sx={{ textAlign: 'center' }}>
           Terms and Conditions
         </Typography>
-        <Box sx={{ my: 3, mx: 5, direction: 'rtl' }}>
+        <Box sx={{ my: 3, mx: 5 }}>
           <Typography variant='h5'>
             باستخدامك واشتراكك بالتطبيق الخاص بــ” iCenna” كمستخدم مريض ("المنصة/منصات/منصاتنا")، فإنك توافق دون قيد أو شرط على الالتزام قانوناً بالشروط والأحكام أدناه ("شروط الاستخدام") من تاريخ الاشتراك ("تاريخ السريان") بين:
           </Typography>

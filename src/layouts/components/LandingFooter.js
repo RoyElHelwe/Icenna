@@ -293,7 +293,7 @@ export const LandingFooter = ({ withTabs, website, ...rest }) => {
             <Image src="/assets/logo/white-01.png" alt="iCenna" width={150} height={150} style={{ width: 150, height: 50 }} />
           </Link>
           <Typography variant='body2' sx={{ color: 'white' }}>
-            {t(" © 2021 iCenna. All rights reserved")}
+            {t(" © 2024 iCenna. All rights reserved")}
           </Typography>
         </Stack>
         <Stack spacing={2} direction={"row"}>
